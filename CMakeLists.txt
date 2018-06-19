@@ -1,8 +1,8 @@
 set(target_name StackBlox)
 
-set(version_major 1)
-set(version_minor 0)
-set(version_patch 3)
+set(version_major 0)
+set(version_minor 9)
+set(version_patch 0)
 
 configure_file(
     ${CMAKE_CURRENT_SOURCE_DIR}/Version.h.in

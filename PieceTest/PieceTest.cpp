@@ -2,7 +2,7 @@
 #include "gtest/gtest.h"
 #include <iostream>
 
-
+/*
 void expectTileCoordinatesEqual(const std::vector<Point>& tilesRef, const std::vector<Point>& tiles, const std::string& testName)
 {
     ASSERT_EQ(tilesRef.size(), tiles.size());
@@ -395,7 +395,7 @@ TEST(offset, negativeRotated)
         { 1, 3 },       // O O X O
     };
     expectTileCoordinatesEqual(tilesRef, piece.rotate(), "Negative Rotated Offset");
-}
+}*/
 
 
 int main(int argc, char** argv)
