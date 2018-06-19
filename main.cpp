@@ -3,7 +3,7 @@
 
 int main(int argc, char *argv[])
 {
-    const int numTilesWidth = 10;
+    const int numTilesWidth = 12;
     const int numTilesHeight = 20;
 
     ErrorHandler errorHandler("error.log");
