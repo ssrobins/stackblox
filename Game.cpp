@@ -300,9 +300,9 @@ void Game::renderTitleScreen()
     SDL_SetRenderDrawColor(renderer, 0, 0, 0, 255);
     SDL_RenderClear(renderer);
 
-    text("StackBlox", 13, white, 0, heightPercentToPixels(5), true);
+    text("StackBlox", 13, white, 0, heightPercentToPixels(9), true);
 
-    text("Controls", 5, white, widthPercentToPixels(4), heightPercentToPixels(32));
+    text("Controls", 5, white, widthPercentToPixels(15), heightPercentToPixels(32));
 
     const char * moveControls;
     const char * rotateControls;
@@ -324,13 +324,13 @@ void Game::renderTitleScreen()
         startControls = "Press Enter to start";
     }
 
-    text(moveControls, 4, white, widthPercentToPixels(4), heightPercentToPixels(37));
+    text(moveControls, 4, white, widthPercentToPixels(15), heightPercentToPixels(37));
     text("Move piece", 4, white, widthPercentToPixels(50), heightPercentToPixels(37));
 
-    text(rotateControls, 4, white, widthPercentToPixels(4), heightPercentToPixels(42));
+    text(rotateControls, 4, white, widthPercentToPixels(15), heightPercentToPixels(42));
     text("Rotate piece", 4, white, widthPercentToPixels(50), heightPercentToPixels(42));
 
-    text(dropControls, 4, white, widthPercentToPixels(4), heightPercentToPixels(47));
+    text(dropControls, 4, white, widthPercentToPixels(15), heightPercentToPixels(47));
     text("Drop piece faster", 4, white, widthPercentToPixels(50), heightPercentToPixels(47));
 
     text(startControls, 6, red, 0, heightPercentToPixels(65), true);
