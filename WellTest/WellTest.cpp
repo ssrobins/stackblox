@@ -171,6 +171,28 @@ TEST(deleteCompleteLines, twoLinesCompleteSeparate)
 }
 
 
+TEST(addPieceToWell, pieceHasNagativeCoordinates)
+{
+    Well well(2, 2);
+    std::vector<std::vector<int>> piece = {
+        { 0, 0 },
+        { 1, 1 },
+    };
+    well.newPiece(Piece(piece, 0, yOffsetTop(piece), Color{ 1, 0, 0, 0 }));
+    well.rotatePiece();
+
+    well.addPieceToWell();
+    std::vector<std::vector<Color>> wellVals = well.getWellValues();
+
+    std::vector<std::vector<Color>> wellValsRef = {
+        { Color{ 1, 0, 0, 0 }, Color{ 0, 0, 0, 0 } },
+        { Color{ 0, 0, 0, 0 }, Color{ 0, 0, 0, 0 } }
+    };
+
+    expectWellsEqual(wellValsRef, wellVals);
+}
+
+
 TEST(getDropDelay, default)
 {
     Well well(0, 0);

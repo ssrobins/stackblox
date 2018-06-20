@@ -17,7 +17,10 @@ void Well::addPieceToWell()
 
     for (auto& p : pieceCoords)
     {
-        wellVals.at(p.y).at(p.x) = pieceColor;
+        if (p.y >= 0 && p.x >=0)
+        {
+            wellVals.at(p.y).at(p.x) = pieceColor;
+        }
     }
 
     wellHasNoPiece = true;
