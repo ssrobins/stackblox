@@ -68,7 +68,7 @@ const std::vector<std::vector<int>> pieceI{
     { 0, 0, 0, 0, 0 },
     { 0, 0, 0, 0, 0 }
 };
-const Color pieceIcolor = { 0, 255, 255, 255 };
+const Color pieceIcolor = { 255, 0, 153, 255 };
 
 const std::vector<std::vector<int>> pieceJ{
     { 0, 0, 0, 0 },
@@ -76,7 +76,7 @@ const std::vector<std::vector<int>> pieceJ{
     { 0, 0, 0, 1 },
     { 0, 0, 0, 0 }
 };
-const Color pieceJcolor = { 0, 0, 255, 255 };
+const Color pieceJcolor = { 243, 243, 21, 255 };
 
 const std::vector<std::vector<int>> pieceL{
     { 0, 0, 0, 0 },
@@ -84,14 +84,14 @@ const std::vector<std::vector<int>> pieceL{
     { 1, 0, 0, 0 },
     { 0, 0, 0, 0 }
 };
-const Color pieceLcolor = { 255, 165, 0, 255 };
+const Color pieceLcolor = { 131, 249, 44, 255 };
 
 const std::vector<std::vector<int>> pieceO{
     { 1, 1, 1 },
     { 1, 1, 0 },
     { 0, 0, 0 }
 };
-const Color pieceOcolor = { 255, 255, 0, 255 };
+const Color pieceOcolor = { 255, 102, 0, 255 };
 
 const std::vector<std::vector<int>> pieceS{
     { 0, 0, 0, 0 },
@@ -99,14 +99,14 @@ const std::vector<std::vector<int>> pieceS{
     { 1, 1, 0, 0 },
     { 0, 0, 0, 0 }
 };
-const Color pieceScolor = { 0, 255, 0, 255 };
+const Color pieceScolor = { 110, 13, 208, 255 };
 
 const std::vector<std::vector<int>> pieceT{
     { 1, 1, 1 },
     { 0, 1, 0 },
     { 0, 1, 0 }
 };
-const Color pieceTcolor = { 128, 0, 128, 255 };
+const Color pieceTcolor = { 0, 255, 255, 255 };
 
 const std::vector<std::vector<int>> pieceZ{
     { 0, 0, 0, 0 },
@@ -114,7 +114,7 @@ const std::vector<std::vector<int>> pieceZ{
     { 0, 1, 1, 1 },
     { 0, 0, 0, 0 }
 };
-const Color pieceZcolor = { 255, 0, 0, 255 };
+const Color pieceZcolor = { 16, 52, 156, 255 };
 
 
 /*const std::vector<std::vector<int>> pieceI{
