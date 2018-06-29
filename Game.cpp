@@ -13,22 +13,12 @@ Game& Game::getInstance(const int numTilesWidth, const int numTilesHeight, const
     return instance;
 }
 
-SDL_DisplayMode Game::getDisplayData()
-{
-    if (SDL_GetCurrentDisplayMode(0, &display) != 0)
-    {
-        throw Exception(SDL_GetError());
-    }
-
-    return display;
-}
-
 Game::Game(const int numTilesWidth, const int numTilesHeight, const char* title, bool fullscreen)
     : fullscreen(fullscreen)
     , well(numTilesWidth, numTilesHeight)
     , showTitleScreen(true)
     , alreadyShowingTitle(false)
-    , gameDisplay(numTilesWidth, numTilesHeight, screenScale)
+    , display(numTilesWidth, numTilesHeight, screenScale)
 {
     int flags = 0;
 
@@ -44,14 +34,18 @@ Game::Game(const int numTilesWidth, const int numTilesHeight, const char* title,
         throw Exception(SDL_GetError());
     }
 
-    getDisplayData();
-    gameDisplay.setDisplaySize(display.w, display.h);
+    SDL_DisplayMode displayMode;
+    if (SDL_GetCurrentDisplayMode(0, &displayMode) != 0)
+    {
+        throw Exception(SDL_GetError());
+    }
+    display.setDisplaySize(displayMode.w, displayMode.h);
 
     window = SDL_CreateWindow(title,
         SDL_WINDOWPOS_CENTERED,
         SDL_WINDOWPOS_CENTERED,
-        gameDisplay.getGameWidth(),
-        gameDisplay.getGameHeight(),
+        display.getGameWidth(),
+        display.getGameHeight(),
         flags);
     if (window == nullptr)
     {
@@ -63,10 +57,10 @@ Game::Game(const int numTilesWidth, const int numTilesHeight, const char* title,
     {
         throw Exception(SDL_GetError());
     }
-    renderRect.x = (display.w-gameDisplay.getGameWidth())/2;
-    renderRect.y = (display.h-gameDisplay.getGameHeight())/2;
-    renderRect.w = gameDisplay.getGameWidth();
-    renderRect.h = gameDisplay.getGameHeight();
+    renderRect.x = (display.getScreenWidth()-display.getGameWidth())/2;
+    renderRect.y = (display.getScreenHeight()-display.getGameHeight())/2;
+    renderRect.w = display.getGameWidth();
+    renderRect.h = display.getGameHeight();
 
     if (TTF_Init() != 0)
     {
@@ -105,15 +99,15 @@ void Game::handleEvents()
                 touchTime = std::chrono::steady_clock::now();
             }
 
-            dragStart = event.tfinger.x * display.w/gameDisplay.getTileSize();
-            dragVertStart = event.tfinger.y * display.h/gameDisplay.getTileSize();
+            dragStart = event.tfinger.x * display.getScreenWidth()/display.getTileSize();
+            dragVertStart = event.tfinger.y * display.getScreenHeight()/display.getTileSize();
             pieceMoved = false;
         }
 
         if (event.type == SDL_FINGERMOTION)
         {
-            dragDistance = event.tfinger.x*display.w/gameDisplay.getTileSize() - dragStart;
-            dragVertDistance = event.tfinger.y*display.h/gameDisplay.getTileSize() - dragVertStart;
+            dragDistance = event.tfinger.x*display.getScreenWidth()/display.getTileSize() - dragStart;
+            dragVertDistance = event.tfinger.y*display.getScreenHeight()/display.getTileSize() - dragVertStart;
 
             if (dragDistance <= -1)
             {
@@ -134,7 +128,7 @@ void Game::handleEvents()
             {
                 well.quickDrop(true);
                 dropTime = time;
-                dragVertStart = event.tfinger.y * display.h/gameDisplay.getTileSize();
+                dragVertStart = event.tfinger.y * display.getScreenHeight()/display.getTileSize();
             }
         }
 
@@ -232,9 +226,9 @@ void Game::newPiece(const Piece& piece)
     well.newPiece(piece);
     dropTime = time + well.quickDrop(false);
     pieceMoved = false;
-    dragStart = event.tfinger.x * display.w/gameDisplay.getTileSize();
+    dragStart = event.tfinger.x * display.getScreenWidth()/display.getTileSize();
     dragDistance = 0;
-    dragVertStart = event.tfinger.y * display.h/gameDisplay.getTileSize();
+    dragVertStart = event.tfinger.y * display.getScreenHeight()/display.getTileSize();
     dragVertDistance = 0;
 }
 
@@ -349,8 +343,8 @@ void Game::renderStackBlox()
     SDL_RenderClear(renderer);
 
     SDL_Rect rect;
-    rect.w = gameDisplay.getTileSize();
-    rect.h = gameDisplay.getTileSize();
+    rect.w = display.getTileSize();
+    rect.h = display.getTileSize();
 
     // Render pieces in well
     std::vector<std::vector<Color>> wellVals = well.getWellValues();
@@ -375,8 +369,8 @@ void Game::renderStackBlox()
                     255);
             }
 
-            rect.x = x * gameDisplay.getTileSize();
-            rect.y = y * gameDisplay.getTileSize();
+            rect.x = x * display.getTileSize();
+            rect.y = y * display.getTileSize();
             SDL_RenderFillRect(renderer, &rect);
         }
     }
@@ -388,8 +382,8 @@ void Game::renderStackBlox()
     std::vector<Point> pieceCoords = well.getPieceTileCoordinates();
     for (auto& p : pieceCoords)
     {
-        rect.x = p.x * gameDisplay.getTileSize();
-        rect.y = p.y * gameDisplay.getTileSize();
+        rect.x = p.x * display.getTileSize();
+        rect.y = p.y * display.getTileSize();
         SDL_RenderFillRect(renderer, &rect);
     }
 
@@ -438,12 +432,12 @@ void Game::reset()
 
 int Game::heightPercentToPixels(int percent)
 {
-    return gameDisplay.getGameHeight() * percent / 100;
+    return display.getGameHeight() * percent / 100;
 }
 
 int Game::widthPercentToPixels(int percent)
 {
-    return gameDisplay.getGameWidth() * percent / 100;
+    return display.getGameWidth() * percent / 100;
 }
 
 float Game::getPixelsToPointsScaleFactor(std::string& fontPath)
@@ -491,7 +485,7 @@ void Game::text(const char * text, int fontSizeHeightPercent, SDL_Color& fontCol
 
     if (centered)
     {
-        x = (gameDisplay.getGameWidth() - textureWidth) / 2 - 3;
+        x = (display.getGameWidth() - textureWidth) / 2 - 3;
     }
 
     SDL_Rect renderQuad = { x, y, textureWidth, textureHeight };

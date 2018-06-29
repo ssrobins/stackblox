@@ -32,8 +32,6 @@ private:
 
     void text(const char * text, int fontSizeHeightPercent, SDL_Color& fontColor, int x = 0, int y = 0, bool centered = false);
 
-    SDL_DisplayMode getDisplayData();
-
     const float screenScale = 
     #if __ANDROID__ || TARGET_OS_IPHONE
         1.0f;
@@ -48,8 +46,7 @@ private:
         false;
     #endif
 
-    SDL_DisplayMode display;
-    Display gameDisplay;
+    Display display;
     bool fullscreen;
 
     int heightPercentToPixels(int percent);
