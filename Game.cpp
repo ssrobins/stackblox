@@ -14,11 +14,11 @@ Game& Game::getInstance(const int numTilesWidth, const int numTilesHeight, const
 }
 
 Game::Game(const int numTilesWidth, const int numTilesHeight, const char* title, bool fullscreen)
-    : fullscreen(fullscreen)
+    : display(numTilesWidth, numTilesHeight, screenScale)
+    , fullscreen(fullscreen)
     , well(numTilesWidth, numTilesHeight)
     , showTitleScreen(true)
     , alreadyShowingTitle(false)
-    , display(numTilesWidth, numTilesHeight, screenScale)
 {
     int flags = 0;
 
