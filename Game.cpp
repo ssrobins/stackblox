@@ -28,6 +28,7 @@ Game::Game(const int numTilesWidth, const int numTilesHeight, const char* title,
     , well(numTilesWidth, numTilesHeight)
     , showTitleScreen(true)
     , alreadyShowingTitle(false)
+    , gameDisplay(numTilesWidth, numTilesHeight, screenScale)
 {
     int flags = 0;
 
@@ -44,14 +45,13 @@ Game::Game(const int numTilesWidth, const int numTilesHeight, const char* title,
     }
 
     getDisplayData();
-    tileSize = static_cast<int>((display.h * screenScale) / numTilesHeight);
-    screenWidth = tileSize * numTilesWidth;
-    screenHeight = tileSize * numTilesHeight;
+    gameDisplay.setDisplaySize(display.w, display.h);
+
     window = SDL_CreateWindow(title,
         SDL_WINDOWPOS_CENTERED,
         SDL_WINDOWPOS_CENTERED,
-        screenWidth,
-        screenHeight,
+        gameDisplay.getGameWidth(),
+        gameDisplay.getGameHeight(),
         flags);
     if (window == nullptr)
     {
@@ -63,10 +63,10 @@ Game::Game(const int numTilesWidth, const int numTilesHeight, const char* title,
     {
         throw Exception(SDL_GetError());
     }
-    renderRect.x = (display.w-screenWidth)/2;
-    renderRect.y = (display.h-screenHeight)/2;
-    renderRect.w = screenWidth;
-    renderRect.h = screenHeight;
+    renderRect.x = (display.w-gameDisplay.getGameWidth())/2;
+    renderRect.y = (display.h-gameDisplay.getGameHeight())/2;
+    renderRect.w = gameDisplay.getGameWidth();
+    renderRect.h = gameDisplay.getGameHeight();
 
     if (TTF_Init() != 0)
     {
@@ -105,15 +105,15 @@ void Game::handleEvents()
                 touchTime = std::chrono::steady_clock::now();
             }
 
-            dragStart = event.tfinger.x * display.w/tileSize;
-            dragVertStart = event.tfinger.y * display.h/tileSize;
+            dragStart = event.tfinger.x * display.w/gameDisplay.getTileSize();
+            dragVertStart = event.tfinger.y * display.h/gameDisplay.getTileSize();
             pieceMoved = false;
         }
 
         if (event.type == SDL_FINGERMOTION)
         {
-            dragDistance = event.tfinger.x*display.w/tileSize - dragStart;
-            dragVertDistance = event.tfinger.y*display.h/tileSize - dragVertStart;
+            dragDistance = event.tfinger.x*display.w/gameDisplay.getTileSize() - dragStart;
+            dragVertDistance = event.tfinger.y*display.h/gameDisplay.getTileSize() - dragVertStart;
 
             if (dragDistance <= -1)
             {
@@ -134,7 +134,7 @@ void Game::handleEvents()
             {
                 well.quickDrop(true);
                 dropTime = time;
-                dragVertStart = event.tfinger.y * display.h/tileSize;
+                dragVertStart = event.tfinger.y * display.h/gameDisplay.getTileSize();
             }
         }
 
@@ -232,9 +232,9 @@ void Game::newPiece(const Piece& piece)
     well.newPiece(piece);
     dropTime = time + well.quickDrop(false);
     pieceMoved = false;
-    dragStart = event.tfinger.x * display.w/tileSize;
+    dragStart = event.tfinger.x * display.w/gameDisplay.getTileSize();
     dragDistance = 0;
-    dragVertStart = event.tfinger.y * display.h/tileSize;
+    dragVertStart = event.tfinger.y * display.h/gameDisplay.getTileSize();
     dragVertDistance = 0;
 }
 
@@ -349,8 +349,8 @@ void Game::renderStackBlox()
     SDL_RenderClear(renderer);
 
     SDL_Rect rect;
-    rect.w = tileSize;
-    rect.h = tileSize;
+    rect.w = gameDisplay.getTileSize();
+    rect.h = gameDisplay.getTileSize();
 
     // Render pieces in well
     std::vector<std::vector<Color>> wellVals = well.getWellValues();
@@ -375,8 +375,8 @@ void Game::renderStackBlox()
                     255);
             }
 
-            rect.x = x * tileSize;
-            rect.y = y * tileSize;
+            rect.x = x * gameDisplay.getTileSize();
+            rect.y = y * gameDisplay.getTileSize();
             SDL_RenderFillRect(renderer, &rect);
         }
     }
@@ -388,8 +388,8 @@ void Game::renderStackBlox()
     std::vector<Point> pieceCoords = well.getPieceTileCoordinates();
     for (auto& p : pieceCoords)
     {
-        rect.x = p.x * tileSize;
-        rect.y = p.y * tileSize;
+        rect.x = p.x * gameDisplay.getTileSize();
+        rect.y = p.y * gameDisplay.getTileSize();
         SDL_RenderFillRect(renderer, &rect);
     }
 
@@ -438,12 +438,12 @@ void Game::reset()
 
 int Game::heightPercentToPixels(int percent)
 {
-    return screenHeight * percent / 100;
+    return gameDisplay.getGameHeight() * percent / 100;
 }
 
 int Game::widthPercentToPixels(int percent)
 {
-    return screenWidth * percent / 100;
+    return gameDisplay.getGameWidth() * percent / 100;
 }
 
 float Game::getPixelsToPointsScaleFactor(std::string& fontPath)
@@ -491,7 +491,7 @@ void Game::text(const char * text, int fontSizeHeightPercent, SDL_Color& fontCol
 
     if (centered)
     {
-        x = (screenWidth - textureWidth) / 2 - 3;
+        x = (gameDisplay.getGameWidth() - textureWidth) / 2 - 3;
     }
 
     SDL_Rect renderQuad = { x, y, textureWidth, textureHeight };
