@@ -9,6 +9,14 @@ configure_file(
     ${CMAKE_CURRENT_BINARY_DIR}/Version.h
 )
 
+set(icons
+    StackBlox.xcassets/AppIcon.appiconset/Icon76x76.png
+    StackBlox.xcassets/AppIcon.appiconset/Icon120x120.png
+    StackBlox.xcassets/AppIcon.appiconset/Icon152x152.png
+    StackBlox.xcassets/AppIcon.appiconset/Icon167x167.png
+    StackBlox.xcassets/AppIcon.appiconset/Icon1024x1024.png
+)
+
 include(${CMAKE_SOURCE_DIR}/add_executable.cmake)
 
 target_sources(${target_name} PRIVATE
@@ -16,6 +24,7 @@ target_sources(${target_name} PRIVATE
     Game.cpp
     main.cpp
     ${CMAKE_CURRENT_BINARY_DIR}/Version.h
+    ${icons}
 )
 
 target_include_directories(${target_name} PRIVATE
