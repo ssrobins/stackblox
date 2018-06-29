@@ -1,5 +1,6 @@
 #pragma once
 
+#include "Display.h"
 #include "Well.h"
 #include "SDL.h"
 #include <string>
@@ -31,9 +32,6 @@ private:
 
     void text(const char * text, int fontSizeHeightPercent, SDL_Color& fontColor, int x = 0, int y = 0, bool centered = false);
 
-    SDL_DisplayMode getDisplayData();
-    int tileSize;
-
     const float screenScale = 
     #if __ANDROID__ || TARGET_OS_IPHONE
         1.0f;
@@ -48,13 +46,9 @@ private:
         false;
     #endif
 
-    SDL_DisplayMode display;
-    int screenWidth;
-    int screenHeight;
+    Display display;
     bool fullscreen;
 
-    int heightPercentToPixels(int percent);
-    int widthPercentToPixels(int percent);
     float getPixelsToPointsScaleFactor(std::string& fontPath);
 
     SDL_Window *window;

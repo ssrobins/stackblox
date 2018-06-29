@@ -13,21 +13,12 @@ Game& Game::getInstance(const int numTilesWidth, const int numTilesHeight, const
     return instance;
 }
 
-SDL_DisplayMode Game::getDisplayData()
-{
-    if (SDL_GetCurrentDisplayMode(0, &display) != 0)
-    {
-        throw Exception(SDL_GetError());
-    }
-
-    return display;
-}
-
 Game::Game(const int numTilesWidth, const int numTilesHeight, const char* title, bool fullscreen)
     : fullscreen(fullscreen)
     , well(numTilesWidth, numTilesHeight)
     , showTitleScreen(true)
     , alreadyShowingTitle(false)
+    , display(numTilesWidth, numTilesHeight, screenScale)
 {
     int flags = 0;
 
@@ -43,15 +34,18 @@ Game::Game(const int numTilesWidth, const int numTilesHeight, const char* title,
         throw Exception(SDL_GetError());
     }
 
-    getDisplayData();
-    tileSize = static_cast<int>((display.h * screenScale) / numTilesHeight);
-    screenWidth = tileSize * numTilesWidth;
-    screenHeight = tileSize * numTilesHeight;
+    SDL_DisplayMode displayMode;
+    if (SDL_GetCurrentDisplayMode(0, &displayMode) != 0)
+    {
+        throw Exception(SDL_GetError());
+    }
+    display.setDisplaySize(displayMode.w, displayMode.h);
+
     window = SDL_CreateWindow(title,
         SDL_WINDOWPOS_CENTERED,
         SDL_WINDOWPOS_CENTERED,
-        screenWidth,
-        screenHeight,
+        display.getGameWidth(),
+        display.getGameHeight(),
         flags);
     if (window == nullptr)
     {
@@ -63,10 +57,10 @@ Game::Game(const int numTilesWidth, const int numTilesHeight, const char* title,
     {
         throw Exception(SDL_GetError());
     }
-    renderRect.x = (display.w-screenWidth)/2;
-    renderRect.y = (display.h-screenHeight)/2;
-    renderRect.w = screenWidth;
-    renderRect.h = screenHeight;
+    renderRect.x = (display.getScreenWidth()-display.getGameWidth())/2;
+    renderRect.y = (display.getScreenHeight()-display.getGameHeight())/2;
+    renderRect.w = display.getGameWidth();
+    renderRect.h = display.getGameHeight();
 
     if (TTF_Init() != 0)
     {
@@ -105,15 +99,15 @@ void Game::handleEvents()
                 touchTime = std::chrono::steady_clock::now();
             }
 
-            dragStart = event.tfinger.x * display.w/tileSize;
-            dragVertStart = event.tfinger.y * display.h/tileSize;
+            dragStart = event.tfinger.x * display.getScreenWidth()/display.getTileSize();
+            dragVertStart = event.tfinger.y * display.getScreenHeight()/display.getTileSize();
             pieceMoved = false;
         }
 
         if (event.type == SDL_FINGERMOTION)
         {
-            dragDistance = event.tfinger.x*display.w/tileSize - dragStart;
-            dragVertDistance = event.tfinger.y*display.h/tileSize - dragVertStart;
+            dragDistance = event.tfinger.x*display.getScreenWidth()/display.getTileSize() - dragStart;
+            dragVertDistance = event.tfinger.y*display.getScreenHeight()/display.getTileSize() - dragVertStart;
 
             if (dragDistance <= -1)
             {
@@ -134,7 +128,7 @@ void Game::handleEvents()
             {
                 well.quickDrop(true);
                 dropTime = time;
-                dragVertStart = event.tfinger.y * display.h/tileSize;
+                dragVertStart = event.tfinger.y * display.getScreenHeight()/display.getTileSize();
             }
         }
 
@@ -232,9 +226,9 @@ void Game::newPiece(const Piece& piece)
     well.newPiece(piece);
     dropTime = time + well.quickDrop(false);
     pieceMoved = false;
-    dragStart = event.tfinger.x * display.w/tileSize;
+    dragStart = event.tfinger.x * display.getScreenWidth()/display.getTileSize();
     dragDistance = 0;
-    dragVertStart = event.tfinger.y * display.h/tileSize;
+    dragVertStart = event.tfinger.y * display.getScreenHeight()/display.getTileSize();
     dragVertDistance = 0;
 }
 
@@ -300,9 +294,9 @@ void Game::renderTitleScreen()
     SDL_SetRenderDrawColor(renderer, 0, 0, 0, 255);
     SDL_RenderClear(renderer);
 
-    text("StackBlox", 13, white, 0, heightPercentToPixels(9), true);
+    text("StackBlox", 13, white, 0, display.heightPercentToPixels(9), true);
 
-    text("Controls", 5, white, widthPercentToPixels(15), heightPercentToPixels(32));
+    text("Controls", 5, white, display.widthPercentToPixels(15), display.heightPercentToPixels(32));
 
     const char * moveControls;
     const char * rotateControls;
@@ -324,21 +318,21 @@ void Game::renderTitleScreen()
         startControls = "Press Enter to start";
     }
 
-    text(moveControls, 4, white, widthPercentToPixels(15), heightPercentToPixels(37));
-    text("Move piece", 4, white, widthPercentToPixels(50), heightPercentToPixels(37));
+    text(moveControls, 4, white, display.widthPercentToPixels(15), display.heightPercentToPixels(37));
+    text("Move piece", 4, white, display.widthPercentToPixels(50), display.heightPercentToPixels(37));
 
-    text(rotateControls, 4, white, widthPercentToPixels(15), heightPercentToPixels(42));
-    text("Rotate piece", 4, white, widthPercentToPixels(50), heightPercentToPixels(42));
+    text(rotateControls, 4, white, display.widthPercentToPixels(15), display.heightPercentToPixels(42));
+    text("Rotate piece", 4, white, display.widthPercentToPixels(50), display.heightPercentToPixels(42));
 
-    text(dropControls, 4, white, widthPercentToPixels(15), heightPercentToPixels(47));
-    text("Drop piece faster", 4, white, widthPercentToPixels(50), heightPercentToPixels(47));
+    text(dropControls, 4, white, display.widthPercentToPixels(15), display.heightPercentToPixels(47));
+    text("Drop piece faster", 4, white, display.widthPercentToPixels(50), display.heightPercentToPixels(47));
 
-    text(startControls, 6, red, 0, heightPercentToPixels(65), true);
+    text(startControls, 6, red, 0, display.heightPercentToPixels(65), true);
 
     const std::string versionString = "Version: " + versionMajor + "." + versionMinor + "." + versionPatch;
-    text(versionString.c_str(), 3, white, widthPercentToPixels(4), heightPercentToPixels(92));
+    text(versionString.c_str(), 3, white, display.widthPercentToPixels(4), display.heightPercentToPixels(92));
 
-    text("dnqpy.com", 3, white, widthPercentToPixels(4), heightPercentToPixels(95));
+    text("dnqpy.com", 3, white, display.widthPercentToPixels(4), display.heightPercentToPixels(95));
 
     SDL_RenderPresent(renderer);
 }
@@ -349,8 +343,8 @@ void Game::renderStackBlox()
     SDL_RenderClear(renderer);
 
     SDL_Rect rect;
-    rect.w = tileSize;
-    rect.h = tileSize;
+    rect.w = display.getTileSize();
+    rect.h = display.getTileSize();
 
     // Render pieces in well
     std::vector<std::vector<Color>> wellVals = well.getWellValues();
@@ -375,8 +369,8 @@ void Game::renderStackBlox()
                     255);
             }
 
-            rect.x = x * tileSize;
-            rect.y = y * tileSize;
+            rect.x = x * display.getTileSize();
+            rect.y = y * display.getTileSize();
             SDL_RenderFillRect(renderer, &rect);
         }
     }
@@ -388,8 +382,8 @@ void Game::renderStackBlox()
     std::vector<Point> pieceCoords = well.getPieceTileCoordinates();
     for (auto& p : pieceCoords)
     {
-        rect.x = p.x * tileSize;
-        rect.y = p.y * tileSize;
+        rect.x = p.x * display.getTileSize();
+        rect.y = p.y * display.getTileSize();
         SDL_RenderFillRect(renderer, &rect);
     }
 
@@ -397,28 +391,28 @@ void Game::renderStackBlox()
 
     if (over())
     {
-        text("GAME", 15, white, 0, heightPercentToPixels(15), true);
-        text("OVER", 15, white, 0, heightPercentToPixels(25), true);
+        text("GAME", 15, white, 0, display.heightPercentToPixels(15), true);
+        text("OVER", 15, white, 0, display.heightPercentToPixels(25), true);
     }
 
     // Render debug text
     /*std::string xString = "x: " + std::to_string(event.tfinger.x);
-    text(xString.c_str(), 5, white, 0, heightPercentToPixels(0), false);
+    text(xString.c_str(), 5, white, 0, display.heightPercentToPixels(0), false);
 
     std::string dragStartString = "dragStart: " + std::to_string(dragStart);
-    text(dragStartString.c_str(), 5, white, 0, heightPercentToPixels(5), false);
+    text(dragStartString.c_str(), 5, white, 0, display.heightPercentToPixels(5), false);
 
     std::string dragDistanceString = "dragDistance: " + std::to_string(dragDistance);
-    text(dragDistanceString.c_str(), 5, white, 0, heightPercentToPixels(10), false);
+    text(dragDistanceString.c_str(), 5, white, 0, display.heightPercentToPixels(10), false);
 
     std::string pieceMovedString = "pieceMoved: " + std::to_string(pieceMoved);
-    text(pieceMovedString.c_str(), 5, white, 0, heightPercentToPixels(15), false);
+    text(pieceMovedString.c_str(), 5, white, 0, display.heightPercentToPixels(15), false);
 
     std::string dragVertStartString = "dragVertStart: " + std::to_string(dragVertStart);
-    text(dragVertStartString.c_str(), 5, white, 0, heightPercentToPixels(20), false);
+    text(dragVertStartString.c_str(), 5, white, 0, display.heightPercentToPixels(20), false);
 
     std::string dragVertDistanceString = "dragVertDistance: " + std::to_string(dragVertDistance);
-    text(dragVertDistanceString.c_str(), 5, white, 0, heightPercentToPixels(25), false);*/
+    text(dragVertDistanceString.c_str(), 5, white, 0, display.heightPercentToPixels(25), false);*/
 
     SDL_RenderPresent(renderer);
 }
@@ -434,16 +428,6 @@ void Game::reset()
     dropTime = time + well.quickDrop(false);
     showTitleScreen = true;
     alreadyShowingTitle = false;
-}
-
-int Game::heightPercentToPixels(int percent)
-{
-    return screenHeight * percent / 100;
-}
-
-int Game::widthPercentToPixels(int percent)
-{
-    return screenWidth * percent / 100;
 }
 
 float Game::getPixelsToPointsScaleFactor(std::string& fontPath)
@@ -471,7 +455,7 @@ void Game::text(const char * text, int fontSizeHeightPercent, SDL_Color& fontCol
     std::string fontPath = basePath + "assets/OpenSans-Regular.ttf";
     
     float scale = getPixelsToPointsScaleFactor(fontPath);
-    int heightPixels = heightPercentToPixels(fontSizeHeightPercent);
+    int heightPixels = display.heightPercentToPixels(fontSizeHeightPercent);
     int fontSize = static_cast<int>(heightPixels * scale);
 
     TTF_Font* font = TTF_OpenFont(fontPath.c_str(), fontSize);
@@ -491,7 +475,7 @@ void Game::text(const char * text, int fontSizeHeightPercent, SDL_Color& fontCol
 
     if (centered)
     {
-        x = (screenWidth - textureWidth) / 2 - 3;
+        x = (display.getGameWidth() - textureWidth) / 2 - 3;
     }
 
     SDL_Rect renderQuad = { x, y, textureWidth, textureHeight };

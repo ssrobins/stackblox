@@ -35,6 +35,7 @@ target_link_libraries(${target_name}
     ErrorHandler
     SDL2-static
     SDL2_ttf
+    StackBloxDisplay
     StackBloxPiece
     StackBloxWell
 )
@@ -47,6 +48,8 @@ set_target_properties(${target_name}
 
 include(${CMAKE_SOURCE_DIR}/copy_files_to_binary_dir.cmake)
 
+add_subdirectory(Display)
+add_subdirectory(DisplayTest)
 add_subdirectory(Piece)
 add_subdirectory(PieceTest)
 add_subdirectory(Well)
