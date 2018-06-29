@@ -294,9 +294,9 @@ void Game::renderTitleScreen()
     SDL_SetRenderDrawColor(renderer, 0, 0, 0, 255);
     SDL_RenderClear(renderer);
 
-    text("StackBlox", 13, white, 0, heightPercentToPixels(9), true);
+    text("StackBlox", 13, white, 0, display.heightPercentToPixels(9), true);
 
-    text("Controls", 5, white, widthPercentToPixels(15), heightPercentToPixels(32));
+    text("Controls", 5, white, display.widthPercentToPixels(15), display.heightPercentToPixels(32));
 
     const char * moveControls;
     const char * rotateControls;
@@ -318,21 +318,21 @@ void Game::renderTitleScreen()
         startControls = "Press Enter to start";
     }
 
-    text(moveControls, 4, white, widthPercentToPixels(15), heightPercentToPixels(37));
-    text("Move piece", 4, white, widthPercentToPixels(50), heightPercentToPixels(37));
+    text(moveControls, 4, white, display.widthPercentToPixels(15), display.heightPercentToPixels(37));
+    text("Move piece", 4, white, display.widthPercentToPixels(50), display.heightPercentToPixels(37));
 
-    text(rotateControls, 4, white, widthPercentToPixels(15), heightPercentToPixels(42));
-    text("Rotate piece", 4, white, widthPercentToPixels(50), heightPercentToPixels(42));
+    text(rotateControls, 4, white, display.widthPercentToPixels(15), display.heightPercentToPixels(42));
+    text("Rotate piece", 4, white, display.widthPercentToPixels(50), display.heightPercentToPixels(42));
 
-    text(dropControls, 4, white, widthPercentToPixels(15), heightPercentToPixels(47));
-    text("Drop piece faster", 4, white, widthPercentToPixels(50), heightPercentToPixels(47));
+    text(dropControls, 4, white, display.widthPercentToPixels(15), display.heightPercentToPixels(47));
+    text("Drop piece faster", 4, white, display.widthPercentToPixels(50), display.heightPercentToPixels(47));
 
-    text(startControls, 6, red, 0, heightPercentToPixels(65), true);
+    text(startControls, 6, red, 0, display.heightPercentToPixels(65), true);
 
     const std::string versionString = "Version: " + versionMajor + "." + versionMinor + "." + versionPatch;
-    text(versionString.c_str(), 3, white, widthPercentToPixels(4), heightPercentToPixels(92));
+    text(versionString.c_str(), 3, white, display.widthPercentToPixels(4), display.heightPercentToPixels(92));
 
-    text("dnqpy.com", 3, white, widthPercentToPixels(4), heightPercentToPixels(95));
+    text("dnqpy.com", 3, white, display.widthPercentToPixels(4), display.heightPercentToPixels(95));
 
     SDL_RenderPresent(renderer);
 }
@@ -391,28 +391,28 @@ void Game::renderStackBlox()
 
     if (over())
     {
-        text("GAME", 15, white, 0, heightPercentToPixels(15), true);
-        text("OVER", 15, white, 0, heightPercentToPixels(25), true);
+        text("GAME", 15, white, 0, display.heightPercentToPixels(15), true);
+        text("OVER", 15, white, 0, display.heightPercentToPixels(25), true);
     }
 
     // Render debug text
     /*std::string xString = "x: " + std::to_string(event.tfinger.x);
-    text(xString.c_str(), 5, white, 0, heightPercentToPixels(0), false);
+    text(xString.c_str(), 5, white, 0, display.heightPercentToPixels(0), false);
 
     std::string dragStartString = "dragStart: " + std::to_string(dragStart);
-    text(dragStartString.c_str(), 5, white, 0, heightPercentToPixels(5), false);
+    text(dragStartString.c_str(), 5, white, 0, display.heightPercentToPixels(5), false);
 
     std::string dragDistanceString = "dragDistance: " + std::to_string(dragDistance);
-    text(dragDistanceString.c_str(), 5, white, 0, heightPercentToPixels(10), false);
+    text(dragDistanceString.c_str(), 5, white, 0, display.heightPercentToPixels(10), false);
 
     std::string pieceMovedString = "pieceMoved: " + std::to_string(pieceMoved);
-    text(pieceMovedString.c_str(), 5, white, 0, heightPercentToPixels(15), false);
+    text(pieceMovedString.c_str(), 5, white, 0, display.heightPercentToPixels(15), false);
 
     std::string dragVertStartString = "dragVertStart: " + std::to_string(dragVertStart);
-    text(dragVertStartString.c_str(), 5, white, 0, heightPercentToPixels(20), false);
+    text(dragVertStartString.c_str(), 5, white, 0, display.heightPercentToPixels(20), false);
 
     std::string dragVertDistanceString = "dragVertDistance: " + std::to_string(dragVertDistance);
-    text(dragVertDistanceString.c_str(), 5, white, 0, heightPercentToPixels(25), false);*/
+    text(dragVertDistanceString.c_str(), 5, white, 0, display.heightPercentToPixels(25), false);*/
 
     SDL_RenderPresent(renderer);
 }
@@ -428,16 +428,6 @@ void Game::reset()
     dropTime = time + well.quickDrop(false);
     showTitleScreen = true;
     alreadyShowingTitle = false;
-}
-
-int Game::heightPercentToPixels(int percent)
-{
-    return display.getGameHeight() * percent / 100;
-}
-
-int Game::widthPercentToPixels(int percent)
-{
-    return display.getGameWidth() * percent / 100;
 }
 
 float Game::getPixelsToPointsScaleFactor(std::string& fontPath)
@@ -465,7 +455,7 @@ void Game::text(const char * text, int fontSizeHeightPercent, SDL_Color& fontCol
     std::string fontPath = basePath + "assets/OpenSans-Regular.ttf";
     
     float scale = getPixelsToPointsScaleFactor(fontPath);
-    int heightPixels = heightPercentToPixels(fontSizeHeightPercent);
+    int heightPixels = display.heightPercentToPixels(fontSizeHeightPercent);
     int fontSize = static_cast<int>(heightPixels * scale);
 
     TTF_Font* font = TTF_OpenFont(fontPath.c_str(), fontSize);

@@ -7,6 +7,8 @@ class Display
 public:
     Display(int numTilesWidth, int numTilesHeight, float screenScale);
     void setDisplaySize(int width, int height);
+    int heightPercentToPixels(int percent);
+    int widthPercentToPixels(int percent);
     int getScreenWidth() { return screenWidth; };
     int getScreenHeight() { return screenHeight; };
     int getTileSize() { return tileSize; };

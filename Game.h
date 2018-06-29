@@ -49,8 +49,6 @@ private:
     Display display;
     bool fullscreen;
 
-    int heightPercentToPixels(int percent);
-    int widthPercentToPixels(int percent);
     float getPixelsToPointsScaleFactor(std::string& fontPath);
 
     SDL_Window *window;

@@ -25,3 +25,13 @@ void Display::setDisplaySize(int width, int height)
     gameWidth = tileSize * numTilesWidth;
     gameHeight = tileSize * numTilesHeight;
 }
+
+int Display::heightPercentToPixels(int percent)
+{
+    return gameHeight * percent / 100;
+}
+
+int Display::widthPercentToPixels(int percent)
+{
+    return gameWidth * percent / 100;
+}
