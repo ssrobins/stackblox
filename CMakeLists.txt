@@ -26,6 +26,11 @@ target_sources(${target_name} PRIVATE
     ${CMAKE_CURRENT_BINARY_DIR}/Version.h
     ${icons}
 )
+if(WIN32)
+    target_sources(${target_name} PRIVATE
+        icon.rc
+    )
+endif()
 
 target_include_directories(${target_name} PRIVATE
     ${CMAKE_CURRENT_BINARY_DIR}
