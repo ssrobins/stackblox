@@ -34,6 +34,7 @@ target_include_directories(${target_name} PRIVATE
 target_link_libraries(${target_name}
     ErrorHandler
     SDL2-static
+    SDL2_image
     SDL2_ttf
     StackBloxDisplay
     StackBloxPiece
