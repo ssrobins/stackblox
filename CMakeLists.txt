@@ -24,11 +24,18 @@ target_sources(${target_name} PRIVATE
     Game.cpp
     main.cpp
     ${CMAKE_CURRENT_BINARY_DIR}/Version.h
-    ${icons}
 )
 if(WIN32)
     target_sources(${target_name} PRIVATE
         icon.rc
+    )
+elseif(IOS)
+    target_sources(${target_name} PRIVATE
+        ${icons}
+    )
+elseif(APPLE)
+    target_sources(${target_name} PRIVATE
+        icon.icns
     )
 endif()
 
@@ -46,11 +53,19 @@ target_link_libraries(${target_name}
     StackBloxWell
 )
 
-set_target_properties(${target_name}
-    PROPERTIES
-    MACOSX_BUNDLE TRUE
-    WIN32_EXECUTABLE TRUE
-)
+if(WIN32)
+    set_target_properties(${target_name}
+        PROPERTIES
+        WIN32_EXECUTABLE TRUE
+    )
+elseif(APPLE AND NOT IOS)
+    set_target_properties(${target_name}
+        PROPERTIES
+        MACOSX_BUNDLE TRUE
+        MACOSX_BUNDLE_ICON_FILE "icon.icns"
+        RESOURCE "icon.icns"
+    )
+endif()
 
 include(${CMAKE_SOURCE_DIR}/copy_files_to_binary_dir.cmake)
 
