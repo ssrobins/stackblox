@@ -146,6 +146,48 @@ std::vector<Point> Piece::calcTileCoordinates(const std::vector<std::vector<int>
     return tiles;
 }
 
+// Clockwise rotation of data in a square 2D matrix
+// Rotation is done by saving the top row value, and taking the value from
+// 90 degrees counter-clockwise and moving it to the top.
+// Repeat for each of the four sides, then repeat for each item in the row.  Finally,
+// Repeat for each layer of the matrix starting from the outside layer and working to the inside.
+// Let's say you have a 4x4 matrix, m, with the following coordinates:
+// 0,0   1,0   2,0   3,0
+// 0,1   1,1   2,1   3,1
+// 0,2   1,2   2,2   3,2
+// 0,3   1,3   2,3   3,3
+// Here is how the point-by-point rotation would work:
+// layer = 0, first = 0, last = 3
+// ==============================
+// i = 0, offset = 3
+// top = m(0,0)
+// m(0,0) = m(0,3)
+// m(0,3) = m(3,3)
+// m(3,3) = m(3,0)
+// m(3,0) = top
+// ------------------------------
+// i = 1, offset = 2
+// top = m(1,0)
+// m(1,0) = m(0,2)
+// m(0,2) = m(2,3)
+// m(2,3) = m(3,1)
+// m(3,1) = top
+// ------------------------------
+// i = 2, offset = 1
+// top = m(2,0)
+// m(2,0) = m(0,1)
+// m(0,1) = m(1,3)
+// m(1,3) = m(3,2)
+// m(3,2) = top
+// ------------------------------
+// layer = 1, first = 1, last = 2
+// ==============================
+// i = 1, offset = 2
+// top = m(1,1)
+// m(1,1) = m(1,2)
+// m(1,2) = m(2,2)
+// m(2,2) = m(2,1)
+// m(2,1) = top
 std::vector<std::vector<int>>& Piece::calcRotation(std::vector<std::vector<int>>& piece)
 {
     auto length = piece.size();
