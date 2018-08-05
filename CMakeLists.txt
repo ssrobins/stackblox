@@ -36,6 +36,10 @@ elseif(IOS)
     target_sources(${target_name} PRIVATE
         ${icons}
     )
+elseif(APPLE)
+    target_sources(${target_name} PRIVATE
+        icon.icns
+    )
 endif()
 
 target_include_directories(${target_name} PRIVATE
@@ -62,6 +66,7 @@ elseif(APPLE AND NOT IOS)
         PROPERTIES
         MACOSX_BUNDLE TRUE
         MACOSX_BUNDLE_ICON_FILE "icon.icns"
+        RESOURCE "icon.icns"
     )
 endif()
 
