@@ -43,11 +43,11 @@ target_include_directories(${target_name} PRIVATE
 )
 
 target_link_libraries(${target_name}
+    Display
     ErrorHandler
     SDL2-static
     SDL2_image
     SDL2_ttf
-    StackBloxDisplay
     StackBloxPiece
     StackBloxWell
 )
@@ -67,8 +67,6 @@ endif()
 
 include(${CMAKE_SOURCE_DIR}/copy_files_to_binary_dir.cmake)
 
-add_subdirectory(Display)
-add_subdirectory(DisplayTest)
 add_subdirectory(Piece)
 add_subdirectory(PieceTest)
 add_subdirectory(Well)
