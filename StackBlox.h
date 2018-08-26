@@ -5,13 +5,13 @@
 #include "SDL.h"
 #include <string>
 
-class Game
+class StackBlox
 {
 public:
-    static Game& getInstance(const int numTilesWidth, const int numTilesHeight, const char* title, bool fullscreen);
-    ~Game();
-    Game(Game const&) = delete;
-    void operator=(Game const&) = delete;
+    static StackBlox& getInstance(const int numTilesWidth, const int numTilesHeight, const char* title, bool fullscreen);
+    ~StackBlox();
+    StackBlox(StackBlox const&) = delete;
+    void operator=(StackBlox const&) = delete;
 
     void handleEvents();
     void update();
@@ -28,7 +28,7 @@ public:
     void start();
 
 private:
-    Game(const int numTilesWidth, const int numTilesHeight, const char* title, bool fullscreen);
+    StackBlox(const int numTilesWidth, const int numTilesHeight, const char* title, bool fullscreen);
 
     void text(const char * text, int fontSizeHeightPercent, SDL_Color& fontColor, int x = 0, int y = 0, bool centered = false);
 

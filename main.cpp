@@ -1,5 +1,5 @@
 #include "ErrorHandler.h"
-#include "Game.h"
+#include "StackBlox.h"
 
 int main(int argc, char *argv[])
 {
@@ -18,7 +18,7 @@ int main(int argc, char *argv[])
 
     try
     {
-        auto& game = Game::getInstance(
+        auto& game = StackBlox::getInstance(
             numTilesWidth,
             numTilesHeight,
             "StackBlox",

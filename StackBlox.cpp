@@ -1,5 +1,5 @@
 #include "ErrorHandler.h"
-#include "Game.h"
+#include "StackBlox.h"
 #include "Piece.h"
 #include "Well.h"
 #include "Version.h"
@@ -8,13 +8,13 @@
 #include <assert.h>
 
 
-Game& Game::getInstance(const int numTilesWidth, const int numTilesHeight, const char* title, bool fullscreen)
+StackBlox& StackBlox::getInstance(const int numTilesWidth, const int numTilesHeight, const char* title, bool fullscreen)
 {
-    static Game instance(numTilesWidth, numTilesHeight, title, fullscreen);
+    static StackBlox instance(numTilesWidth, numTilesHeight, title, fullscreen);
     return instance;
 }
 
-Game::Game(const int numTilesWidth, const int numTilesHeight, const char* title, bool fullscreen)
+StackBlox::StackBlox(const int numTilesWidth, const int numTilesHeight, const char* title, bool fullscreen)
     : display(numTilesWidth, numTilesHeight, screenScale)
     , fullscreen(fullscreen)
     , well(numTilesWidth, numTilesHeight)
@@ -80,14 +80,14 @@ Game::Game(const int numTilesWidth, const int numTilesHeight, const char* title,
     isRunning = true;
 }
 
-Game::~Game()
+StackBlox::~StackBlox()
 {
     SDL_DestroyRenderer(renderer);
     SDL_DestroyWindow(window);
     SDL_Quit();
 }
 
-void Game::handleEvents()
+void StackBlox::handleEvents()
 {
     while(SDL_PollEvent(&event))
     {
@@ -231,7 +231,7 @@ void Game::handleEvents()
 }
 
 
-void Game::newPiece(const Piece& piece)
+void StackBlox::newPiece(const Piece& piece)
 {
     well.newPiece(piece);
     dropTime = time + well.quickDrop(false);
@@ -242,12 +242,12 @@ void Game::newPiece(const Piece& piece)
     dragVertDistance = 0;
 }
 
-bool Game::noPiece()
+bool StackBlox::noPiece()
 {
     return well.hasNoPiece();
 }
 
-void Game::update()
+void StackBlox::update()
 {
     time = std::chrono::steady_clock::now();
 
@@ -271,7 +271,7 @@ void Game::update()
     }
 }
 
-void Game::render()
+void StackBlox::render()
 {
     if (fullscreen)
     {
@@ -296,7 +296,7 @@ void Game::render()
 }
 
 
-void Game::renderTitleScreen()
+void StackBlox::renderTitleScreen()
 {
     SDL_Color white = { 255, 255, 255, 255 };
     SDL_Color red = { 255, 0, 0, 255 };
@@ -347,7 +347,7 @@ void Game::renderTitleScreen()
     SDL_RenderPresent(renderer);
 }
 
-void Game::renderStackBlox()
+void StackBlox::renderStackBlox()
 {
     SDL_SetRenderDrawColor(renderer, 20, 20, 20, 255);
     SDL_RenderClear(renderer);
@@ -427,12 +427,12 @@ void Game::renderStackBlox()
     SDL_RenderPresent(renderer);
 }
 
-bool Game::over()
+bool StackBlox::over()
 {
     return well.isFull();
 }
 
-void Game::reset()
+void StackBlox::reset()
 {
     well.reset();
     dropTime = time + well.quickDrop(false);
@@ -440,7 +440,7 @@ void Game::reset()
     alreadyShowingTitle = false;
 }
 
-float Game::getPixelsToPointsScaleFactor(std::string& fontPath)
+float StackBlox::getPixelsToPointsScaleFactor(std::string& fontPath)
 {
     int fontSize = 100;
     TTF_Font* font = TTF_OpenFont(fontPath.c_str(), fontSize);
@@ -460,7 +460,7 @@ float Game::getPixelsToPointsScaleFactor(std::string& fontPath)
     return static_cast<float>(fontSize)/static_cast<float>(height);
 }
 
-void Game::text(const char * text, int fontSizeHeightPercent, SDL_Color& fontColor, int x, int y, bool centered)
+void StackBlox::text(const char * text, int fontSizeHeightPercent, SDL_Color& fontColor, int x, int y, bool centered)
 {
     std::string fontPath = basePath + "assets/OpenSans-Regular.ttf";
     
@@ -494,7 +494,7 @@ void Game::text(const char * text, int fontSizeHeightPercent, SDL_Color& fontCol
     SDL_DestroyTexture(labelTexture);
 }
 
-void Game::start()
+void StackBlox::start()
 {
     time = std::chrono::steady_clock::now();
     dropTime = time + well.quickDrop(false);

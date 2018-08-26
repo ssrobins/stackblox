@@ -23,8 +23,8 @@ set(icons
 include(${CMAKE_SOURCE_DIR}/add_executable.cmake)
 
 target_sources(${target_name} PRIVATE
-    Game.h
-    Game.cpp
+    StackBlox.h
+    StackBlox.cpp
     main.cpp
     ${CMAKE_CURRENT_BINARY_DIR}/Version.h
 )
