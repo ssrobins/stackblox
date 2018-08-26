@@ -18,7 +18,7 @@ int main(int argc, char *argv[])
 
     try
     {
-        auto& game = StackBlox::getInstance(
+        auto& stackblox = StackBlox::getInstance(
             numTilesWidth,
             numTilesHeight,
             "StackBlox",
@@ -42,28 +42,28 @@ int main(int argc, char *argv[])
         Uint32 frameStart;
         int frameTime;
 
-        while (game.running())
+        while (stackblox.running())
         {
             frameStart = SDL_GetTicks();
 
-            game.handleEvents();
+            stackblox.handleEvents();
 
-            if (!game.showTitle())
+            if (!stackblox.showTitle())
             {
-                if (game.noPiece())
+                if (stackblox.noPiece())
                 {
-                    game.newPiece(pieceCollection.getRandomPiece());
+                    stackblox.newPiece(pieceCollection.getRandomPiece());
                 }
 
-                game.update();
+                stackblox.update();
             }
 
-            if (!game.running())
+            if (!stackblox.running())
             {
                 break;
             }
 
-            game.render();
+            stackblox.render();
 
             frameTime = SDL_GetTicks() - frameStart;
 
@@ -72,10 +72,10 @@ int main(int argc, char *argv[])
                 SDL_Delay(frameDelay - frameTime);
             }
 
-            if (game.over())
+            if (stackblox.over())
             {
                 SDL_Delay(3000); // in milliseconds
-                game.reset();
+                stackblox.reset();
             }
         }
     }

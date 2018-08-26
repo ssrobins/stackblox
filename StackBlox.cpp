@@ -1,10 +1,7 @@
-#include "ErrorHandler.h"
 #include "StackBlox.h"
 #include "Piece.h"
 #include "Well.h"
 #include "Version.h"
-#include "SDL_image.h"
-#include "SDL_ttf.h"
 #include <assert.h>
 
 
@@ -15,76 +12,16 @@ StackBlox& StackBlox::getInstance(const int numTilesWidth, const int numTilesHei
 }
 
 StackBlox::StackBlox(const int numTilesWidth, const int numTilesHeight, const char* title, bool fullscreen)
-    : display(numTilesWidth, numTilesHeight, screenScale)
-    , fullscreen(fullscreen)
+    : game(numTilesWidth, numTilesHeight, title, fullscreen)
     , well(numTilesWidth, numTilesHeight)
     , showTitleScreen(true)
     , alreadyShowingTitle(false)
 {
-    int flags = 0;
-
-    if (fullscreen)
-    {
-        flags = SDL_WINDOW_FULLSCREEN;
-    }
-
-    isRunning = false;
-
-    if (SDL_Init(SDL_INIT_VIDEO) != 0)
-    {
-        throw Exception(SDL_GetError());
-    }
-
-    SDL_DisplayMode displayMode;
-    if (SDL_GetCurrentDisplayMode(0, &displayMode) != 0)
-    {
-        throw Exception(SDL_GetError());
-    }
-    display.setDisplaySize(displayMode.w, displayMode.h);
-
-    window = SDL_CreateWindow(title,
-        SDL_WINDOWPOS_CENTERED,
-        SDL_WINDOWPOS_CENTERED,
-        display.getGameWidth(),
-        display.getGameHeight(),
-        flags);
-    if (window == nullptr)
-    {
-        throw Exception(SDL_GetError());
-    }
-
-    std::string iconPath = basePath + "assets/Icon1024x1024.png";
-    SDL_Surface* icon = IMG_Load(iconPath.c_str());
-    if (icon == nullptr)
-    {
-        throw Exception(SDL_GetError());
-    }
-    SDL_SetWindowIcon(window, icon);
-    SDL_FreeSurface(icon);
-
-    renderer = SDL_CreateRenderer(window, -1, 0);
-    if (renderer == nullptr)
-    {
-        throw Exception(SDL_GetError());
-    }
-    renderRect.x = (display.getScreenWidth()-display.getGameWidth())/2;
-    renderRect.y = (display.getScreenHeight()-display.getGameHeight())/2;
-    renderRect.w = display.getGameWidth();
-    renderRect.h = display.getGameHeight();
-
-    if (TTF_Init() != 0)
-    {
-        throw Exception(SDL_GetError());
-    }
-
     isRunning = true;
 }
 
 StackBlox::~StackBlox()
 {
-    SDL_DestroyRenderer(renderer);
-    SDL_DestroyWindow(window);
-    SDL_Quit();
 }
 
 void StackBlox::handleEvents()
@@ -109,15 +46,15 @@ void StackBlox::handleEvents()
                 touchTime = std::chrono::steady_clock::now();
             }
 
-            dragStart = event.tfinger.x * display.getScreenWidth()/display.getTileSize();
-            dragVertStart = event.tfinger.y * display.getScreenHeight()/display.getTileSize();
+            dragStart = event.tfinger.x * game.getScreenWidth()/game.getTileSize();
+            dragVertStart = event.tfinger.y * game.getScreenHeight()/game.getTileSize();
             pieceMoved = false;
         }
 
         if (event.type == SDL_FINGERMOTION)
         {
-            dragDistance = event.tfinger.x*display.getScreenWidth()/display.getTileSize() - dragStart;
-            dragVertDistance = event.tfinger.y*display.getScreenHeight()/display.getTileSize() - dragVertStart;
+            dragDistance = event.tfinger.x*game.getScreenWidth()/game.getTileSize() - dragStart;
+            dragVertDistance = event.tfinger.y*game.getScreenHeight()/game.getTileSize() - dragVertStart;
 
             if (dragDistance <= -1)
             {
@@ -138,7 +75,7 @@ void StackBlox::handleEvents()
             {
                 well.quickDrop(true);
                 dropTime = time;
-                dragVertStart = event.tfinger.y * display.getScreenHeight()/display.getTileSize();
+                dragVertStart = event.tfinger.y * game.getScreenHeight()/game.getTileSize();
             }
         }
 
@@ -236,9 +173,9 @@ void StackBlox::newPiece(const Piece& piece)
     well.newPiece(piece);
     dropTime = time + well.quickDrop(false);
     pieceMoved = false;
-    dragStart = event.tfinger.x * display.getScreenWidth()/display.getTileSize();
+    dragStart = event.tfinger.x * game.getScreenWidth()/game.getTileSize();
     dragDistance = 0;
-    dragVertStart = event.tfinger.y * display.getScreenHeight()/display.getTileSize();
+    dragVertStart = event.tfinger.y * game.getScreenHeight()/game.getTileSize();
     dragVertDistance = 0;
 }
 
@@ -273,12 +210,9 @@ void StackBlox::update()
 
 void StackBlox::render()
 {
-    if (fullscreen)
+    if (game.isFullscreen())
     {
-        if (SDL_RenderSetViewport(renderer, &renderRect) != 0)
-        {
-            throw Exception(SDL_GetError());
-        }
+        game.renderSetViewport();
     }
 
     if (showTitle())
@@ -301,12 +235,12 @@ void StackBlox::renderTitleScreen()
     SDL_Color white = { 255, 255, 255, 255 };
     SDL_Color red = { 255, 0, 0, 255 };
 
-    SDL_SetRenderDrawColor(renderer, 0, 0, 0, 255);
-    SDL_RenderClear(renderer);
+    game.setRenderDrawColor({ 0, 0, 0, 255 });
+    game.renderClear();
 
-    text("StackBlox", 13, white, 0, display.heightPercentToPixels(9), true);
+    game.text("StackBlox", 13, white, 0, game.heightPercentToPixels(9), true);
 
-    text("Controls", 5, white, display.widthPercentToPixels(15), display.heightPercentToPixels(32));
+    game.text("Controls", 5, white, game.widthPercentToPixels(15), game.heightPercentToPixels(32));
 
     const char * moveControls;
     const char * rotateControls;
@@ -328,33 +262,33 @@ void StackBlox::renderTitleScreen()
         startControls = "Press Enter to start";
     }
 
-    text(moveControls, 4, white, display.widthPercentToPixels(15), display.heightPercentToPixels(37));
-    text("Move piece", 4, white, display.widthPercentToPixels(50), display.heightPercentToPixels(37));
+    game.text(moveControls, 4, white, game.widthPercentToPixels(15), game.heightPercentToPixels(37));
+    game.text("Move piece", 4, white, game.widthPercentToPixels(50), game.heightPercentToPixels(37));
 
-    text(rotateControls, 4, white, display.widthPercentToPixels(15), display.heightPercentToPixels(42));
-    text("Rotate piece", 4, white, display.widthPercentToPixels(50), display.heightPercentToPixels(42));
+    game.text(rotateControls, 4, white, game.widthPercentToPixels(15), game.heightPercentToPixels(42));
+    game.text("Rotate piece", 4, white, game.widthPercentToPixels(50), game.heightPercentToPixels(42));
 
-    text(dropControls, 4, white, display.widthPercentToPixels(15), display.heightPercentToPixels(47));
-    text("Drop piece faster", 4, white, display.widthPercentToPixels(50), display.heightPercentToPixels(47));
+    game.text(dropControls, 4, white, game.widthPercentToPixels(15), game.heightPercentToPixels(47));
+    game.text("Drop piece faster", 4, white, game.widthPercentToPixels(50), game.heightPercentToPixels(47));
 
-    text(startControls, 6, red, 0, display.heightPercentToPixels(65), true);
+    game.text(startControls, 6, red, 0, game.heightPercentToPixels(65), true);
 
     const std::string versionString = "Version: " + versionMajor + "." + versionMinor + "." + versionPatch;
-    text(versionString.c_str(), 3, white, display.widthPercentToPixels(4), display.heightPercentToPixels(92));
+    game.text(versionString.c_str(), 3, white, game.widthPercentToPixels(4), game.heightPercentToPixels(92));
 
-    text("dnqpy.com", 3, white, display.widthPercentToPixels(4), display.heightPercentToPixels(95));
+    game.text("dnqpy.com", 3, white, game.widthPercentToPixels(4), game.heightPercentToPixels(95));
 
-    SDL_RenderPresent(renderer);
+    game.renderPresent();
 }
 
 void StackBlox::renderStackBlox()
 {
-    SDL_SetRenderDrawColor(renderer, 20, 20, 20, 255);
-    SDL_RenderClear(renderer);
+    game.setRenderDrawColor({ 20, 20, 20, 255 });
+    game.renderClear();
 
     SDL_Rect rect;
-    rect.w = display.getTileSize();
-    rect.h = display.getTileSize();
+    rect.w = game.getTileSize();
+    rect.h = game.getTileSize();
 
     // Render pieces in well
     std::vector<std::vector<Color>> wellVals = well.getWellValues();
@@ -364,67 +298,67 @@ void StackBlox::renderStackBlox()
         {
             if (wellVals.at(y).at(x) != Color{ 0, 0, 0, 0 })
             {
-                SDL_SetRenderDrawColor(renderer,
+                game.setRenderDrawColor({
                     wellVals.at(y).at(x).r,
                     wellVals.at(y).at(x).g,
                     wellVals.at(y).at(x).b,
-                    wellVals.at(y).at(x).a);
+                    wellVals.at(y).at(x).a});
             }
             else
             {
-                SDL_SetRenderDrawColor(renderer,
+                game.setRenderDrawColor({
                     0,
                     0,
                     0,
-                    255);
+                    255});
             }
 
-            rect.x = x * display.getTileSize();
-            rect.y = y * display.getTileSize();
-            SDL_RenderFillRect(renderer, &rect);
+            rect.x = x * game.getTileSize();
+            rect.y = y * game.getTileSize();
+            game.renderFillRect(rect);
         }
     }
 
     Color color = well.getPieceColor();
-    SDL_SetRenderDrawColor(renderer, color.r, color.g, color.b, color.a);
+    game.setRenderDrawColor({ color.r, color.g, color.b, color.a });
 
     // Render active piece
     std::vector<Point> pieceCoords = well.getPieceTileCoordinates();
     for (auto& p : pieceCoords)
     {
-        rect.x = p.x * display.getTileSize();
-        rect.y = p.y * display.getTileSize();
-        SDL_RenderFillRect(renderer, &rect);
+        rect.x = p.x * game.getTileSize();
+        rect.y = p.y * game.getTileSize();
+        game.renderFillRect(rect);
     }
 
     SDL_Color white = { 255, 255, 255, 255 };
 
     if (over())
     {
-        text("GAME", 15, white, 0, display.heightPercentToPixels(15), true);
-        text("OVER", 15, white, 0, display.heightPercentToPixels(25), true);
+        game.text("GAME", 15, white, 0, game.heightPercentToPixels(15), true);
+        game.text("OVER", 15, white, 0, game.heightPercentToPixels(25), true);
     }
 
     // Render debug text
     /*std::string xString = "x: " + std::to_string(event.tfinger.x);
-    text(xString.c_str(), 5, white, 0, display.heightPercentToPixels(0), false);
+    text(xString.c_str(), 5, white, 0, game.heightPercentToPixels(0), false);
 
     std::string dragStartString = "dragStart: " + std::to_string(dragStart);
-    text(dragStartString.c_str(), 5, white, 0, display.heightPercentToPixels(5), false);
+    text(dragStartString.c_str(), 5, white, 0, game.heightPercentToPixels(5), false);
 
     std::string dragDistanceString = "dragDistance: " + std::to_string(dragDistance);
-    text(dragDistanceString.c_str(), 5, white, 0, display.heightPercentToPixels(10), false);
+    text(dragDistanceString.c_str(), 5, white, 0, game.heightPercentToPixels(10), false);
 
     std::string pieceMovedString = "pieceMoved: " + std::to_string(pieceMoved);
-    text(pieceMovedString.c_str(), 5, white, 0, display.heightPercentToPixels(15), false);
+    text(pieceMovedString.c_str(), 5, white, 0, game.heightPercentToPixels(15), false);
 
     std::string dragVertStartString = "dragVertStart: " + std::to_string(dragVertStart);
-    text(dragVertStartString.c_str(), 5, white, 0, display.heightPercentToPixels(20), false);
+    text(dragVertStartString.c_str(), 5, white, 0, game.heightPercentToPixels(20), false);
 
     std::string dragVertDistanceString = "dragVertDistance: " + std::to_string(dragVertDistance);
-    text(dragVertDistanceString.c_str(), 5, white, 0, display.heightPercentToPixels(25), false);*/
+    text(dragVertDistanceString.c_str(), 5, white, 0, game.heightPercentToPixels(25), false);*/
 
-    SDL_RenderPresent(renderer);
+    game.renderPresent();
 }
 
 bool StackBlox::over()
@@ -438,60 +372,6 @@ void StackBlox::reset()
     dropTime = time + well.quickDrop(false);
     showTitleScreen = true;
     alreadyShowingTitle = false;
-}
-
-float StackBlox::getPixelsToPointsScaleFactor(std::string& fontPath)
-{
-    int fontSize = 100;
-    TTF_Font* font = TTF_OpenFont(fontPath.c_str(), fontSize);
-    if (font == nullptr)
-    {
-        throw Exception(SDL_GetError());
-    }
-
-    int height = TTF_FontHeight(font);
-    if (height <= 0)
-    {
-        throw Exception("Font " + fontPath + " height is " + std::to_string(height));
-    }
-    
-    TTF_CloseFont(font);
-    
-    return static_cast<float>(fontSize)/static_cast<float>(height);
-}
-
-void StackBlox::text(const char * text, int fontSizeHeightPercent, SDL_Color& fontColor, int x, int y, bool centered)
-{
-    std::string fontPath = basePath + "assets/OpenSans-Regular.ttf";
-    
-    float scale = getPixelsToPointsScaleFactor(fontPath);
-    int heightPixels = display.heightPercentToPixels(fontSizeHeightPercent);
-    int fontSize = static_cast<int>(heightPixels * scale);
-
-    TTF_Font* font = TTF_OpenFont(fontPath.c_str(), fontSize);
-    if (font == nullptr)
-    {
-        throw Exception(SDL_GetError());
-    }
-
-    SDL_Surface* surf = TTF_RenderText_Blended(font, text, fontColor);
-
-    TTF_CloseFont(font);
-    SDL_Texture* labelTexture = SDL_CreateTextureFromSurface(renderer, surf);
-
-    int textureWidth = surf->w;
-    int textureHeight = surf->h;
-    SDL_FreeSurface(surf);
-
-    if (centered)
-    {
-        x = (display.getGameWidth() - textureWidth) / 2 - 3;
-    }
-
-    SDL_Rect renderQuad = { x, y, textureWidth, textureHeight };
-
-    SDL_RenderCopyEx(renderer, labelTexture, nullptr, &renderQuad, 0.0, nullptr, SDL_FLIP_NONE);
-    SDL_DestroyTexture(labelTexture);
 }
 
 void StackBlox::start()

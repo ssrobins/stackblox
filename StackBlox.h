@@ -1,9 +1,7 @@
 #pragma once
 
-#include "Display.h"
+#include "Game.h"
 #include "Well.h"
-#include "SDL.h"
-#include <string>
 
 class StackBlox
 {
@@ -30,15 +28,6 @@ public:
 private:
     StackBlox(const int numTilesWidth, const int numTilesHeight, const char* title, bool fullscreen);
 
-    void text(const char * text, int fontSizeHeightPercent, SDL_Color& fontColor, int x = 0, int y = 0, bool centered = false);
-
-    const float screenScale = 
-    #if __ANDROID__ || TARGET_OS_IPHONE
-        1.0f;
-    #else
-        0.8f;
-    #endif
-
     const bool hasTouchscreen =
     #if __ANDROID__ || TARGET_OS_IPHONE
         true;
@@ -46,13 +35,8 @@ private:
         false;
     #endif
 
-    Display display;
-    bool fullscreen;
+    Game game;
 
-    float getPixelsToPointsScaleFactor(std::string& fontPath);
-
-    SDL_Window *window;
-    SDL_Renderer* renderer;
     SDL_Rect renderRect;
     SDL_Event event;
     bool isRunning;
@@ -73,11 +57,4 @@ private:
 
     bool showTitleScreen;
     bool alreadyShowingTitle;
-
-    std::string basePath = 
-    #if __ANDROID__
-        "";
-    #else
-        SDL_GetBasePath();
-    #endif
 };
