@@ -16,7 +16,7 @@ void expectTileCoordinatesEqual(const std::vector<Point>& tilesRef, const std::v
 }
 
 
-const std::vector<std::vector<int>> piece{
+const std::vector<std::vector<int>> samplePiece{
     { 0, 0, 0, 0 },
     { 1, 1, 1, 1 },
     { 0, 0, 0, 0 },
@@ -26,7 +26,7 @@ const std::vector<std::vector<int>> piece{
 
 TEST(coordinates, piece)
 {
-    Piece piece(piece);
+    Piece piece(samplePiece);
 
     std::vector<Point> tilesRef0{
         { 0, 1 },       // O O O O
@@ -66,13 +66,13 @@ TEST(coordinates, piece)
 
 TEST(yOffsetTop, piece)
 {
-    EXPECT_EQ(-1, yOffsetTop(piece));
+    EXPECT_EQ(-1, yOffsetTop(samplePiece));
 }
 
 
 TEST(move, positiveX)
 {
-    Piece piece(piece);
+    Piece piece(samplePiece);
 
     piece.move(1, 0);
     std::vector<Point> tilesRef{
@@ -87,7 +87,7 @@ TEST(move, positiveX)
 
 TEST(move, negativeX)
 {
-    Piece piece(piece);
+    Piece piece(samplePiece);
 
     piece.move(-1, 0);
     std::vector<Point> tilesRef{
@@ -102,7 +102,7 @@ TEST(move, negativeX)
 
 TEST(move, positiveY)
 {
-    Piece piece(piece);
+    Piece piece(samplePiece);
 
     piece.move(0, 2);
     std::vector<Point> tilesRef{
@@ -117,7 +117,7 @@ TEST(move, positiveY)
 
 TEST(move, negativeY)
 {
-    Piece piece(piece);
+    Piece piece(samplePiece);
 
     piece.move(0, -2);
     std::vector<Point> tilesRef{
@@ -132,7 +132,7 @@ TEST(move, negativeY)
 
 TEST(move, thenRotate)
 {
-    Piece piece(piece);
+    Piece piece(samplePiece);
 
     piece.move(4, -3);
     std::vector<Point> tilesRef{
