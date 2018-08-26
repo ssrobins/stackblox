@@ -37,7 +37,6 @@ private:
 
     Game game;
 
-    SDL_Rect renderRect;
     SDL_Event event;
     bool isRunning;
     std::chrono::steady_clock::time_point time;
