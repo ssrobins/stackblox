@@ -70,7 +70,7 @@ TEST(yOffsetTop, piece)
 }
 
 
-TEST(offset, positive)
+TEST(move, positiveX)
 {
     Piece piece(piece);
 
@@ -81,11 +81,11 @@ TEST(offset, positive)
         { 3, 1 },       // O O O O
         { 4, 1 },       // O O O O
     };
-    expectTileCoordinatesEqual(tilesRef, piece.getTileCoordinates(), "Positive Offset");
+    expectTileCoordinatesEqual(tilesRef, piece.getTileCoordinates(), "");
 }
 
 
-TEST(offset, negative)
+TEST(move, negativeX)
 {
     Piece piece(piece);
 
@@ -96,37 +96,52 @@ TEST(offset, negative)
         { 1, 1 },       // O O O O
         { 2, 1 },       // O O O O
     };
-    expectTileCoordinatesEqual(tilesRef, piece.getTileCoordinates(), "Negative Offset");
+    expectTileCoordinatesEqual(tilesRef, piece.getTileCoordinates(), "");
 }
 
 
-TEST(offset, positiveRotated)
+TEST(move, positiveY)
 {
     Piece piece(piece);
 
-    piece.move(1, 0);
+    piece.move(0, 2);
     std::vector<Point> tilesRef{
-        { 3, 0 },       // O O X O
-        { 3, 1 },       // O O X O
-        { 3, 2 },       // O O X O
-        { 3, 3 },       // O O X O
+        { 0, 3 },       // O O O O
+        { 1, 3 },       // X X X X
+        { 2, 3 },       // O O O O
+        { 3, 3 },       // O O O O
     };
-    expectTileCoordinatesEqual(tilesRef, piece.rotate(), "Positive Rotated Offset");
+    expectTileCoordinatesEqual(tilesRef, piece.getTileCoordinates(), "");
 }
 
 
-TEST(offset, negativeRotated)
+TEST(move, negativeY)
 {
     Piece piece(piece);
 
-    piece.move(-1, 0);
+    piece.move(0, -2);
     std::vector<Point> tilesRef{
-        { 1, 0 },       // O O X O
-        { 1, 1 },       // O O X O
-        { 1, 2 },       // O O X O
-        { 1, 3 },       // O O X O
+        { 0,-1 },       // O O O O
+        { 1,-1 },       // X X X X
+        { 2,-1 },       // O O O O
+        { 3,-1 },       // O O O O
     };
-    expectTileCoordinatesEqual(tilesRef, piece.rotate(), "Negative Rotated Offset");
+    expectTileCoordinatesEqual(tilesRef, piece.getTileCoordinates(), "");
+}
+
+
+TEST(move, thenRotate)
+{
+    Piece piece(piece);
+
+    piece.move(4, -3);
+    std::vector<Point> tilesRef{
+        { 6,-3 },       // O O X O
+        { 6,-2 },       // O O X O
+        { 6,-1 },       // O O X O
+        { 6, 0 },       // O O X O
+    };
+    expectTileCoordinatesEqual(tilesRef, piece.rotate(), "");
 }
 
 
