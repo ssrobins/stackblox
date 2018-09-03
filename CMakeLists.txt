@@ -4,7 +4,7 @@ set(version_major 1)
 set(version_minor 0)
 set(version_patch 1)
 if(ANDROID)
-    set(version_code 3)
+    set(version_code 4)
 endif()
 
 configure_file(
