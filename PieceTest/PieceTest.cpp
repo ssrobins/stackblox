@@ -1,7 +1,11 @@
 #include "Piece.h"
 #include "gtest/gtest.h"
+#include "gmock/gmock.h"
 #include <iostream>
 
+
+// This plus the gmock include above are simply to test that gmock works. Remove when any tests start using gmock for real.
+using ::testing::AtLeast;
 
 void expectTileCoordinatesEqual(const std::vector<Point>& tilesRef, const std::vector<Point>& tiles, const std::string& testName)
 {
