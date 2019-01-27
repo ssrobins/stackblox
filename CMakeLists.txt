@@ -20,7 +20,7 @@ set(icons
     StackBlox.xcassets/AppIcon.appiconset/Icon1024x1024.png
 )
 
-include(${CMAKE_SOURCE_DIR}/add_executable.cmake)
+add_sdl2_executable(${target_name})
 
 target_sources(${target_name} PRIVATE
     StackBlox.h
@@ -61,7 +61,7 @@ elseif(APPLE AND NOT IOS)
     )
 endif()
 
-include(${CMAKE_SOURCE_DIR}/copy_files_to_binary_dir.cmake)
+install_executable(${target_name})
 
 add_subdirectory(Piece)
 add_subdirectory(PieceTest)
