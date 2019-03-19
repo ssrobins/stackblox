@@ -2,9 +2,9 @@ set(target_name StackBlox)
 
 set(version_major 1)
 set(version_minor 0)
-set(version_patch 1)
+set(version_patch 2)
 if(ANDROID)
-    set(version_code 4)
+    set(version_code 5)
 endif()
 
 configure_file(
