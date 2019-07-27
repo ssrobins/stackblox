@@ -210,10 +210,7 @@ void StackBlox::update()
 
 void StackBlox::render()
 {
-    if (game.isFullscreen())
-    {
-        game.renderSetViewport();
-    }
+    game.renderSetViewport();
 
     if (showTitle())
     {
@@ -283,12 +280,18 @@ void StackBlox::renderTitleScreen()
 
 void StackBlox::renderStackBlox()
 {
-    game.setRenderDrawColor({ 20, 20, 20, 255 });
+    game.setRenderDrawColor({ 0, 0, 0, 255 });
     game.renderClear();
+
+    SDL_Color white = { 255, 255, 255, 255 };
+    SDL_Rect outlineRect = { 0, 0, game.getGameWidth(), game.getGameHeight() };
+    game.renderFillRect(outlineRect, white);
 
     SDL_Rect rect;
     rect.w = game.getTileSize();
     rect.h = game.getTileSize();
+
+    SDL_Color tileColor;
 
     // Render pieces in well
     std::vector<std::vector<Color>> wellVals = well.getWellValues();
@@ -298,40 +301,33 @@ void StackBlox::renderStackBlox()
         {
             if (wellVals.at(y).at(x) != Color{ 0, 0, 0, 0 })
             {
-                game.setRenderDrawColor({
+                tileColor = {
                     wellVals.at(y).at(x).r,
                     wellVals.at(y).at(x).g,
                     wellVals.at(y).at(x).b,
-                    wellVals.at(y).at(x).a});
+                    wellVals.at(y).at(x).a};
             }
             else
             {
-                game.setRenderDrawColor({
-                    0,
-                    0,
-                    0,
-                    255});
+                tileColor = { 0, 0, 0, 255 };
             }
 
-            rect.x = x * game.getTileSize();
-            rect.y = y * game.getTileSize();
-            game.renderFillRect(rect);
+            rect.x = x * game.getTileSize() + game.getOutlineOffsetWidth();
+            rect.y = y * game.getTileSize() + game.getOutlineOffsetHeight();
+            game.renderFillRect(rect, tileColor);
         }
     }
 
     Color color = well.getPieceColor();
-    game.setRenderDrawColor({ color.r, color.g, color.b, color.a });
 
     // Render active piece
     std::vector<Point> pieceCoords = well.getPieceTileCoordinates();
     for (auto& p : pieceCoords)
     {
-        rect.x = p.x * game.getTileSize();
-        rect.y = p.y * game.getTileSize();
-        game.renderFillRect(rect);
+        rect.x = p.x * game.getTileSize() + game.getOutlineOffsetWidth();
+        rect.y = p.y * game.getTileSize() + game.getOutlineOffsetHeight();
+        game.renderFillRect(rect, { color.r, color.g, color.b, color.a });
     }
-
-    SDL_Color white = { 255, 255, 255, 255 };
 
     if (over())
     {

@@ -2,11 +2,11 @@ set(target_name StackBlox)
 
 set(version_major 1)
 set(version_minor 0)
-set(version_patch 5)
+set(version_patch 6)
 if("${ANDROID_ABI}" STREQUAL "armeabi-v7a")
-    set(version_code 10)
+    set(version_code 12)
 elseif("${ANDROID_ABI}" STREQUAL "arm64-v8a")
-    set(version_code 11)
+    set(version_code 13)
 endif()
 
 configure_file(
