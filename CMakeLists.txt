@@ -2,7 +2,7 @@ set(target_name StackBlox)
 
 set(version_major 1)
 set(version_minor 1)
-set(version_patch 0)
+set(version_patch 1)
 if("${ANDROID_ABI}" STREQUAL "armeabi-v7a")
     set(version_code 14)
 elseif("${ANDROID_ABI}" STREQUAL "arm64-v8a")
