@@ -15,11 +15,11 @@ configure_file(
 )
 
 set(icons
-    StackBlox.xcassets/AppIcon.appiconset/Icon76x76.png
-    StackBlox.xcassets/AppIcon.appiconset/Icon120x120.png
-    StackBlox.xcassets/AppIcon.appiconset/Icon152x152.png
-    StackBlox.xcassets/AppIcon.appiconset/Icon167x167.png
-    StackBlox.xcassets/AppIcon.appiconset/Icon1024x1024.png
+    StackBlox.xcassets/AppIcon.appiconset/AppIcon1024x1024~ios-marketing.png
+    StackBlox.xcassets/AppIcon.appiconset/AppIcon60x60@2x.png
+    StackBlox.xcassets/AppIcon.appiconset/AppIcon76x76@2x~ipad.png
+    StackBlox.xcassets/AppIcon.appiconset/AppIcon76x76~ipad.png
+    StackBlox.xcassets/AppIcon.appiconset/AppIcon83.5x83.5@2x~ipad.png
 )
 
 add_sdl2_executable(${target_name})
