@@ -14,14 +14,6 @@ configure_file(
     ${CMAKE_CURRENT_BINARY_DIR}/Version.h
 )
 
-set(icons
-    StackBlox.xcassets/AppIcon.appiconset/AppIcon1024x1024~ios-marketing.png
-    StackBlox.xcassets/AppIcon.appiconset/AppIcon60x60@2x.png
-    StackBlox.xcassets/AppIcon.appiconset/AppIcon76x76@2x~ipad.png
-    StackBlox.xcassets/AppIcon.appiconset/AppIcon76x76~ipad.png
-    StackBlox.xcassets/AppIcon.appiconset/AppIcon83.5x83.5@2x~ipad.png
-)
-
 add_sdl2_executable(${target_name})
 
 target_sources(${target_name} PRIVATE
@@ -30,13 +22,26 @@ target_sources(${target_name} PRIVATE
     main.cpp
     ${CMAKE_CURRENT_BINARY_DIR}/Version.h
 )
+
 if(WIN32)
     target_sources(${target_name} PRIVATE
         icon.rc
     )
 elseif(IOS)
+    set(icons
+        StackBlox.xcassets/AppIcon.appiconset/AppIcon1024x1024~ios-marketing.png
+        StackBlox.xcassets/AppIcon.appiconset/AppIcon60x60@2x.png
+        StackBlox.xcassets/AppIcon.appiconset/AppIcon76x76@2x~ipad.png
+        StackBlox.xcassets/AppIcon.appiconset/AppIcon76x76~ipad.png
+        StackBlox.xcassets/AppIcon.appiconset/AppIcon83.5x83.5@2x~ipad.png
+    )
+
     target_sources(${target_name} PRIVATE
         ${icons}
+    )
+
+    set_target_properties(${target_name} PROPERTIES
+        RESOURCE "${icons}"
     )
 endif()
 
@@ -51,13 +56,11 @@ target_link_libraries(${target_name}
 )
 
 if(WIN32)
-    set_target_properties(${target_name}
-        PROPERTIES
+    set_target_properties(${target_name} PROPERTIES
         WIN32_EXECUTABLE TRUE
     )
 elseif(APPLE AND NOT IOS)
-    set_target_properties(${target_name}
-        PROPERTIES
+    set_target_properties(${target_name} PROPERTIES
         MACOSX_BUNDLE TRUE
         MACOSX_BUNDLE_ICON_FILE "icon.icns"
     )
