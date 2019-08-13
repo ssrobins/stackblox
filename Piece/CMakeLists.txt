@@ -1,16 +1,14 @@
-set(target_name StackBloxPiece)
-
-add_library(${target_name} STATIC
+add_library(StackBloxPiece STATIC
     Piece.cpp
     Piece.h
 )
 
-target_include_directories(${target_name}
+target_include_directories(StackBloxPiece
   PUBLIC
     .
   PRIVATE
     
 )
 
-target_link_libraries(${target_name}
+target_link_libraries(StackBloxPiece
 )

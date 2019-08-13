@@ -1,5 +1,3 @@
-set(target_name StackBlox)
-
 set(version_major 1)
 set(version_minor 1)
 set(version_patch 1)
@@ -14,9 +12,9 @@ configure_file(
     ${CMAKE_CURRENT_BINARY_DIR}/Version.h
 )
 
-add_sdl2_executable(${target_name})
+add_sdl2_executable(StackBlox)
 
-target_sources(${target_name} PRIVATE
+target_sources(StackBlox PRIVATE
     StackBlox.h
     StackBlox.cpp
     main.cpp
@@ -24,7 +22,7 @@ target_sources(${target_name} PRIVATE
 )
 
 if(WIN32)
-    target_sources(${target_name} PRIVATE
+    target_sources(StackBlox PRIVATE
         icon.rc
     )
 elseif(IOS)
@@ -36,37 +34,37 @@ elseif(IOS)
         StackBlox.xcassets/AppIcon.appiconset/AppIcon83.5x83.5@2x~ipad.png
     )
 
-    target_sources(${target_name} PRIVATE
+    target_sources(StackBlox PRIVATE
         ${icons}
     )
 
-    set_target_properties(${target_name} PROPERTIES
+    set_target_properties(StackBlox PROPERTIES
         RESOURCE "${icons}"
     )
 endif()
 
-target_include_directories(${target_name} PRIVATE
+target_include_directories(StackBlox PRIVATE
     ${CMAKE_CURRENT_BINARY_DIR}
 )
 
-target_link_libraries(${target_name}
+target_link_libraries(StackBlox
     Game
     StackBloxPiece
     StackBloxWell
 )
 
 if(WIN32)
-    set_target_properties(${target_name} PROPERTIES
+    set_target_properties(StackBlox PROPERTIES
         WIN32_EXECUTABLE TRUE
     )
 elseif(APPLE AND NOT IOS)
-    set_target_properties(${target_name} PROPERTIES
+    set_target_properties(StackBlox PROPERTIES
         MACOSX_BUNDLE TRUE
         MACOSX_BUNDLE_ICON_FILE "icon.icns"
     )
 endif()
 
-install_executable(${target_name})
+install_executable(StackBlox)
 
 add_subdirectory(Piece)
 add_subdirectory(PieceTest)

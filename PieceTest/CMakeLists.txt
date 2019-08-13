@@ -1,14 +1,12 @@
-set(target_name StackBloxPieceTest)
+add_test_executable(StackBloxPieceTest)
 
-add_test_executable(${target_name})
-
-target_sources(${target_name} PRIVATE
+target_sources(StackBloxPieceTest PRIVATE
     PieceTest.cpp
 )
 
-target_include_directories(${target_name} PRIVATE
+target_include_directories(StackBloxPieceTest PRIVATE
 )
 
-target_link_libraries(${target_name}
+target_link_libraries(StackBloxPieceTest
     StackBloxPiece
 )

@@ -1,17 +1,15 @@
-set(target_name StackBloxWell)
-
-add_library(${target_name} STATIC
+add_library(StackBloxWell STATIC
     Well.cpp
     Well.h
 )
 
-target_include_directories(${target_name}
+target_include_directories(StackBloxWell
   PUBLIC
     .
   PRIVATE
     
 )
 
-target_link_libraries(${target_name}
+target_link_libraries(StackBloxWell
     StackBloxPiece
 )
