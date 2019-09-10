@@ -1,6 +1,5 @@
-set(version_major 1)
-set(version_minor 1)
-set(version_patch 1)
+project(StackBlox VERSION 1.1.1)
+
 if("${ANDROID_ABI}" STREQUAL "armeabi-v7a")
     set(version_code 14)
 elseif("${ANDROID_ABI}" STREQUAL "arm64-v8a")
@@ -48,7 +47,7 @@ target_include_directories(StackBlox PRIVATE
 )
 
 target_link_libraries(StackBlox
-    Game
+    CONAN_PKG::ssrobins_engine
     StackBloxPiece
     StackBloxWell
 )

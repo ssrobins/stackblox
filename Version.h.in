@@ -2,6 +2,6 @@
 
 #include <string>
 
-const std::string versionMajor = "${version_major}";
-const std::string versionMinor = "${version_minor}";
-const std::string versionPatch = "${version_patch}";
+const std::string versionMajor = "${PROJECT_VERSION_MAJOR}";
+const std::string versionMinor = "${PROJECT_VERSION_MINOR}";
+const std::string versionPatch = "${PROJECT_VERSION_PATCH}";
