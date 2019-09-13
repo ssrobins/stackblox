@@ -1,0 +1,7 @@
+#pragma once
+
+#include <string>
+
+const std::string versionMajor = "${PROJECT_VERSION_MAJOR}";
+const std::string versionMinor = "${PROJECT_VERSION_MINOR}";
+const std::string versionPatch = "${PROJECT_VERSION_PATCH}";
