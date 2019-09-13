@@ -1,0 +1,78 @@
+variables:
+  CONAN_USER_HOME: "$CI_PROJECT_DIR"
+  CONAN_REVISIONS_ENABLED: "1"
+
+stages:
+  - build
+
+before_script:
+  - cmake --version
+  - conan --version
+
+.android:
+  image: registry.gitlab.com/ssrobins/docker-android-build:jdk8u212b04-ndk20
+  stage: build
+  script:
+    - lscpu
+    - cat /proc/meminfo | grep MemTotal
+    - java -version
+    - ./build_$android_arch.sh
+    - cd build_$android_arch
+  artifacts:
+    paths:
+      - build_$android_arch/_package/*.apk
+  except:
+    variables:
+      - $desktop_only == "true"
+
+android-v7a:
+  variables:
+    android_arch: "android-v7a"
+  extends: .android
+
+android-v8a:
+  variables:
+    android_arch: "android-v8a"
+  extends: .android
+
+ios:
+  stage: build
+  script:
+    - ./build_ios.sh
+  tags:
+    - ios
+  except:
+    variables:
+      - $desktop_only == "true"
+
+linux:
+  image: registry.gitlab.com/ssrobins/docker-linux-build:gcc9.2.0
+  stage: build
+  script:
+    - lscpu
+    - cat /proc/meminfo | grep MemTotal
+    - gcc --version
+    - ./build_linux.sh
+  artifacts:
+    paths:
+      - build_linux/_package/*.tar.gz
+
+mac:
+  stage: build
+  script:
+    - ./build_mac.sh
+  artifacts:
+    paths:
+      - build_mac/_package/*.zip
+  tags:
+    - mac
+
+windows:
+  stage: build
+  script:
+    - .\build_windows.bat
+  artifacts:
+    paths:
+      - build_windows/_package/*.zip
+  tags:
+    - windows
