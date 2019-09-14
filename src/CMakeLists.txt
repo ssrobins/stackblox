@@ -1,17 +1,9 @@
-project(StackBlox VERSION 1.1.1)
-
-if("${ANDROID_ABI}" STREQUAL "armeabi-v7a")
-    set(version_code 14)
-elseif("${ANDROID_ABI}" STREQUAL "arm64-v8a")
-    set(version_code 15)
-endif()
+add_sdl2_executable(StackBlox)
 
 configure_file(
     ${CMAKE_CURRENT_SOURCE_DIR}/Version.h.in
     ${CMAKE_CURRENT_BINARY_DIR}/Version.h
 )
-
-add_sdl2_executable(StackBlox)
 
 target_sources(StackBlox PRIVATE
     StackBlox.h
