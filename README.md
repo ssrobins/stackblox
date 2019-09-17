@@ -6,8 +6,8 @@ I couldn't find a simple C++ CMake/Conan build setup with continuous integration
 (it's free and ad-free)
 
 ## Building StackBlox
-If you want to build from source, you'll need the following tools installed:
-*  [CMake](https://cmake.org/download/) (Download directly from CMake, your favorite package manager may not have a new enough version)
+If you want to build from source, download the **latest versions** of the following tools:
+*  [CMake](https://cmake.org/download/)
 *  [Conan](https://conan.io/downloads.html)
 *  [Android NDK](https://developer.android.com/ndk/downloads)
 *  [Android SDK tools](https://developer.android.com/studio) (install Android Studio for the full IDE experience)
@@ -15,10 +15,13 @@ If you want to build from source, you'll need the following tools installed:
 *  On Linux: [gcc 9](https://hub.docker.com/_/gcc)
 *  On macOS: [Xcode 10](https://apps.apple.com/us/app/xcode/id497799835?mt=12)
 
-Clone this repo and run the `build_` script from the main directory to build.
+Then,
+1. Clone this repo
+1. At the command line, `cd` to the repo
+1. Run the `build_*` script for the desired platform to run the full build process
 
 ## Continuous integration (CI)
-The build process is automated through GitLab's built-in CI, defined in the [.gitlab-ci.yml](https://gitlab.com/ssrobins/stackblox/blob/master/.gitlab-ci.yml) file. Nothing fancy here, it runs the same `build_` script scripts described above and archives the results.
+The build process is automated through GitLab's built-in CI, defined in the [.gitlab-ci.yml](https://gitlab.com/ssrobins/stackblox/blob/master/.gitlab-ci.yml) file. Nothing fancy here, it runs the same `build_*` scripts described above and archives the results.
 
 ## Docker build setups
 The CI system uses custom Docker containers for Linux and Android builds. You can build and use them for the build setup or look at the Dockerfile for details steps on what to install. You can find them here:
@@ -28,15 +31,20 @@ The CI system uses custom Docker containers for Linux and Android builds. You ca
 I also have a Windows-based Docker, though it's not hooked up to the CI yet:
 * https://gitlab.com/ssrobins/docker-windows-build
 
-The .gitlab-ci.yml file in each repo describes the Docker image build process (yup, even the CI environments have a CI!).
+The .gitlab-ci.yml file in each repo defines the Docker image build process (yup, even the CI environments have a CI!).
 
 ## Conan packages
-The packages used in StackBlox are listed in [conanfile.py](https://gitlab.com/ssrobins/stackblox/blob/master/conanfile.py).
+The packages directly used in StackBlox are listed in [conanfile.py](https://gitlab.com/ssrobins/stackblox/blob/master/conanfile.py).
 
-I build and publish the packages from here:
+Those packages plus all dependencies are defined in these repos:
+* https://gitlab.com/ssrobins/conan-bzip2
+* https://gitlab.com/ssrobins/conan-freetype
 * https://gitlab.com/ssrobins/conan-gtest
+* https://gitlab.com/ssrobins/conan-libpng
 * https://gitlab.com/ssrobins/conan-sdl2
 * https://gitlab.com/ssrobins/conan-sdl2_image
 * https://gitlab.com/ssrobins/conan-sdl2_ttf
+* https://gitlab.com/ssrobins/conan-ssrobins_engine
+* https://gitlab.com/ssrobins/conan-zlib
 
-These packages and more are publically available on https://bintray.com/stever/conan.
+The .gitlab-ci.yml file in each repo defines the Conan build/packaging process. These packages and more are publically available on https://bintray.com/stever/conan.
