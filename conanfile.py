@@ -1,7 +1,8 @@
 from conans import ConanFile
 
 class Conan(ConanFile):
-
+    name = "StackBlox"
+    version = ""
     settings = "os"
     generators = "cmake"
 
