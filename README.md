@@ -13,7 +13,7 @@ If you want to build from source, download the **latest versions** of the follow
 *  [Android SDK tools](https://developer.android.com/studio) (install Android Studio for the full IDE experience)
 *  On Windows: [Visual Studio 2019](https://visualstudio.microsoft.com/vs/)
 *  On Linux: [gcc 9](https://hub.docker.com/_/gcc)
-*  On macOS: [Xcode 10](https://apps.apple.com/us/app/xcode/id497799835?mt=12)
+*  On macOS: [Xcode 11](https://apps.apple.com/us/app/xcode/id497799835?mt=12)
 
 Then,
 1. Clone this repo
