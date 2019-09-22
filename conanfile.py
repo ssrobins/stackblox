@@ -7,5 +7,5 @@ class Conan(ConanFile):
     generators = "cmake"
 
     def requirements(self):
-        self.requires.add("gtest/1.8.1#0ab3cafdcd7fe85deaefe41b3011d36fbd86e38e")
-        self.requires.add("ssrobins_engine/0.1.0#fd90aa57c604024d1e49597f75616ad42c7683a1")
+        self.requires.add("gtest/1.8.1#87754ca5593a1001e629122ee514d931aa9e8bf7")
+        self.requires.add("ssrobins_engine/0.1.0#d3e7ff5bda36e861325826ea6a224a496d0308e2")

@@ -8,7 +8,7 @@ cd $build_dir
 
 conan remote add bintray-stever https://api.bintray.com/conan/stever/conan --insert --force
 
-conan install --update ..
+conan install --update .. -s compiler.version=11.0
 
 config=Release
 
