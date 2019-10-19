@@ -9,6 +9,7 @@ I couldn't find a simple C++ CMake/Conan build setup with continuous integration
 If you want to build from source, download the **latest versions** of the following tools:
 *  [CMake](https://cmake.org/download/)
 *  [Conan](https://conan.io/downloads.html)
+*  [Ninja](https://github.com/ninja-build/ninja/releases) (for Linux and Android builds)
 *  [Android NDK](https://developer.android.com/ndk/downloads)
 *  [Android SDK tools](https://developer.android.com/studio) (install Android Studio for the full IDE experience)
 *  On Windows: [Visual Studio 2019](https://visualstudio.microsoft.com/vs/)

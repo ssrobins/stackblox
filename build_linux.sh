@@ -12,9 +12,9 @@ conan install --update .. -s compiler.libcxx=libstdc++11
 
 config=Release
 
-cmake -DCMAKE_BUILD_TYPE=$config ..
+cmake -G Ninja -DCMAKE_BUILD_TYPE=$config ..
 
-cmake --build . -- -j 4
+cmake --build .
 
 ctest -C $config --output-on-failure
 
