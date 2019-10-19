@@ -19,7 +19,7 @@ cmake --build . --config %config% -- /m || goto :error
 
 ctest -C %config% --output-on-failure || goto :error
 
-cpack || goto :error
+cpack -C %config% || goto :error
 
 :error
 exit /b %errorlevel%

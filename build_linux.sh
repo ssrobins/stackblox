@@ -18,4 +18,4 @@ cmake --build . -- -j 4
 
 ctest -C $config --output-on-failure
 
-cpack
+cpack -C $config
