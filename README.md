@@ -38,9 +38,9 @@ The .gitlab-ci.yml file in each repo defines the Docker image build process (yup
 The packages directly used in StackBlox are listed in [conanfile.py](https://gitlab.com/ssrobins/stackblox/blob/master/conanfile.py).
 
 Those packages plus all dependencies are defined in these repos:
-* https://gitlab.com/ssrobins/conan-android-sdl2
+* https://gitlab.com/ssrobins/conan-android_sdl2
 * https://gitlab.com/ssrobins/conan-bzip2
-* https://gitlab.com/ssrobins/conan-cmake-utils
+* https://gitlab.com/ssrobins/conan-cmake_utils
 * https://gitlab.com/ssrobins/conan-freetype
 * https://gitlab.com/ssrobins/conan-gtest
 * https://gitlab.com/ssrobins/conan-libpng
