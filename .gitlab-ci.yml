@@ -1,6 +1,7 @@
 variables:
   CONAN_USER_HOME: "$CI_PROJECT_DIR"
   CONAN_REVISIONS_ENABLED: "1"
+  CONAN_SYSREQUIRES_SUDO: "0"
 
 stages:
   - build
