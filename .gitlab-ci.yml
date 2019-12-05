@@ -40,6 +40,9 @@ ios:
   stage: build
   script:
     - ./build_ios.sh
+  artifacts:
+    paths:
+      - build_ios/_package/*.ipa
   tags:
     - ios
   except:

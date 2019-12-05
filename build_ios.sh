@@ -12,4 +12,8 @@ conan install --update .. -s os=iOS -s arch=armv7 -s os.version=8.0 -s compiler.
 
 cmake -G Xcode -DCMAKE_SYSTEM_NAME=iOS -DCMAKE_OSX_ARCHITECTURES="armv7 arm64" -DCMAKE_OSX_DEPLOYMENT_TARGET=8.0 -DCMAKE_TRY_COMPILE_TARGET_TYPE=STATIC_LIBRARY ..
 
-cmake --build . --config Release
+config=Release
+
+cmake --build . --config $config
+
+cpack -C $config-iphoneos

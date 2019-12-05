@@ -12,6 +12,10 @@ target_sources(StackBlox PRIVATE
     ${CMAKE_CURRENT_BINARY_DIR}/Version.h
 )
 
+target_assets(StackBlox
+    assets
+)
+
 if(WIN32)
     target_sources(StackBlox PRIVATE
         icon.rc
@@ -31,6 +35,10 @@ elseif(IOS)
 
     set_target_properties(StackBlox PROPERTIES
         RESOURCE "${icons}"
+    )
+
+    target_assets(StackBlox
+        StackBlox.xcassets
     )
 endif()
 
