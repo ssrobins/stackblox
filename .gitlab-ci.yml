@@ -39,7 +39,11 @@ android-v8a:
 ios:
   stage: build
   script:
-    - ./build_ios.sh
+    - |
+      ./build_ios.sh
+      if [ "$publish" == "true" ]; then
+        xcrun altool --upload-app --file $(find . -name *.ipa | head -n 1) --type ios --username ssrobins@gmail.com --password $APPLEID_PASSWORD
+      fi
   artifacts:
     paths:
       - build_ios/_package/*.ipa

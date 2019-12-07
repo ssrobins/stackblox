@@ -1,6 +1,6 @@
 cmake_minimum_required(VERSION 3.14)
 
-project(StackBlox VERSION 1.1.1)
+project(StackBlox VERSION 1.1.5)
 
 if("${ANDROID_ABI}" STREQUAL "armeabi-v7a")
     set(version_code 14)
