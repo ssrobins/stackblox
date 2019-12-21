@@ -1,11 +1,43 @@
 cmake_minimum_required(VERSION 3.16)
 
+if(ANDROID_ABI STREQUAL armeabi-v7a)
+    set(android_min_sdk_version 16)
+    set(ANDROID_PLATFORM android-${android_min_sdk_version})
+    set(version_code 14)
+    set(android_arch armv7)
+elseif(ANDROID_ABI STREQUAL arm64-v8a)
+    set(android_min_sdk_version 21)
+    set(ANDROID_PLATFORM android-${android_min_sdk_version})
+    set(version_code 15)
+    set(android_arch armv8)
+elseif(APPLE)
+    set(xcode_version 11.0)
+endif()
+
 project(StackBlox VERSION 1.1.5)
 
-if("${ANDROID_ABI}" STREQUAL "armeabi-v7a")
-    set(version_code 14)
-elseif("${ANDROID_ABI}" STREQUAL "arm64-v8a")
-    set(version_code 15)
+if(ANDROID)
+    set(conan_args -s os=Android -s os.api_level=${android_min_sdk_version} -s arch=${android_arch} -s compiler=clang -s compiler.version=8 -s compiler.libcxx=libc++)
+elseif(IOS)
+    set(CMAKE_OSX_ARCHITECTURES "armv7 arm64")
+    set(CMAKE_OSX_DEPLOYMENT_TARGET 8.0)
+    set(conan_args -s os=iOS -s arch=armv7 -s os.version=${CMAKE_OSX_DEPLOYMENT_TARGET} -s compiler.version=${xcode_version})
+elseif(APPLE)
+    set(CMAKE_OSX_DEPLOYMENT_TARGET 10.9)
+    set(conan_args -s os.version=${CMAKE_OSX_DEPLOYMENT_TARGET} -s compiler.version=${xcode_version})
+elseif(UNIX)
+    set(conan_args -s compiler=gcc -s compiler.version=9 -s compiler.libcxx=libstdc++11)
+elseif(WIN32)
+    set(conan_args -s arch=x86 -s compiler.version=16 -s compiler.runtime=MT)
+endif()
+
+execute_process(
+    COMMAND conan remote add bintray-stever https://api.bintray.com/conan/stever/conan --insert --force
+    COMMAND conan install --update ${CMAKE_SOURCE_DIR} ${conan_args}
+    RESULT_VARIABLE conan_result
+)
+if(conan_result)
+    message(FATAL_ERROR "Conan error: ${conan_error}")
 endif()
 
 include(${CMAKE_BINARY_DIR}/conanbuildinfo.cmake)
