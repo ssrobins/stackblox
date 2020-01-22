@@ -83,4 +83,4 @@ windows:
     paths:
       - build_windows/_package/*.zip
   tags:
-    - windows
+    - windows-self-hosted
