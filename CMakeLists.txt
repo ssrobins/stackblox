@@ -1,4 +1,4 @@
-cmake_minimum_required(VERSION 3.16)
+cmake_minimum_required(VERSION 3.17)
 
 if(ANDROID_ABI STREQUAL armeabi-v7a)
     set(android_min_sdk_version 16)

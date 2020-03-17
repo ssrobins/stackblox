@@ -6,10 +6,10 @@ cd $(dirname "$0")
 mkdir -p $build_dir
 cd $build_dir
 
+cmake -G "Ninja Multi-Config" -DANDROID_ABI=arm64-v8a -DCMAKE_TOOLCHAIN_FILE=$ANDROID_HOME/android-ndk-${android_ndk_version}/build/cmake/android.toolchain.cmake ..
+
 config=Release
 
-cmake -G Ninja -DANDROID_ABI=arm64-v8a -DCMAKE_BUILD_TYPE=$config -DCMAKE_TOOLCHAIN_FILE=$ANDROID_HOME/android-ndk-${android_ndk_version}/build/cmake/android.toolchain.cmake ..
-
-cmake --build . --verbose
+cmake --build . --config $config --verbose
 
 cpack -C $config

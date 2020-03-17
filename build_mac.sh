@@ -6,9 +6,9 @@ cd $(dirname "$0")
 mkdir -p $build_dir
 cd $build_dir
 
-config=Release
-
 cmake -G Xcode ..
+
+config=Release
 
 cmake --build . --config $config
 

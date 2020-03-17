@@ -54,7 +54,7 @@ ios:
       - $desktop_only == "true"
 
 linux:
-  image: registry.gitlab.com/ssrobins/docker-linux-build:gcc9.2.0
+  image: registry.gitlab.com/ssrobins/docker-linux-build:gcc9.3.0
   stage: build
   script:
     - lscpu
