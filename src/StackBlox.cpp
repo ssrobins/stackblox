@@ -232,6 +232,9 @@ void StackBlox::renderTitleScreen()
     SDL_Color white = { 255, 255, 255, 255 };
     SDL_Color red = { 255, 0, 0, 255 };
 
+    // Workaround for this issue: https://bugzilla.libsdl.org/show_bug.cgi?id=5077
+    game.renderPresent();
+
     game.setRenderDrawColor({ 0, 0, 0, 255 });
     game.renderClear();
 
