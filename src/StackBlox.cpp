@@ -15,7 +15,6 @@ StackBlox::StackBlox(const int numTilesWidth, const int numTilesHeight, const ch
     : game(numTilesWidth, numTilesHeight, title, fullscreen)
     , well(numTilesWidth, numTilesHeight)
     , showTitleScreen(true)
-    , alreadyShowingTitle(false)
 {
     isRunning = true;
 }
@@ -214,11 +213,7 @@ void StackBlox::render()
 
     if (showTitle())
     {
-        if (!alreadyShowingTitle)
-        {
-            renderTitleScreen();
-            alreadyShowingTitle = true;
-        }
+        renderTitleScreen();
     }
     else
     {
@@ -231,9 +226,6 @@ void StackBlox::renderTitleScreen()
 {
     SDL_Color white = { 255, 255, 255, 255 };
     SDL_Color red = { 255, 0, 0, 255 };
-
-    // Workaround for this issue: https://bugzilla.libsdl.org/show_bug.cgi?id=5077
-    game.renderPresent();
 
     game.setRenderDrawColor({ 0, 0, 0, 255 });
     game.renderClear();
@@ -370,7 +362,6 @@ void StackBlox::reset()
     well.reset();
     dropTime = time + well.quickDrop(false);
     showTitleScreen = true;
-    alreadyShowingTitle = false;
 }
 
 void StackBlox::start()
