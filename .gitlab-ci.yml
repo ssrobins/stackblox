@@ -11,7 +11,7 @@ before_script:
   - conan --version
 
 .android:
-  image: registry.gitlab.com/ssrobins/docker-android-build:jdk8u252-ndk21b
+  image: registry.gitlab.com/ssrobins/docker-android-build:jdk8u252-ndk21c
   stage: build
   script:
     - lscpu
