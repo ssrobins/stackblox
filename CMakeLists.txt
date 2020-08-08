@@ -1,5 +1,17 @@
 cmake_minimum_required(VERSION 3.17)
 
+if(ANDROID_ABI)
+    if(NOT EXISTS $ENV{ANDROID_NDK_ROOT})
+        message(FATAL_ERROR "Environment variable ANDROID_NDK_ROOT needs to point to a valid Android NDK installation")
+    else()
+        set(CMAKE_TOOLCHAIN_FILE $ENV{ANDROID_NDK_ROOT}/build/cmake/android.toolchain.cmake)
+    endif()
+
+    if(NOT EXISTS $ENV{ANDROID_SDK_ROOT})
+        message(FATAL_ERROR "Environment variable ANDROID_SDK_ROOT needs to point to a valid Android SDK installation")
+    endif()
+endif()
+
 if(ANDROID_ABI STREQUAL armeabi-v7a)
     set(android_min_sdk_version 16)
     set(ANDROID_PLATFORM android-${android_min_sdk_version})
@@ -33,11 +45,11 @@ endif()
 
 execute_process(
     COMMAND conan remote add bintray-stever https://api.bintray.com/conan/stever/conan --insert --force
-    COMMAND conan install --update ${CMAKE_SOURCE_DIR} ${conan_args}
+    COMMAND conan install --install-folder ${CMAKE_BINARY_DIR} --update ${CMAKE_SOURCE_DIR} ${conan_args}
     RESULT_VARIABLE conan_result
 )
 if(conan_result)
-    message(FATAL_ERROR "Conan error: ${conan_error}")
+    message(FATAL_ERROR "Conan error")
 endif()
 
 include(${CMAKE_BINARY_DIR}/conanbuildinfo.cmake)

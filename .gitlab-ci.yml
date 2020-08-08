@@ -17,8 +17,7 @@ before_script:
     - lscpu
     - cat /proc/meminfo | grep MemTotal
     - java -version
-    - ./build_$android_arch.sh
-    - cd build_$android_arch
+    - ./cmake.py $android_arch --build --package --config Release
   artifacts:
     paths:
       - build_$android_arch/_package/*.apk
@@ -26,21 +25,21 @@ before_script:
     variables:
       - $desktop_only == "true"
 
-android-v7a:
+androidarm:
   variables:
-    android_arch: "android-v7a"
+    android_arch: "androidarm"
   extends: .android
 
-android-v8a:
+androidarm64:
   variables:
-    android_arch: "android-v8a"
+    android_arch: "androidarm64"
   extends: .android
 
 ios:
   stage: build
   script:
     - |
-      ./build_ios.sh
+      ./cmake.py ios --build --package --config Release
       if [ "$publish" == "true" ]; then
         xcrun altool --upload-app --file $(find . -name *.ipa | head -n 1) --type ios --username ssrobins@gmail.com --password $APPLEID_PASSWORD
       fi
@@ -60,25 +59,25 @@ linux:
     - lscpu
     - cat /proc/meminfo | grep MemTotal
     - gcc --version
-    - ./build_linux.sh
+    - ./cmake.py linux --build --test --package --config Release
   artifacts:
     paths:
       - build_linux/_package/*.tar.gz
 
-mac:
+macos:
   stage: build
   script:
-    - ./build_mac.sh
+    - ./cmake.py macos --build --test --package --config Release
   artifacts:
     paths:
-      - build_mac/_package/*.zip
+      - build_macos/_package/*.zip
   tags:
     - mac
 
 windows:
   stage: build
   script:
-    - .\build_windows.bat
+    - python .\cmake.py windows --build --test --package --config Release
   artifacts:
     paths:
       - build_windows/_package/*.zip

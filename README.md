@@ -19,10 +19,10 @@ If you want to build from source, download the **latest versions** of the follow
 Then,
 1. Clone this repo
 1. At the command line, `cd` to the repo
-1. Run the `build_*` script for the desired platform to run the full build process
+1. Run the `./make.py` script for the desired platform to run all or part of the build, test, and package processes. Run `./cmake.py -h` for more information.
 
 ## Continuous integration (CI)
-The build process is automated through GitLab's built-in CI, defined in the [.gitlab-ci.yml](https://gitlab.com/ssrobins/stackblox/blob/master/.gitlab-ci.yml) file. Nothing fancy here, it runs the same `build_*` scripts described above and archives the results.
+The build process is automated through GitLab's built-in CI, defined in the [.gitlab-ci.yml](https://gitlab.com/ssrobins/stackblox/blob/master/.gitlab-ci.yml) file. Nothing fancy here, it runs the same `cmake.py` script described above and archives the results.
 
 ## Docker build setups
 The CI system uses custom Docker containers for Linux and Android builds. You can build and use them for the build setup or look at the Dockerfile for details steps on what to install. You can find them here:
