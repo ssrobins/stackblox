@@ -19,7 +19,7 @@ If you want to build from source, download the **latest versions** of the follow
 Then,
 1. Clone this repo
 1. At the command line, `cd` to the repo
-1. Run the `./make.py` script for the desired platform to run all or part of the build, test, and package processes. Run `./cmake.py -h` for more information.
+1. Run the `./cmake.py` script for the desired platform to run all or part of the build, test, and package processes. Run `./cmake.py -h` for more information.
 
 ## Continuous integration (CI)
 The build process is automated through GitLab's built-in CI, defined in the [.gitlab-ci.yml](https://gitlab.com/ssrobins/stackblox/blob/master/.gitlab-ci.yml) file. Nothing fancy here, it runs the same `cmake.py` script described above and archives the results.
