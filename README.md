@@ -20,6 +20,7 @@ Then,
 1. Clone this repo
 1. At the command line, `cd` to the repo
 1. Run the `./cmake.py` script for the desired platform to run all or part of the build, test, and package processes. Run `./cmake.py -h` for more information.
+1. Android only: You can open AndroidStudio/StackBlox from the CMake binary folder in Android Studio to build and run the app
 
 ## Continuous integration (CI)
 The build process is automated through GitLab's built-in CI, defined in the [.gitlab-ci.yml](https://gitlab.com/ssrobins/stackblox/blob/master/.gitlab-ci.yml) file. Nothing fancy here, it runs the same `cmake.py` script described above and archives the results.
