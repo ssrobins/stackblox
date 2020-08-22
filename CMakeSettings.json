@@ -1,10 +1,62 @@
 ﻿{
   "configurations": [
     {
-      "name": "x86-Release",
+      "name": "android-arm64-Debug",
+      "generator": "Ninja",
+      "configurationType": "Debug",
+      "buildRoot": "${projectDir}\\build\\${name}",
+      "cmakeCommandArgs": "-DANDROID_ABI=arm64-v8a",
+      "buildCommandArgs": "-v",
+      "ctestCommandArgs": "",
+      "inheritEnvironments": [ "android-clang-arm64" ],
+      "intelliSenseMode": "android-clang-arm64",
+      "variables": [],
+      "cmakeExecutable": "cmake.exe"
+    },
+    {
+      "name": "android-arm64-Release",
       "generator": "Ninja",
       "configurationType": "Release",
-      "buildRoot": "${projectDir}\\build_windows\\${name}",
+      "buildRoot": "${projectDir}\\build\\${name}",
+      "cmakeCommandArgs": "-DANDROID_ABI=arm64-v8a",
+      "buildCommandArgs": "-v",
+      "ctestCommandArgs": "",
+      "inheritEnvironments": [ "android-clang-arm64" ],
+      "intelliSenseMode": "android-clang-arm64",
+      "variables": [],
+      "cmakeExecutable": "cmake.exe"
+    },
+    {
+      "name": "android-arm-Debug",
+      "generator": "Ninja",
+      "configurationType": "Debug",
+      "buildRoot": "${projectDir}\\build\\${name}",
+      "cmakeCommandArgs": "-DANDROID_ABI=armeabi-v7a",
+      "buildCommandArgs": "-v",
+      "ctestCommandArgs": "",
+      "inheritEnvironments": [ "android-clang-arm" ],
+      "intelliSenseMode": "android-clang-arm",
+      "variables": [],
+      "cmakeExecutable": "cmake.exe"
+    },
+    {
+      "name": "android-arm-Release",
+      "generator": "Ninja",
+      "configurationType": "Release",
+      "buildRoot": "${projectDir}\\build\\${name}",
+      "cmakeCommandArgs": "-DANDROID_ABI=armeabi-v7a",
+      "buildCommandArgs": "-v",
+      "ctestCommandArgs": "",
+      "inheritEnvironments": [ "android-clang-arm" ],
+      "intelliSenseMode": "android-clang-arm",
+      "variables": [],
+      "cmakeExecutable": "cmake.exe"
+    },
+    {
+      "name": "win32-x86-Debug",
+      "generator": "Ninja",
+      "configurationType": "Debug",
+      "buildRoot": "${projectDir}\\build\\${name}",
       "cmakeCommandArgs": "",
       "buildCommandArgs": "-v",
       "ctestCommandArgs": "",
@@ -13,10 +65,10 @@
       "cmakeExecutable": "cmake.exe"
     },
     {
-      "name": "x86-Debug",
+      "name": "win32-x86-Release",
       "generator": "Ninja",
-      "configurationType": "Debug",
-      "buildRoot": "${projectDir}\\build_windows\\${name}",
+      "configurationType": "Release",
+      "buildRoot": "${projectDir}\\build\\${name}",
       "cmakeCommandArgs": "",
       "buildCommandArgs": "-v",
       "ctestCommandArgs": "",
