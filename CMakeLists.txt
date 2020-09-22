@@ -23,7 +23,7 @@ elseif(ANDROID_ABI STREQUAL arm64-v8a)
     set(version_code 15)
     set(android_arch armv8)
 elseif(APPLE)
-    set(xcode_version 11.0)
+    set(xcode_version 12.0)
 endif()
 
 project(StackBlox VERSION 1.1.5)
