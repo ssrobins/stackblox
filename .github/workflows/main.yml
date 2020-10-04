@@ -1,0 +1,122 @@
+name: CI
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+  workflow_dispatch:
+    inputs:
+      publish:
+        description: 'Publish'
+        required: false
+        default: '0'
+
+env:
+  CONAN_REVISIONS_ENABLED: 1
+  CONAN_SYSREQUIRES_SUDO: 0
+  app_name: StackBlox
+
+jobs:
+  builds:
+    name: ${{ matrix.name }}
+    runs-on: ${{ matrix.os }}
+    container: ${{ matrix.container }}
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - name: androidarm
+            os: ubuntu-20.04
+            container: ghcr.io/ssrobins/docker-android-build:jdk8u265-ndk21d
+            build_script: ./cmake.py androidarm --build --package --config Release
+            artifact_path: build_androidarm/_package/*.apk
+          - name: androidarm64
+            os: ubuntu-20.04
+            container: ghcr.io/ssrobins/docker-android-build:jdk8u265-ndk21d
+            build_script: ./cmake.py androidarm64 --build --package --config Release
+            artifact_path: build_androidarm64/_package/*.apk
+          - name: ios
+            os: macos-10.15
+            build_script: ./cmake.py ios --build --package --config Release
+            artifact_path: build_ios/_package/*.ipa
+          - name: linux
+            os: ubuntu-20.04
+            container: ghcr.io/ssrobins/docker-linux-build:gcc9.3.0
+            build_script: ./cmake.py linux --build --test --package --config Release
+            artifact_path: build_linux/_package/*.tar.gz
+          - name: macos
+            os: macos-10.15
+            build_script: ./cmake.py macos --build --test --package --config Release
+            artifact_path: build_macos/_package/*.zip
+          - name:  windows
+            os: windows-2019
+            build_script: py cmake.py windows --build --test --package --config Release
+            artifact_path: build_windows/_package/*.zip
+    steps:
+      - uses: actions/checkout@v2
+
+      - name: Print environment variables
+        run: env
+
+      - name: Install Android key store
+        if: contains(matrix.name, 'android')
+        run: |
+          key_store_path=/root/android.jks
+          gradle_config_dir=/root/.gradle
+          echo "${{ secrets.ANDROID_KEY_STORE }}" | base64 --decode > $key_store_path
+          mkdir $gradle_config_dir
+          echo "ANDROID_KEY_STORE_PATH=$key_store_path\n\
+          ANDROID_KEY_STORE_PASSWORD=${{ secrets.ANDROID_KEY_STORE_PASSWORD }}\n\
+          ANDROID_KEY_ALIAS=androidUploadKey\n\
+          ANDROID_KEY_PASSWORD=${{ secrets.ANDROID_KEY_PASSWORD }}" >> $gradle_config_dir/gradle.properties
+
+      - name: 'Download development provisioning profile'
+        if: matrix.name == 'ios'
+        uses: apple-actions/download-provisioning-profiles@v1
+        with:
+          bundle-id: 'com.dnqpy.${{ env.app_name }}'
+          profile-type: 'IOS_APP_DEVELOPMENT'
+          issuer-id: ${{ secrets.APPSTORE_ISSUER_ID }}
+          api-key-id: ${{ secrets.APPSTORE_KEY_ID }}
+          api-private-key: ${{ secrets.APPSTORE_PRIVATE_KEY }}
+
+      - name: 'Download App Store provisioning profile'
+        if: matrix.name == 'ios'
+        uses: apple-actions/download-provisioning-profiles@v1
+        with:
+          bundle-id: 'com.dnqpy.${{ env.app_name }}'
+          profile-type: 'IOS_APP_STORE'
+          issuer-id: ${{ secrets.APPSTORE_ISSUER_ID }}
+          api-key-id: ${{ secrets.APPSTORE_KEY_ID }}
+          api-private-key: ${{ secrets.APPSTORE_PRIVATE_KEY }}
+
+      - name: Import Code-Signing Certificates
+        if: matrix.name == 'ios' || matrix.name == 'macos'
+        uses: apple-actions/import-codesign-certs@v1
+        with:
+          p12-file-base64: ${{ secrets.APPLE_CERTIFICATES }}
+          p12-password: ${{ secrets.APPLE_CERTIFICATES_PASSWORD }}
+
+      - name: Install Conan
+        run: pip3 install conan --upgrade
+
+      - name: Print versions
+        run: |
+          cmake --version
+          conan --version
+
+      - name: Build
+        run:  ${{ matrix.build_script }}
+        env:
+          DEVELOPER_DIR: /Applications/Xcode_12.0.0.app/Contents/Developer
+
+      - uses: actions/upload-artifact@v2
+        with:
+          name: ${{ env.app_name }}_artifact${{ github.run_number }}
+          path: ${{ matrix.artifact_path }}
+          if-no-files-found: error
+
+      - name: 'Publish to App Store'
+        if: matrix.name == 'ios' && github.event.inputs.publish == '1'
+        run: xcrun altool --upload-app --file $(find . -name *.ipa | head -n 1) --type ios --username ssrobins@gmail.com --password ${{ secrets.APPLE_APP_SPECIFIC_PASSWORD }}
