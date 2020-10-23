@@ -109,7 +109,7 @@ jobs:
       - name: Build
         run:  ${{ matrix.build_script }}
         env:
-          DEVELOPER_DIR: /Applications/Xcode_12.0.0.app/Contents/Developer
+          DEVELOPER_DIR: /Applications/Xcode_12.app/Contents/Developer
 
       - uses: actions/upload-artifact@v2
         with:
