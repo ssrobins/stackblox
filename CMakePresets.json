@@ -1,21 +1,69 @@
 {
     "version": 1,
     "cmakeMinimumRequired": {
-      "major": 3,
-      "minor": 19,
-      "patch": 0
+        "major": 3,
+        "minor": 19,
+        "patch": 0
     },
     "configurePresets": [
-      {
-        "name": "androidarm",
-        "generator": "Ninja Multi-Config",
-        "binaryDir": "build_${name}",
-        "cacheVariables": {
-          "ANDROID_ABI": {
-            "type": "STRING",
-            "value": "armeabi-v7a"
-          }
+        {
+            "name": "android",
+            "hidden": true,
+            "environment": {
+                "ANDROID_NDK_ROOT": "$penv{ANDROID_NDK_ROOT}",
+                "ANDROID_SDK_ROOT": "$penv{ANDROID_SDK_ROOT}"
+            }
+        },
+        {
+            "name": "androidarm",
+            "inherits": "android",
+            "generator": "Ninja Multi-Config",
+            "binaryDir": "build_${presetName}",
+            "cacheVariables": {
+                "ANDROID_ABI": {
+                    "type": "STRING",
+                    "value": "armeabi-v7a"
+                }
+            }
+        },
+        {
+            "name": "androidarm64",
+            "inherits": "android",
+            "generator": "Ninja Multi-Config",
+            "binaryDir": "build_${presetName}",
+            "cacheVariables": {
+                "ANDROID_ABI": {
+                    "type": "STRING",
+                    "value": "arm64-v8a"
+                }
+            }
+        },
+        {
+            "name": "ios",
+            "generator": "Xcode",
+            "binaryDir": "build_${presetName}",
+            "cacheVariables": {
+                "CMAKE_SYSTEM_NAME": {
+                    "type": "STRING",
+                    "value": "iOS"
+                }
+            }
+        },
+        {
+            "name": "linux",
+            "generator": "Ninja Multi-Config",
+            "binaryDir": "build_${presetName}"
+        },
+        {
+            "name": "macos",
+            "generator": "Xcode",
+            "binaryDir": "build_${presetName}"
+        },
+        {
+            "name": "windows",
+            "generator": "Visual Studio 16 2019",
+            "architecture": "Win32",
+            "binaryDir": "build_${presetName}"
         }
-      }
     ]
-  }
+}
