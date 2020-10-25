@@ -5,17 +5,17 @@ import os.path
 import subprocess
 
 def main():
-    platform = {
-        "androidarm": 'cmake -G "Ninja Multi-Config" -DANDROID_ABI=armeabi-v7a',
-        "androidarm64": 'cmake -G "Ninja Multi-Config" -DANDROID_ABI=arm64-v8a',
-        "ios": 'cmake -G Xcode -DCMAKE_SYSTEM_NAME=iOS',
-        "linux": 'cmake -G "Ninja Multi-Config"',
-        "macos": 'cmake -G Xcode',
-        "windows": 'cmake -G "Visual Studio 16 2019" -A Win32'
-    }
+    platform = [
+        "androidarm",
+        "androidarm64",
+        "ios",
+        "linux",
+        "macos",
+        "windows"
+    ]
 
     parser = argparse.ArgumentParser()
-    parser.add_argument("platform", choices=list(platform.keys()), help="Build platform")
+    parser.add_argument("platform", choices=platform, help="Build platform")
     parser.add_argument("--config", help="Build config")
     parser.add_argument("--build", action="store_true", help="Run build in CMake")
     parser.add_argument("--test", action="store_true", help="Run tests in CTest")
@@ -29,7 +29,7 @@ def main():
     else:
         config = "Debug"
 
-    subprocess.run(f"{platform[command_args.platform]} -B build_{command_args.platform}",
+    subprocess.run(f"cmake --preset={command_args.platform} -B build_{command_args.platform}",
         cwd=script_path, shell=True, check=True)
 
     if command_args.build:
