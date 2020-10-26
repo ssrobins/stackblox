@@ -108,6 +108,17 @@ jobs:
           tar xf ${cmake_zip}
           echo "${GITHUB_WORKSPACE}/${cmake_dir}/CMake.app/Contents/bin" >> $GITHUB_PATH
 
+      - name: Install CMake
+        if: matrix.name == 'windows'
+        run: |
+          $cmake_version = "3.19.0-rc1"
+          $cmake_dir = "cmake-${cmake_version}-win64-x64"
+          $cmake_zip = "${cmake_dir}.zip"
+          $ProgressPreference = 'SilentlyContinue'
+          Invoke-WebRequest https://github.com/Kitware/CMake/releases/download/v${cmake_version}/${cmake_zip} -outFile ${cmake_zip}
+          Expand-Archive -Path $cmake_zip
+          echo "${Env:GITHUB_WORKSPACE}/${cmake_dir}/${cmake_dir}/bin" >> ${Env:GITHUB_PATH}
+
       - name: Install Conan
         run: pip3 install conan --upgrade
 
