@@ -101,7 +101,7 @@ jobs:
       - name: Install CMake
         if: matrix.name == 'ios' || matrix.name == 'macos'
         run: |
-          cmake_version=3.19.0-rc1
+          cmake_version=3.19.0-rc2
           cmake_dir=cmake-${cmake_version}-Darwin-x86_64
           cmake_zip=${cmake_dir}.tar.gz
           wget --no-verbose https://github.com/Kitware/CMake/releases/download/v${cmake_version}/${cmake_zip}
@@ -111,7 +111,7 @@ jobs:
       - name: Install CMake
         if: matrix.name == 'windows'
         run: |
-          $cmake_version = "3.19.0-rc1"
+          $cmake_version = "3.19.0-rc2"
           $cmake_dir = "cmake-${cmake_version}-win64-x64"
           $cmake_zip = "${cmake_dir}.zip"
           $ProgressPreference = 'SilentlyContinue'
