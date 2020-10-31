@@ -8,11 +8,7 @@
     "configurePresets": [
         {
             "name": "android",
-            "hidden": true,
-            "environment": {
-                "ANDROID_NDK_ROOT": "$penv{ANDROID_NDK_ROOT}",
-                "ANDROID_SDK_ROOT": "$penv{ANDROID_SDK_ROOT}"
-            }
+            "hidden": true
         },
         {
             "name": "androidarm",
