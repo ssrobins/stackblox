@@ -29,7 +29,7 @@ def main():
     else:
         config = "Debug"
 
-    subprocess.run(f"cmake --preset={command_args.platform} -B build_{command_args.platform}",
+    subprocess.run(f"cmake --preset={command_args.platform}",
         cwd=script_path, shell=True, check=True)
 
     if command_args.build:
