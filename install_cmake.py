@@ -43,7 +43,6 @@ else:
     print("Unsupported archive: {cmake_archive}", flush=True)
     exit(1)
 
-with open("$GITHUB_PATH", "a") as envfile:
-    envfile.write(cmake_binary_path)
-
-print(os.listdir(cmake_binary_path), flush=True)
+if "GITHUB_PATH" in os.environ:
+    with open(os.environ["GITHUB_PATH"], "a") as envfile:
+        envfile.write(cmake_binary_path)
