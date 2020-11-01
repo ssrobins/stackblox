@@ -40,11 +40,12 @@ elif "zip" in cmake_archive:
     with zipfile.ZipFile(f"{cmake_archive}", 'r') as zip:
         zip.extractall()
 else:
-    print("Unsupported archive: {cmake_archive}")
+    print("Unsupported archive: {cmake_archive}", flush=True)
     exit(1)
 
-print(f"Add CMake binary path: {cmake_binary_path }")
+#print(f"Add CMake binary path: {cmake_binary_path}", flush=True)
+#os.environ["GITHUB_PATH"] = os.environ.get("GITHUB_PATH", "") + cmake_binary_path
 
-os.environ["GITHUB_PATH"] = os.environ.get("GITHUB_PATH", "") + cmake_binary_path
+print(os.listdir(cmake_binary_path), flush=True)
 
 subprocess.run("cmake --version", shell=True, check=True)
