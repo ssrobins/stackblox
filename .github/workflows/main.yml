@@ -98,7 +98,7 @@ jobs:
           p12-file-base64: ${{ secrets.APPLE_CERTIFICATES }}
           p12-password: ${{ secrets.APPLE_CERTIFICATES_PASSWORD }}
 
-       - name: Install CMake
+      - name: Install CMake
          run: ./install_cmake.py
 
       # - name: Install CMake
