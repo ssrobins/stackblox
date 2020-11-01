@@ -23,10 +23,10 @@ cmake_dir = f"cmake-{cmake_version}-{cmake_platform}"
 cmake_archive = f"{cmake_dir}{cmake_archive_ext}"
 cmake_url = f"http://dnqpy.com/temp/{cmake_archive}"
 
-print(f"Downloading {cmake_url}")
+print(f"Downloading {cmake_url}", flush=True)
 urllib.request.urlretrieve(f"{cmake_url}", f"{cmake_archive}")
 
-print(f"Extracting {cmake_archive}")
+print(f"Extracting {cmake_archive}", flush=True)
 if "tar" in cmake_archive:
     with tarfile.open(f"{cmake_archive}", "r:gz") as tar:
         tar.extractall()
