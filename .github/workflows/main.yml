@@ -26,20 +26,20 @@ jobs:
       fail-fast: false
       matrix:
         include:
-          - name: androidarm
-            os: ubuntu-20.04
-            container: ghcr.io/ssrobins/docker-android-build:jdk8u265-ndk21d
-            build_script: ./cmake.py androidarm --build --package --config Release
-            artifact_path: build_androidarm/_package/*.apk
-          - name: androidarm64
-            os: ubuntu-20.04
-            container: ghcr.io/ssrobins/docker-android-build:jdk8u265-ndk21d
-            build_script: ./cmake.py androidarm64 --build --package --config Release
-            artifact_path: build_androidarm64/_package/*.apk
-          - name: ios
-            os: macos-10.15
-            build_script: ./cmake.py ios --build --package --config Release
-            artifact_path: build_ios/_package/*.ipa
+          # - name: androidarm
+          #   os: ubuntu-20.04
+          #   container: ghcr.io/ssrobins/docker-android-build:jdk8u265-ndk21d
+          #   build_script: ./cmake.py androidarm --build --package --config Release
+          #   artifact_path: build_androidarm/_package/*.apk
+          # - name: androidarm64
+          #   os: ubuntu-20.04
+          #   container: ghcr.io/ssrobins/docker-android-build:jdk8u265-ndk21d
+          #   build_script: ./cmake.py androidarm64 --build --package --config Release
+          #   artifact_path: build_androidarm64/_package/*.apk
+          # - name: ios
+          #   os: macos-10.15
+          #   build_script: ./cmake.py ios --build --package --config Release
+          #   artifact_path: build_ios/_package/*.ipa
           - name: linux
             os: ubuntu-20.04
             container: ghcr.io/ssrobins/docker-linux-build:gcc9.3.0
@@ -98,26 +98,29 @@ jobs:
           p12-file-base64: ${{ secrets.APPLE_CERTIFICATES }}
           p12-password: ${{ secrets.APPLE_CERTIFICATES_PASSWORD }}
 
-      - name: Install CMake
-        if: matrix.name == 'ios' || matrix.name == 'macos'
-        run: |
-          cmake_version=3.19.0-rc2
-          cmake_dir=cmake-${cmake_version}-Darwin-x86_64
-          cmake_zip=${cmake_dir}.tar.gz
-          wget --no-verbose https://github.com/Kitware/CMake/releases/download/v${cmake_version}/${cmake_zip}
-          tar xf ${cmake_zip}
-          echo "${GITHUB_WORKSPACE}/${cmake_dir}/CMake.app/Contents/bin" >> $GITHUB_PATH
+       - name: Install CMake
+         run: ./install_cmake.py
 
-      - name: Install CMake
-        if: matrix.name == 'windows'
-        run: |
-          $cmake_version = "3.19.0-rc2"
-          $cmake_dir = "cmake-${cmake_version}-win64-x64"
-          $cmake_zip = "${cmake_dir}.zip"
-          $ProgressPreference = 'SilentlyContinue'
-          Invoke-WebRequest https://github.com/Kitware/CMake/releases/download/v${cmake_version}/${cmake_zip} -outFile ${cmake_zip}
-          Expand-Archive -Path $cmake_zip
-          echo "${Env:GITHUB_WORKSPACE}/${cmake_dir}/${cmake_dir}/bin" >> ${Env:GITHUB_PATH}
+      # - name: Install CMake
+      #   if: matrix.name == 'ios' || matrix.name == 'macos'
+      #   run: |
+      #     cmake_version=3.19.0-rc2
+      #     cmake_dir=cmake-${cmake_version}-Darwin-x86_64
+      #     cmake_zip=${cmake_dir}.tar.gz
+      #     wget --no-verbose https://github.com/Kitware/CMake/releases/download/v${cmake_version}/${cmake_zip}
+      #     tar xf ${cmake_zip}
+      #     echo "${GITHUB_WORKSPACE}/${cmake_dir}/CMake.app/Contents/bin" >> $GITHUB_PATH
+
+      # - name: Install CMake
+      #   if: matrix.name == 'windows'
+      #   run: |
+      #     $cmake_version = "3.19.0-rc2"
+      #     $cmake_dir = "cmake-${cmake_version}-win64-x64"
+      #     $cmake_zip = "${cmake_dir}.zip"
+      #     $ProgressPreference = 'SilentlyContinue'
+      #     Invoke-WebRequest https://github.com/Kitware/CMake/releases/download/v${cmake_version}/${cmake_zip} -outFile ${cmake_zip}
+      #     Expand-Archive -Path $cmake_zip
+      #     echo "${Env:GITHUB_WORKSPACE}/${cmake_dir}/${cmake_dir}/bin" >> ${Env:GITHUB_PATH}
 
       - name: Install Conan
         run: pip3 install conan --upgrade
