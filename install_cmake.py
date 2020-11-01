@@ -21,19 +21,18 @@ elif platform.system() == "Windows":
 
 cmake_dir = f"cmake-{cmake_version}-{cmake_platform}"
 cmake_archive = f"{cmake_dir}{cmake_archive_ext}"
+cmake_url = f"http://dnqpy.com/temp/{cmake_archive}"
 
-urllib.request.urlretrieve(
-    f"http://dnqpy.com/temp/{cmake_archive}",
-    f"{cmake_archive}"
-)
+print(f"Downloading {cmake_url}")
+urllib.request.urlretrieve(f"{cmake_url}", f"{cmake_archive}")
 
+print(f"Extracting {cmake_archive}")
 if "tar" in cmake_archive:
     with tarfile.open(f"{cmake_archive}", "r:gz") as tar:
         tar.extractall()
 elif "zip" in cmake_archive:
     with zipfile.ZipFile(f"{cmake_archive}", 'r') as zip:
         zip.extractall()
-    
 else:
     print("Unsupported archive: {cmake_archive}")
     exit(1)

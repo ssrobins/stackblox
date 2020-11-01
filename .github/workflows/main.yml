@@ -42,7 +42,7 @@ jobs:
           #   artifact_path: build_ios/_package/*.ipa
           - name: linux
             os: ubuntu-20.04
-            container: ghcr.io/ssrobins/docker-linux-build:gcc9.3.0
+            # container: ghcr.io/ssrobins/docker-linux-build:gcc9.3.0
             build_script: ./cmake.py linux --build --test --package --config Release
             artifact_path: build_linux/_package/*.tar.gz
           - name: macos
