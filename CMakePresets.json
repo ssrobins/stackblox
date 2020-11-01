@@ -7,12 +7,7 @@
     },
     "configurePresets": [
         {
-            "name": "android",
-            "hidden": true
-        },
-        {
             "name": "androidarm",
-            "inherits": "android",
             "generator": "Ninja Multi-Config",
             "binaryDir": "build_${presetName}",
             "cacheVariables": {
@@ -24,7 +19,6 @@
         },
         {
             "name": "androidarm64",
-            "inherits": "android",
             "generator": "Ninja Multi-Config",
             "binaryDir": "build_${presetName}",
             "cacheVariables": {
