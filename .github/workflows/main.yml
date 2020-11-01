@@ -102,9 +102,7 @@ jobs:
           p12-password: ${{ secrets.APPLE_CERTIFICATES_PASSWORD }}
 
       - name: Install CMake
-        run: |
-          ${{ matrix.cmake_script }}
-          echo "${GITHUB_WORKSPACE}/cmake" >> $GITHUB_PATH
+        run: ${{ matrix.cmake_script }}
 
       # - name: Install CMake
       #   if: matrix.name == 'ios' || matrix.name == 'macos'

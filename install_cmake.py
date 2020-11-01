@@ -2,7 +2,6 @@
 
 import os
 import platform
-import shutil
 import subprocess
 import tarfile
 import urllib.request
@@ -27,7 +26,8 @@ elif platform.system() == "Windows":
 cmake_dir = f"cmake-{cmake_version}-{cmake_platform}"
 cmake_archive = f"{cmake_dir}{cmake_archive_ext}"
 cmake_url = f"http://dnqpy.com/temp/{cmake_archive}"
-cmake_binary_path = os.path.join(cmake_dir, cmake_binary_dir)
+script_path = os.path.dirname(os.path.realpath(__file__))
+cmake_binary_path = os.path.join(script_path, cmake_dir, cmake_binary_dir)
 
 print(f"Downloading {cmake_url}", flush=True)
 urllib.request.urlretrieve(f"{cmake_url}", f"{cmake_archive}")
@@ -43,7 +43,5 @@ else:
     print("Unsupported archive: {cmake_archive}", flush=True)
     exit(1)
 
-print(f"Move {cmake_binary_path} to cmake", flush=True)
-shutil.move(cmake_binary_path, "cmake")
-
-subprocess.run("cmake --version", shell=True, check=True)
+with open("$GITHUB_PATH", "a") as envfile:
+    envfile.write(cmake_binary_path)
