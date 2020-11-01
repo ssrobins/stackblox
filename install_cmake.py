@@ -44,5 +44,6 @@ else:
     exit(1)
 
 if "GITHUB_PATH" in os.environ:
+    print(f"Write CMake path, {cmake_binary_path}, to {os.environ['GITHUB_PATH']}", flush=True)
     with open(os.environ["GITHUB_PATH"], "a") as envfile:
         envfile.write(cmake_binary_path)
