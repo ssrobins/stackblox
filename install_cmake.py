@@ -45,3 +45,5 @@ else:
 
 with open("$GITHUB_PATH", "a") as envfile:
     envfile.write(cmake_binary_path)
+
+print(os.listdir(cmake_binary_path), flush=True)
