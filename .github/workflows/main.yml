@@ -53,7 +53,7 @@ jobs:
             artifact_path: build_macos/_package/*.zip
           - name:  windows
             os: windows-2019
-            cmake_script: py install_cmake.py --version 3.19.0-rc3
+            cmake_script: python install_cmake.py --version 3.19.0-rc3
             build_script: py cmake.py windows --build --test --package --config Release
             artifact_path: build_windows/_package/*.zip
     steps:
