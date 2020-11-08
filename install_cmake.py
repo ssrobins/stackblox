@@ -3,14 +3,19 @@
 import argparse
 import os
 import platform
-import subprocess
+import requests
 import tarfile
-import urllib.request
 import zipfile
+from requests.adapters import HTTPAdapter
+from requests.packages.urllib3.util.retry import Retry
+
 
 class CMakeInstall:
     def __init__(self, version):
         self.version = version
+        self.download_timeout_seconds = 10
+        self.download_retry_count = 3
+        self.download_backoff_factor = 10
 
         if platform.system() == "Darwin":
             cmake_platform = "Darwin-x86_64"
@@ -29,11 +34,31 @@ class CMakeInstall:
         self.archive = f"{cmake_dir}{cmake_archive_ext}"
         self.url = f"http://dnqpy.com/temp/{self.archive}"
         script_path = os.path.dirname(os.path.realpath(__file__))
-        cmake_binary_path = os.path.join(script_path, cmake_dir, cmake_binary_dir)
+        self.path = os.path.join(script_path, cmake_dir, cmake_binary_dir)
+
 
     def download(self):
-        print(f"Downloading {self.url}", flush=True)
-        urllib.request.urlretrieve(f"{self.url}", f"{self.archive}")
+        retry_strategy = Retry(
+            total=self.download_retry_count,
+            backoff_factor=self.download_backoff_factor,
+        )
+        adapter = HTTPAdapter(max_retries = retry_strategy)
+        http = requests.Session()
+        http.mount("https://", adapter)
+        http.mount("http://", adapter)
+
+        try:
+            print(f"Downloading {self.url}", flush=True)
+            request = http.get(self.url, timeout=self.download_timeout_seconds, stream=True)
+            request.raise_for_status()
+        except requests.exceptions.RequestException as error:
+            print("Download failed", flush=True)
+            print(error, flush=True)
+            exit(1)
+
+        with open(self.archive, 'wb') as f:
+            f.write(request.content)
+
 
     def extract(self):
         print(f"Extracting {self.archive}", flush=True)
@@ -47,11 +72,12 @@ class CMakeInstall:
             print("Unsupported archive: {self.archive}", flush=True)
             exit(1)
 
+
     def set_path(self):
         if "GITHUB_PATH" in os.environ:
-            print(f"Write CMake path, {cmake_binary_path}, to {os.environ['GITHUB_PATH']}", flush=True)
+            print(f"Write CMake path, {self.path}, to {os.environ['GITHUB_PATH']}", flush=True)
             with open(os.environ["GITHUB_PATH"], "a") as envfile:
-                envfile.write(cmake_binary_path)
+                envfile.write(self.path)
 
 
 def main():
@@ -62,7 +88,6 @@ def main():
     cmake_args = parser.parse_args()
 
     cmake_install = CMakeInstall(cmake_args.version)
-
     cmake_install.download()
     cmake_install.extract()
     cmake_install.set_path()
