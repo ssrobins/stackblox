@@ -101,36 +101,10 @@ jobs:
           p12-file-base64: ${{ secrets.APPLE_CERTIFICATES }}
           p12-password: ${{ secrets.APPLE_CERTIFICATES_PASSWORD }}
 
-      #- name: Install CMake
-      #  run: |
-      #    python --version
-      #    pip3 install requests
-      #    ${{ matrix.cmake_script }}
-
-      - uses: ssrobins/install-cmake@main
+      - name: Install CMake
+        uses: ssrobins/install-cmake@main
         with:
           version: '3.19.0-rc3'
-
-      # - name: Install CMake
-      #   if: matrix.name == 'ios' || matrix.name == 'macos'
-      #   run: |
-      #     cmake_version=3.19.0-rc2
-      #     cmake_dir=cmake-${cmake_version}-Darwin-x86_64
-      #     cmake_zip=${cmake_dir}.tar.gz
-      #     wget --no-verbose https://github.com/Kitware/CMake/releases/download/v${cmake_version}/${cmake_zip}
-      #     tar xf ${cmake_zip}
-      #     echo "${GITHUB_WORKSPACE}/${cmake_dir}/CMake.app/Contents/bin" >> $GITHUB_PATH
-
-      # - name: Install CMake
-      #   if: matrix.name == 'windows'
-      #   run: |
-      #     $cmake_version = "3.19.0-rc2"
-      #     $cmake_dir = "cmake-${cmake_version}-win64-x64"
-      #     $cmake_zip = "${cmake_dir}.zip"
-      #     $ProgressPreference = 'SilentlyContinue'
-      #     Invoke-WebRequest https://github.com/Kitware/CMake/releases/download/v${cmake_version}/${cmake_zip} -outFile ${cmake_zip}
-      #     Expand-Archive -Path $cmake_zip
-      #     echo "${Env:GITHUB_WORKSPACE}/${cmake_dir}/${cmake_dir}/bin" >> ${Env:GITHUB_PATH}
 
       - name: Install Conan
         run: pip3 install conan --upgrade
