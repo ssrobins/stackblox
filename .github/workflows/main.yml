@@ -107,7 +107,7 @@ jobs:
       #    pip3 install requests
       #    ${{ matrix.cmake_script }}
 
-      - uses: ssrobins/install-cmake
+      - uses: ssrobins/install-cmake@main
         with:
           version: '3.19.0-rc3'
 
