@@ -103,6 +103,7 @@ jobs:
 
       - name: Install CMake
         run: |
+          python --version
           pip3 install requests
           ${{ matrix.cmake_script }}
 
