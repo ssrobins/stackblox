@@ -111,8 +111,6 @@ jobs:
 
       - name: Print versions
         run: |
-          env
-          ls -l /home/runner/work/_temp
           cmake --version
           conan --version
 
