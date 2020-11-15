@@ -103,8 +103,6 @@ jobs:
 
       - name: Install CMake
         uses: ssrobins/install-cmake@main
-        with:
-          version: '3.19.0-rc3'
 
       - name: Install Conan
         run: pip3 install conan --upgrade
