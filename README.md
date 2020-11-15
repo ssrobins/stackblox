@@ -39,7 +39,7 @@ The command line builds combine CMake presets with a thin Python wrapper that le
 The build process is automated through GitHub Actions, defined in the [main.yml](.github/workflows/main.yml) file. Nothing fancy here, it runs the same `cmake.py` script described above and archives the results.
 
 ## Docker build setups
-The CI system uses custom Docker containers for Linux and Android builds. You can build and use them for the build setup or look at the Dockerfile for details steps on what to install. You can find them here:
+The CI system uses custom Docker containers for Linux and Android builds. You can build and use them for the build setup or look at the Dockerfile for detailed steps on what to install. You can find them here:
 * https://github.com/ssrobins/docker-linux-build
 * https://github.com/ssrobins/docker-android-build
 
