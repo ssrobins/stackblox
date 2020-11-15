@@ -98,6 +98,9 @@ jobs:
           p12-file-base64: ${{ secrets.APPLE_CERTIFICATES }}
           p12-password: ${{ secrets.APPLE_CERTIFICATES_PASSWORD }}
 
+      - name: Install CMake
+        uses: ssrobins/install-cmake@main
+
       - name: Install Conan
         run: pip3 install conan --upgrade
 
