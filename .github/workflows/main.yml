@@ -111,6 +111,7 @@ jobs:
 
       - name: Print versions
         run: |
+          env
           cmake --version
           conan --version
 
