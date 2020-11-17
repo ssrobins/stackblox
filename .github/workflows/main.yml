@@ -28,12 +28,12 @@ jobs:
         include:
           - name: androidarm
             os: ubuntu-20.04
-            container: ghcr.io/ssrobins/docker-android-build:jdk8u265-ndk21d
+            container: ghcr.io/ssrobins/docker-android-build:jdk8u275-ndk21d
             build_script: ./cmake.py androidarm --build --package --config Release
             artifact_path: build_androidarm/_package/*.apk
           - name: androidarm64
             os: ubuntu-20.04
-            container: ghcr.io/ssrobins/docker-android-build:jdk8u265-ndk21d
+            container: ghcr.io/ssrobins/docker-android-build:jdk8u275-ndk21d
             build_script: ./cmake.py androidarm64 --build --package --config Release
             artifact_path: build_androidarm64/_package/*.apk
           - name: ios
