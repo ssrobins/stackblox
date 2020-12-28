@@ -55,5 +55,4 @@ private:
     Well well;
 
     bool showTitleScreen;
-    bool alreadyShowingTitle;
 };

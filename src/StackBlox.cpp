@@ -15,7 +15,6 @@ StackBlox::StackBlox(const int numTilesWidth, const int numTilesHeight, const ch
     : game(numTilesWidth, numTilesHeight, title, fullscreen)
     , well(numTilesWidth, numTilesHeight)
     , showTitleScreen(true)
-    , alreadyShowingTitle(false)
 {
     isRunning = true;
 }
@@ -214,11 +213,7 @@ void StackBlox::render()
 
     if (showTitle())
     {
-        if (!alreadyShowingTitle)
-        {
-            renderTitleScreen();
-            alreadyShowingTitle = true;
-        }
+        renderTitleScreen();
     }
     else
     {
@@ -367,7 +362,6 @@ void StackBlox::reset()
     well.reset();
     dropTime = time + well.quickDrop(false);
     showTitleScreen = true;
-    alreadyShowingTitle = false;
 }
 
 void StackBlox::start()
