@@ -44,7 +44,7 @@ elseif(WIN32)
 endif()
 
 execute_process(
-    COMMAND conan remote add bintray-stever https://api.bintray.com/conan/stever/conan --insert --force
+    COMMAND conan remote add artifactory-ssrobins https://ssrobins.jfrog.io/artifactory/api/conan/conan --insert --force
     COMMAND conan install --install-folder ${CMAKE_BINARY_DIR} --update ${CMAKE_SOURCE_DIR} ${conan_args}
     RESULT_VARIABLE conan_result
 )
