@@ -8,9 +8,9 @@ class Conan(ConanFile):
 
     def build_requirements(self):
         if self.settings.os == "Android":
-            self.build_requires("android_sdl2/0.1.0#ed934365b888c490f9dca54779d85a6e3cc3cc52")
-        self.build_requires("cmake_utils/0.3.1#e474aafdec36cf92d97e781b844f390f3170f29f")
+            self.build_requires("android_sdl2/0.1.0#a8e9c63ad2763313865f84a027b0509ab6a4208f")
+        self.build_requires("cmake_utils/0.3.1#da30d52b2c5db13fc90a22140f704d67c7635319")
 
     def requirements(self):
-        self.requires("gtest/1.10.0#f11a61df1ef0e30586c1ac7ca39110dba29b2bd7")
-        self.requires("ssrobins_engine/0.3.0#a91a3d260dbb7c77f8fc11a68159e2ed85b36dff")
+        self.requires("gtest/1.10.0#a2327ae0fc8d73335445e3951ae998a6f0887be4")
+        self.requires("ssrobins_engine/0.3.0#7744a6a9ab567a8caa242397b15714d2b16a2441")
