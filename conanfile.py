@@ -12,5 +12,5 @@ class Conan(ConanFile):
         self.build_requires("cmake_utils/0.3.1#77d5f06b9b20302a5410e41ed45e7bbea7de90a5")
 
     def requirements(self):
-        self.requires("gtest/1.11.0#1b8ec1a4d85a679be150cd3ad2dad866ca2aab30")
-        self.requires("ssrobins_engine/0.3.0#697927c3370b68c5673304ed9915b1e38bf8e669")
+        self.requires("gtest/1.11.0#e16a50c3a5d1fcb9955b759f6b6d82dea712d821")
+        self.requires("ssrobins_engine/0.3.0#496f9c0ffbc398ada023789d248e1011abc0d79f")
