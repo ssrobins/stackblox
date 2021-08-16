@@ -26,7 +26,7 @@ elseif(APPLE)
     set(xcode_version 12.0)
 endif()
 
-project(StackBlox VERSION 1.1.5)
+project(StackBlox VERSION 1.1.6)
 
 if(ANDROID)
     set(conan_args -s os=Android -s os.api_level=${android_min_sdk_version} -s arch=${android_arch} -s compiler=clang -s compiler.version=11 -s compiler.libcxx=c++_static)
