@@ -26,10 +26,10 @@ elseif(APPLE)
     set(xcode_version 12.0)
 endif()
 
-project(StackBlox VERSION 1.1.6)
+project(StackBlox VERSION 1.1.7)
 
 if(ANDROID)
-    set(conan_args -s os=Android -s os.api_level=${android_min_sdk_version} -s arch=${android_arch} -s compiler=clang -s compiler.version=11 -s compiler.libcxx=c++_static)
+    set(conan_args -s os=Android -s os.api_level=${android_min_sdk_version} -s arch=${android_arch} -s compiler=clang -s compiler.version=12 -s compiler.libcxx=c++_static)
 elseif(IOS)
     set(CMAKE_OSX_ARCHITECTURES "armv7 arm64")
     set(CMAKE_OSX_DEPLOYMENT_TARGET 9.0)
