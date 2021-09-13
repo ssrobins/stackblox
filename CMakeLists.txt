@@ -38,14 +38,14 @@ elseif(APPLE)
     set(CMAKE_OSX_DEPLOYMENT_TARGET 10.9)
     set(conan_args -s os.version=${CMAKE_OSX_DEPLOYMENT_TARGET} -s compiler.version=${xcode_version})
 elseif(UNIX)
-    set(conan_args -s compiler=gcc -s compiler.version=11 -s compiler.libcxx=libstdc++11)
+    set(conan_args -s compiler.libcxx=libstdc++11)
 elseif(WIN32)
     set(conan_args -s arch=x86 -s compiler.version=16 -s compiler.runtime=MT)
 endif()
 
 execute_process(
     COMMAND conan remote add artifactory-ssrobins https://ssrobins.jfrog.io/artifactory/api/conan/conan --insert --force
-    COMMAND conan install --install-folder ${CMAKE_BINARY_DIR} --update ${CMAKE_SOURCE_DIR} ${conan_args}
+    COMMAND conan install --install-folder ${CMAKE_BINARY_DIR} --update ${CMAKE_SOURCE_DIR} --build=missing ${conan_args}
     RESULT_VARIABLE conan_result
 )
 if(conan_result)
