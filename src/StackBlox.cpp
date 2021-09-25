@@ -17,6 +17,9 @@ StackBlox::StackBlox(const int numTilesWidth, const int numTilesHeight, const ch
     , showTitleScreen(true)
 {
     isRunning = true;
+
+    // LG G4 Android device doesn't show the title screen in the proper position without this
+    game.renderPresent();
 }
 
 StackBlox::~StackBlox()
@@ -213,7 +216,11 @@ void StackBlox::render()
 
     if (showTitle())
     {
-        renderTitleScreen();
+        if (!alreadyShowingTitle)
+        {
+            renderTitleScreen();
+            alreadyShowingTitle = true;
+        }
     }
     else
     {
@@ -362,6 +369,7 @@ void StackBlox::reset()
     well.reset();
     dropTime = time + well.quickDrop(false);
     showTitleScreen = true;
+    alreadyShowingTitle = false;
 }
 
 void StackBlox::start()
