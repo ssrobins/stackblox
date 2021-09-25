@@ -27,7 +27,19 @@ endif()
 project(StackBlox VERSION 1.1.7)
 
 if(ANDROID)
-    set(conan_args -s os=Android -s os.api_level=${android_min_sdk_version} -s arch=${android_arch} -s compiler=clang -s compiler.version=12 -s compiler.libcxx=c++_static)
+    execute_process(
+        COMMAND ${CMAKE_CXX_COMPILER} --version
+        RESULT_VARIABLE compiler_result
+        OUTPUT_VARIABLE compiler_version
+    )
+    if(compiler_result)
+        message(FATAL_ERROR "Couldn't get compiler version from clang command")
+    endif()
+
+    string(REGEX MATCH "(clang version )([0-9]+)" compiler_version ${compiler_version})
+    set(compiler_version ${CMAKE_MATCH_2})
+
+    set(conan_args -s os=Android -s os.api_level=${android_min_sdk_version} -s arch=${android_arch} -s compiler=clang -s compiler.version=${compiler_version} -s compiler.libcxx=c++_static)
 elseif(IOS)
     set(CMAKE_OSX_ARCHITECTURES "armv7 arm64")
     set(CMAKE_OSX_DEPLOYMENT_TARGET 9.0)
