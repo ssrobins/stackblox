@@ -57,9 +57,14 @@ elseif(MSVC)
     set(conan_args -s arch=x86 -s compiler.version=${compiler_version} -s compiler.runtime=MT)
 endif()
 
+option(CONAN_BUILD_MISSING_PKGS "Build missing Conan packages" ON)
+if(CONAN_BUILD_MISSING_PKGS)
+    set(conan_build_option --build=missing)
+endif()
+
 execute_process(
     COMMAND conan remote add artifactory-ssrobins https://ssrobins.jfrog.io/artifactory/api/conan/conan --insert --force
-    COMMAND conan install --install-folder ${CMAKE_BINARY_DIR} --update ${CMAKE_SOURCE_DIR} --build=missing ${conan_args}
+    COMMAND conan install --install-folder ${CMAKE_BINARY_DIR} --update ${CMAKE_SOURCE_DIR} ${conan_build_option} ${conan_args}
     RESULT_VARIABLE conan_result
 )
 if(conan_result)
