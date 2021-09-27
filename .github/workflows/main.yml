@@ -103,6 +103,10 @@ jobs:
       - name: Install Conan
         run: pip3 install conan --upgrade
 
+      - name: Install Ninja
+        if: matrix.name == 'linux'
+        run: sudo apt-get install ninja-build -y
+
       - name: Print versions
         run: |
           cmake --version
