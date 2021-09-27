@@ -26,7 +26,11 @@ endif()
 
 project(StackBlox VERSION 1.1.7)
 
-string(REGEX MATCH "[0-9]+" compiler_version ${CMAKE_CXX_COMPILER_VERSION})
+if(MSVC)
+    string(REGEX MATCH "[0-9]+" compiler_version ${CMAKE_GENERATOR})
+else()
+    string(REGEX MATCH "[0-9]+" compiler_version ${CMAKE_CXX_COMPILER_VERSION})
+endif()
 
 if(ANDROID)
     set(conan_args -s os=Android -s os.api_level=${android_min_sdk_version} -s arch=${android_arch} -s compiler=clang -s compiler.version=${compiler_version} -s compiler.libcxx=c++_static)
@@ -44,8 +48,8 @@ elseif(UNIX)
         set(compiler gcc)
     endif()
     set(conan_args -s compiler=${compiler} -s compiler.version=${compiler_version} -s compiler.libcxx=libstdc++11)
-elseif(WIN32)
-    set(conan_args -s arch=x86 -s compiler.runtime=MT)
+elseif(MSVC)
+    set(conan_args -s arch=x86 -s compiler.version=${compiler_version} -s compiler.runtime=MT)
 endif()
 
 execute_process(
