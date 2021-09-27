@@ -40,7 +40,7 @@ jobs:
             build_script: ./cmake.py ios --build --package
             artifact_path: build_ios/_package/*.ipa
           - name: linux
-            os: ubuntu-20.04
+            os: ubuntu-18.04
             build_script: ./cmake.py linux --build --test --package
             artifact_path: build_linux/_package/*.tar.gz
           - name: macos
