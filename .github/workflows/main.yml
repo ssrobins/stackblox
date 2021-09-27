@@ -14,7 +14,6 @@ on:
 
 env:
   CONAN_REVISIONS_ENABLED: 1
-  CONAN_SYSREQUIRES_SUDO: 0
   app_name: StackBlox
 
 jobs:
