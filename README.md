@@ -61,4 +61,4 @@ Those packages plus all dependencies are defined in these repos:
 * https://github.com/ssrobins/conan-ssrobins_engine
 * https://github.com/ssrobins/conan-zlib
 
-The .github/workflows/main.yml file in each repo defines the Conan build/packaging process. These packages and more are publically available on https://bintray.com/stever/conan.
+The .github/workflows/main.yml file in each repo defines the Conan build/packaging process. These packages and more are publically available on https://ssrobins.jfrog.io/ui/repos/tree/General/conan.
