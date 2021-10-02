@@ -4,7 +4,7 @@ if(ANDROID_ABI)
     if(NOT EXISTS $ENV{ANDROID_NDK_ROOT})
         message(FATAL_ERROR "Environment variable ANDROID_NDK_ROOT needs to point to a valid Android NDK installation")
     else()
-        string(REGEX REPLACE "\\\\" "/" ANDROID_NDK_ROOT $ENV{ANDROID_NDK_ROOT})
+        cmake_path(CONVERT $ENV{ANDROID_NDK_ROOT} TO_CMAKE_PATH_LIST ANDROID_NDK_ROOT NORMALIZE)
         set(CMAKE_TOOLCHAIN_FILE ${ANDROID_NDK_ROOT}/build/cmake/android.toolchain.cmake)
     endif()
 
