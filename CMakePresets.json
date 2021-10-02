@@ -7,7 +7,13 @@
     },
     "configurePresets": [
         {
+            "name": "default",
+            "hidden": true,
+            "cmakeExecutable": "cmake.exe"
+        },
+        {
             "name": "androidarm",
+            "inherits": "default",
             "generator": "Ninja Multi-Config",
             "binaryDir": "${sourceDir}/build_${presetName}",
             "cacheVariables": {
@@ -19,6 +25,7 @@
         },
         {
             "name": "androidarm64",
+            "inherits": "default",
             "generator": "Ninja Multi-Config",
             "binaryDir": "${sourceDir}/build_${presetName}",
             "cacheVariables": {
@@ -30,6 +37,7 @@
         },
         {
             "name": "ios",
+            "inherits": "default",
             "generator": "Xcode",
             "binaryDir": "${sourceDir}/build_${presetName}",
             "condition": {
@@ -46,6 +54,7 @@
         },
         {
             "name": "linux",
+            "inherits": "default",
             "generator": "Ninja Multi-Config",
             "binaryDir": "${sourceDir}/build_${presetName}",
             "condition": {
@@ -56,6 +65,7 @@
         },
         {
             "name": "macos",
+            "inherits": "default",
             "generator": "Xcode",
             "binaryDir": "${sourceDir}/build_${presetName}",
             "condition": {
@@ -66,6 +76,7 @@
         },
         {
             "name": "windows",
+            "inherits": "default",
             "generator": "Visual Studio 16 2019",
             "architecture": "Win32",
             "binaryDir": "${sourceDir}/build_${presetName}",
