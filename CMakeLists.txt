@@ -1,4 +1,4 @@
-cmake_minimum_required(VERSION 3.19)
+cmake_minimum_required(VERSION 3.21)
 
 if(ANDROID_ABI)
     if(NOT EXISTS $ENV{ANDROID_NDK_ROOT})
