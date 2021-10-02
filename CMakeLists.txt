@@ -1,10 +1,11 @@
-cmake_minimum_required(VERSION 3.19)
+cmake_minimum_required(VERSION 3.21)
 
 if(ANDROID_ABI)
     if(NOT EXISTS $ENV{ANDROID_NDK_ROOT})
         message(FATAL_ERROR "Environment variable ANDROID_NDK_ROOT needs to point to a valid Android NDK installation")
     else()
-        set(CMAKE_TOOLCHAIN_FILE $ENV{ANDROID_NDK_ROOT}/build/cmake/android.toolchain.cmake)
+        cmake_path(CONVERT $ENV{ANDROID_NDK_ROOT} TO_CMAKE_PATH_LIST ANDROID_NDK_ROOT NORMALIZE)
+        set(CMAKE_TOOLCHAIN_FILE ${ANDROID_NDK_ROOT}/build/cmake/android.toolchain.cmake)
     endif()
 
     if(NOT EXISTS $ENV{ANDROID_SDK_ROOT})
