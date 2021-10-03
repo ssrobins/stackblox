@@ -14,7 +14,6 @@ on:
 
 env:
   CONAN_REVISIONS_ENABLED: 1
-  CONAN_SYSREQUIRES_SUDO: 0
   app_name: StackBlox
 
 jobs:
@@ -41,8 +40,7 @@ jobs:
             build_script: ./cmake.py ios --build --package
             artifact_path: build_ios/_package/*.ipa
           - name: linux
-            os: ubuntu-20.04
-            container: ghcr.io/ssrobins/docker-linux-build:gcc11.1.0
+            os: ubuntu-18.04
             build_script: ./cmake.py linux --build --test --package
             artifact_path: build_linux/_package/*.tar.gz
           - name: macos
@@ -97,6 +95,10 @@ jobs:
         with:
           p12-file-base64: ${{ secrets.APPLE_CERTIFICATES }}
           p12-password: ${{ secrets.APPLE_CERTIFICATES_PASSWORD }}
+
+      - name: Install required Linux packages
+        if: matrix.name == 'linux'
+        run: sudo apt-get install ninja-build python3-setuptools -y
 
       - name: Install CMake
         uses: ssrobins/install-cmake@main
