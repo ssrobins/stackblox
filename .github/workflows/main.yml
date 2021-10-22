@@ -110,7 +110,7 @@ jobs:
           conan --version
 
       - name: Build
-        run:  ${{ matrix.build_script }} --noConanPkgBuild --config Release
+        run:  ${{ matrix.build_script }} --config Release
         env:
           DEVELOPER_DIR: /Applications/Xcode_13.0.app/Contents/Developer
 
