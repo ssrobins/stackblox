@@ -64,7 +64,6 @@ jobs:
           key_store_path=/home/$USER/android.jks
           gradle_config_dir=/root/.gradle
           echo "${{ secrets.ANDROID_KEY_STORE }}" | base64 --decode > $key_store_path
-          mkdir $gradle_config_dir
           sudo echo "ANDROID_KEY_STORE_PATH=$key_store_path\n\
           ANDROID_KEY_STORE_PASSWORD=${{ secrets.ANDROID_KEY_STORE_PASSWORD }}\n\
           ANDROID_KEY_ALIAS=androidUploadKey\n\
