@@ -55,6 +55,9 @@ jobs:
       - name: Print environment variables
         run: env
 
+      - name: Check home dir
+        run: ls -la $HOME
+
       - name: Install Android key store
         if: contains(matrix.name, 'android')
         run: |
