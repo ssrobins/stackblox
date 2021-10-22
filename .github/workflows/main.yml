@@ -56,7 +56,7 @@ jobs:
         run: env
 
       - name: Check gradle dir
-        run: ls -la /root/.gradle
+        run: sudo ls -la /root/.gradle
 
       - name: Install Android key store
         if: contains(matrix.name, 'android')
