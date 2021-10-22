@@ -55,10 +55,8 @@ jobs:
       - name: Print environment variables
         run: env
 
-      - name: Check home dir
-        run: |
-          ls -la $HOME
-          sudo find / -name .gradle
+      - name: Check gradle dir
+        run: ls -la /root/.gradle
 
       - name: Install Android key store
         if: contains(matrix.name, 'android')
