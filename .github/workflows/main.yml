@@ -65,10 +65,10 @@ jobs:
           gradle_config_dir=$HOME/.gradle
           echo "${{ secrets.ANDROID_KEY_STORE }}" | base64 --decode > $key_store_path
           mkdir $gradle_config_dir
-          echo "ANDROID_KEY_STORE_PATH=$key_store_path\n\
-          ANDROID_KEY_STORE_PASSWORD=${{ secrets.ANDROID_KEY_STORE_PASSWORD }}\n\
-          ANDROID_KEY_ALIAS=androidUploadKey\n\
-          ANDROID_KEY_PASSWORD=${{ secrets.ANDROID_KEY_PASSWORD }}" >> $gradle_config_dir/gradle.properties
+          echo ANDROID_KEY_STORE_PATH=$key_store_path >> $gradle_config_dir/gradle.properties
+          echo ANDROID_KEY_STORE_PASSWORD=${{ secrets.ANDROID_KEY_STORE_PASSWORD }} >> $gradle_config_dir/gradle.properties
+          echo ANDROID_KEY_ALIAS=androidUploadKey >> $gradle_config_dir/gradle.properties
+          echo ANDROID_KEY_PASSWORD=${{ secrets.ANDROID_KEY_PASSWORD }} >> $gradle_config_dir/gradle.properties
           cat $gradle_config_dir/gradle.properties
 
       - name: 'Download development provisioning profile'
