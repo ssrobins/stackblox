@@ -55,9 +55,6 @@ jobs:
       - name: Print environment variables
         run: env
 
-      - name: Check gradle dir
-        run: sudo ls -la /root/.gradle
-
       - name: Install Android key store
         if: contains(matrix.name, 'android')
         run: |
