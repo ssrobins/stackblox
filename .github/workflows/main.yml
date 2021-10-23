@@ -69,6 +69,7 @@ jobs:
           ANDROID_KEY_STORE_PASSWORD=${{ secrets.ANDROID_KEY_STORE_PASSWORD }}\n\
           ANDROID_KEY_ALIAS=androidUploadKey\n\
           ANDROID_KEY_PASSWORD=${{ secrets.ANDROID_KEY_PASSWORD }}" >> $gradle_config_dir/gradle.properties
+          cat $gradle_config_dir/gradle.properties
 
       - name: 'Download development provisioning profile'
         if: matrix.name == 'ios'
