@@ -60,6 +60,7 @@ jobs:
         run: |
           key_store_path=$HOME/android.jks
           gradle_config_dir=$HOME/.gradle
+          echo "GRADLE_USER_HOME=$gradle_config_dir" >> $GITHUB_ENV
           echo "${{ secrets.ANDROID_KEY_STORE }}" | base64 --decode > $key_store_path
           mkdir $gradle_config_dir
           echo ANDROID_KEY_STORE_PATH=$key_store_path >> $gradle_config_dir/gradle.properties
@@ -114,7 +115,6 @@ jobs:
         run:  ${{ matrix.build_script }} --config Release
         env:
           DEVELOPER_DIR: /Applications/Xcode_13.0.app/Contents/Developer
-          GRADLE_USER_HOME: /home/runner/.gradle
 
       - uses: actions/upload-artifact@v2
         with:
