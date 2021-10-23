@@ -6,6 +6,7 @@ if(ANDROID_ABI)
     else()
         cmake_path(CONVERT $ENV{ANDROID_NDK_ROOT} TO_CMAKE_PATH_LIST ANDROID_NDK_ROOT NORMALIZE)
         set(CMAKE_TOOLCHAIN_FILE ${ANDROID_NDK_ROOT}/build/cmake/android.toolchain.cmake)
+        message(STATUS "ANDROID_NDK_ROOT: ${ANDROID_NDK_ROOT}")
     endif()
 
     if(NOT EXISTS $ENV{ANDROID_SDK_ROOT})
