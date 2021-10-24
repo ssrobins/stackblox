@@ -60,14 +60,14 @@ jobs:
         run: |
           key_store_path=$HOME/android.jks
           gradle_config_dir=$HOME/.gradle
+          gradle_properties=$gradle_config_dir/gradle.properties
           echo "GRADLE_USER_HOME=$gradle_config_dir" >> $GITHUB_ENV
           echo "${{ secrets.ANDROID_KEY_STORE }}" | base64 --decode > $key_store_path
           mkdir $gradle_config_dir
-          echo ANDROID_KEY_STORE_PATH=$key_store_path >> $gradle_config_dir/gradle.properties
-          echo ANDROID_KEY_STORE_PASSWORD=${{ secrets.ANDROID_KEY_STORE_PASSWORD }} >> $gradle_config_dir/gradle.properties
-          echo ANDROID_KEY_ALIAS=androidUploadKey >> $gradle_config_dir/gradle.properties
-          echo ANDROID_KEY_PASSWORD=${{ secrets.ANDROID_KEY_PASSWORD }} >> $gradle_config_dir/gradle.properties
-          cat $gradle_config_dir/gradle.properties
+          echo ANDROID_KEY_STORE_PATH=$key_store_path >> $gradle_properties
+          echo ANDROID_KEY_STORE_PASSWORD=${{ secrets.ANDROID_KEY_STORE_PASSWORD }} >> $gradle_properties
+          echo ANDROID_KEY_ALIAS=androidUploadKey >> $gradle_properties
+          echo ANDROID_KEY_PASSWORD=${{ secrets.ANDROID_KEY_PASSWORD }} >> $gradle_properties
 
       - name: 'Download development provisioning profile'
         if: matrix.name == 'ios'
@@ -111,8 +111,12 @@ jobs:
           cmake --version
           conan --version
 
+      - name: Set Android NDK
+        if: contains(matrix.name, 'android')
+        run: echo "ANDROID_NDK_ROOT=$ANDROID_NDK_LATEST_HOME" >> $GITHUB_ENV
+
       - name: Build
-        run:  ${{ matrix.build_script }} --config Release
+        run:  ${{ matrix.build_script }} --noConanPkgBuild  --config Release
         env:
           DEVELOPER_DIR: /Applications/Xcode_13.0.app/Contents/Developer
 
