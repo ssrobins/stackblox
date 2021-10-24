@@ -27,12 +27,10 @@ jobs:
         include:
           - name: androidarm
             os: ubuntu-20.04
-            container: ghcr.io/ssrobins/docker-android-build:jdk8u302-ndk23
             build_script: ./cmake.py androidarm --build --package
             artifact_path: build_androidarm/_package/*.apk
           - name: androidarm64
             os: ubuntu-20.04
-            container: ghcr.io/ssrobins/docker-android-build:jdk8u302-ndk23
             build_script: ./cmake.py androidarm64 --build --package
             artifact_path: build_androidarm64/_package/*.apk
           - name: ios
@@ -60,14 +58,16 @@ jobs:
       - name: Install Android key store
         if: contains(matrix.name, 'android')
         run: |
-          key_store_path=/root/android.jks
-          gradle_config_dir=/root/.gradle
+          key_store_path=$HOME/android.jks
+          gradle_config_dir=$HOME/.gradle
+          gradle_properties=$gradle_config_dir/gradle.properties
+          echo "GRADLE_USER_HOME=$gradle_config_dir" >> $GITHUB_ENV
           echo "${{ secrets.ANDROID_KEY_STORE }}" | base64 --decode > $key_store_path
           mkdir $gradle_config_dir
-          echo "ANDROID_KEY_STORE_PATH=$key_store_path\n\
-          ANDROID_KEY_STORE_PASSWORD=${{ secrets.ANDROID_KEY_STORE_PASSWORD }}\n\
-          ANDROID_KEY_ALIAS=androidUploadKey\n\
-          ANDROID_KEY_PASSWORD=${{ secrets.ANDROID_KEY_PASSWORD }}" >> $gradle_config_dir/gradle.properties
+          echo ANDROID_KEY_STORE_PATH=$key_store_path >> $gradle_properties
+          echo ANDROID_KEY_STORE_PASSWORD=${{ secrets.ANDROID_KEY_STORE_PASSWORD }} >> $gradle_properties
+          echo ANDROID_KEY_ALIAS=androidUploadKey >> $gradle_properties
+          echo ANDROID_KEY_PASSWORD=${{ secrets.ANDROID_KEY_PASSWORD }} >> $gradle_properties
 
       - name: 'Download development provisioning profile'
         if: matrix.name == 'ios'
@@ -97,7 +97,7 @@ jobs:
           p12-password: ${{ secrets.APPLE_CERTIFICATES_PASSWORD }}
 
       - name: Install required Linux packages
-        if: matrix.name == 'linux'
+        if: contains(matrix.name, 'android') || matrix.name == 'linux'
         run: sudo apt-get install ninja-build python3-setuptools -y
 
       - name: Install CMake
@@ -110,6 +110,10 @@ jobs:
         run: |
           cmake --version
           conan --version
+
+      - name: Set Android NDK
+        if: contains(matrix.name, 'android')
+        run: echo "ANDROID_NDK_ROOT=$ANDROID_NDK_LATEST_HOME" >> $GITHUB_ENV
 
       - name: Build
         run:  ${{ matrix.build_script }} --noConanPkgBuild --config Release
