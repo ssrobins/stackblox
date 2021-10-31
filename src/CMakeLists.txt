@@ -21,6 +21,9 @@ if(WIN32)
         icon.rc
     )
 elseif(APPLE AND NOT IOS)
+    target_assets(StackBlox
+        icon.icns
+    )
     set_target_properties(StackBlox PROPERTIES
         MACOSX_BUNDLE_ICON_FILE "icon.icns"
     )
