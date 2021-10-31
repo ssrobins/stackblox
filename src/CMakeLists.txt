@@ -1,4 +1,4 @@
-add_sdl2_executable(StackBlox)
+add_sdl2_executable(StackBlox MACOSX_BUNDLE WIN32)
 
 configure_file(
     ${CMAKE_CURRENT_SOURCE_DIR}/Version.h.in
@@ -20,13 +20,13 @@ if(WIN32)
     target_sources(StackBlox PRIVATE
         icon.rc
     )
-elseif(IOS)
-    target_assets(StackBlox
-        StackBlox.xcassets
-    )
 elseif(APPLE AND NOT IOS)
     set_target_properties(StackBlox PROPERTIES
         MACOSX_BUNDLE_ICON_FILE "icon.icns"
+    )
+elseif(IOS)
+    target_assets(StackBlox
+        StackBlox.xcassets
     )
 endif()
 
