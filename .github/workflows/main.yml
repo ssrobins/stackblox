@@ -46,7 +46,7 @@ jobs:
             build_script: ./cmake.py macos --build --test --package
             artifact_path: build_macos/_package/*.zip
           - name:  windows
-            os: windows-2019
+            os: windows-2022
             build_script: py cmake.py windows --build --test --package
             artifact_path: build_windows/_package/*.zip
     steps:
