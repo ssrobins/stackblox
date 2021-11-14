@@ -25,7 +25,7 @@ elseif(ANDROID_ABI STREQUAL arm64-v8a)
     set(android_arch armv8)
 endif()
 
-project(StackBlox VERSION 1.1.8)
+project(StackBlox VERSION 1.1.9)
 
 if(MSVC)
     string(REGEX MATCH "[0-9]+" compiler_version ${CMAKE_GENERATOR})
