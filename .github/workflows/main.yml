@@ -46,7 +46,7 @@ jobs:
             build_script: ./cmake.py macos --build --test --package
             artifact_path: build_macos/_package/*.zip
           - name:  windows
-            os: windows-2019
+            os: windows-2022
             build_script: py cmake.py windows --build --test --package
             artifact_path: build_windows/_package/*.zip
     steps:
@@ -118,7 +118,7 @@ jobs:
       - name: Build
         run:  ${{ matrix.build_script }} --noConanPkgBuild --config Release
         env:
-          DEVELOPER_DIR: /Applications/Xcode_13.0.app/Contents/Developer
+          DEVELOPER_DIR: /Applications/Xcode_13.1.app/Contents/Developer
 
       - uses: actions/upload-artifact@v2
         with:
