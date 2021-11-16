@@ -118,7 +118,7 @@ jobs:
       - name: Build
         run:  ${{ matrix.build_script }} --config Release
         env:
-          DEVELOPER_DIR: /Applications/Xcode_13.0.app/Contents/Developer
+          DEVELOPER_DIR: /Applications/Xcode_13.1.app/Contents/Developer
 
       - uses: actions/upload-artifact@v2
         with:
