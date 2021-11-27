@@ -13,23 +13,23 @@ target_sources(StackBlox PRIVATE
 )
 
 target_assets(StackBlox
-    assets
+    ${CONAN_STACKBLOX_ASSETS_ROOT}/assets
 )
 
 if(WIN32)
     target_sources(StackBlox PRIVATE
-        icon.rc
+        ${CONAN_STACKBLOX_ASSETS_ROOT}/icon.rc
     )
 elseif(APPLE AND NOT IOS)
     target_assets(StackBlox
-        icon.icns
+        ${CONAN_STACKBLOX_ASSETS_ROOT}/icon.icns
     )
     set_target_properties(StackBlox PROPERTIES
         MACOSX_BUNDLE_ICON_FILE "icon.icns"
     )
 elseif(IOS)
     target_assets(StackBlox
-        StackBlox.xcassets
+        ${CONAN_STACKBLOX_ASSETS_ROOT}/StackBlox.xcassets
     )
 endif()
 
