@@ -45,6 +45,11 @@ int main(int argc, char *argv[])
         while (stackblox.running())
         {
             frameStart = SDL_GetTicks();
+            frameTime = SDL_GetTicks() - frameStart;
+            if (frameDelay > frameTime)
+            {
+                SDL_Delay(frameDelay - frameTime);
+            }
 
             stackblox.handleEvents();
 
@@ -64,13 +69,6 @@ int main(int argc, char *argv[])
             }
 
             stackblox.render();
-
-            frameTime = SDL_GetTicks() - frameStart;
-
-            if (frameDelay > frameTime)
-            {
-                SDL_Delay(frameDelay - frameTime);
-            }
 
             if (stackblox.over())
             {

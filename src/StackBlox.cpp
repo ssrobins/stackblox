@@ -216,11 +216,7 @@ void StackBlox::render()
 
     if (showTitle())
     {
-        if (!alreadyShowingTitle)
-        {
-            renderTitleScreen();
-            alreadyShowingTitle = true;
-        }
+        renderTitleScreen();
     }
     else
     {
@@ -369,7 +365,6 @@ void StackBlox::reset()
     well.reset();
     dropTime = time + well.quickDrop(false);
     showTitleScreen = true;
-    alreadyShowingTitle = false;
 }
 
 void StackBlox::start()
