@@ -37,6 +37,16 @@ def main():
     subprocess.run(f"cmake --preset={command_args.platform} {conan_build_option}",
         cwd=script_path, shell=True, check=True)
 
+    if command_args.test:
+        command_args.build = True
+
+    if command_args.package:
+        # iOS packaging does a clean build so skip the build if packaging is selected
+        if command_args.platform == "ios":
+            command_args.build = False
+        else:
+            command_args.build = True
+
     if command_args.build:
         subprocess.run(f"cmake --build build_{command_args.platform} --config {config} --verbose",
             cwd=script_path, shell=True, check=True)
