@@ -78,7 +78,7 @@ int main(int argc, char *argv[])
                 {
                     printf("SDL_mixer could not initialize! SDL_mixer Error: %s\n", Mix_GetError());
                 }
-                music = Mix_LoadMUS("assets/GetDownWithTheBlox.wav");
+                music = Mix_LoadMUS("assets/GetDownWithTheBlox.ogg");
                 if(music == nullptr)
                 {
                     printf("Failed to load music! SDL_mixer Error: %s\n", Mix_GetError());
