@@ -26,7 +26,7 @@ elseif(ANDROID_ABI STREQUAL arm64-v8a)
     set(android_arch armv8)
 endif()
 
-project(StackBlox VERSION 1.1.14)
+project(StackBlox VERSION 1.1.15)
 
 set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
