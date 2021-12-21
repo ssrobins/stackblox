@@ -24,7 +24,8 @@ public:
     void render();
     void renderStackBlox();
     void renderTitleScreen();
-    void playMusic();
+    void playTitleScreenMusic();
+    void stopMusic();
     void start();
 
 private:

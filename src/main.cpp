@@ -69,12 +69,22 @@ int main(int argc, char *argv[])
                 break;
             }
 
-            if(!stackblox.playingMusic())
-            {
-                stackblox.playMusic();
-            }
-
             stackblox.render();
+
+            if(stackblox.showTitle())
+            {
+                if(!stackblox.playingMusic())
+                {
+                    stackblox.playTitleScreenMusic();
+                }
+            }
+            else
+            {
+                if(stackblox.playingMusic())
+                {
+                    stackblox.stopMusic();
+                }
+            }
 
             if (stackblox.over())
             {
