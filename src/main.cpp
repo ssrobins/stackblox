@@ -43,9 +43,6 @@ int main(int argc, char *argv[])
         Uint32 frameStart;
         int frameTime;
 
-        bool playingMusic = false;
-        Mix_Music *music = nullptr;
-
         while (stackblox.running())
         {
             frameStart = SDL_GetTicks();
@@ -72,20 +69,9 @@ int main(int argc, char *argv[])
                 break;
             }
 
-            if(!playingMusic)
+            if(!stackblox.playingMusic())
             {
-                if(Mix_OpenAudio( 44100, MIX_DEFAULT_FORMAT, 2, 2048 ) < 0)
-                {
-                    printf("SDL_mixer could not initialize! SDL_mixer Error: %s\n", Mix_GetError());
-                }
-                music = Mix_LoadMUS("assets/GetDownWithTheBlox.ogg");
-                if(music == nullptr)
-                {
-                    printf("Failed to load music! SDL_mixer Error: %s\n", Mix_GetError());
-                }
-                Mix_PlayMusic(music, -1);
-
-                playingMusic = true;
+                stackblox.playMusic();
             }
 
             stackblox.render();

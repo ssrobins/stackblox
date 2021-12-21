@@ -15,6 +15,7 @@ public:
     void update();
     bool running() { return isRunning; }
     bool showTitle() { return showTitleScreen; }
+    bool playingMusic() { return isPlayingMusic; }
     bool noPiece();
     void newPiece(const Piece& piece);
     bool over();
@@ -23,6 +24,7 @@ public:
     void render();
     void renderStackBlox();
     void renderTitleScreen();
+    void playMusic();
     void start();
 
 private:
@@ -54,5 +56,6 @@ private:
 
     Well well;
 
+    bool isPlayingMusic;
     bool showTitleScreen;
 };
