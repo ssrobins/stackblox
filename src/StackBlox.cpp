@@ -367,6 +367,18 @@ void StackBlox::reset()
     showTitleScreen = true;
 }
 
+void StackBlox::playTitleScreenMusic()
+{
+    game.playMusic("assets/GetDownWithTheBlox.ogg");
+    isPlayingMusic = true;
+}
+
+void StackBlox::stopMusic()
+{
+    game.stopMusic();
+    isPlayingMusic = false;
+}
+
 void StackBlox::start()
 {
     time = std::chrono::steady_clock::now();

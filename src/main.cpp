@@ -1,5 +1,6 @@
 #include "ErrorHandler.h"
 #include "StackBlox.h"
+#include "SDL_mixer.h"
 
 int main(int argc, char *argv[])
 {
@@ -69,6 +70,21 @@ int main(int argc, char *argv[])
             }
 
             stackblox.render();
+
+            if(stackblox.showTitle())
+            {
+                if(!stackblox.playingMusic())
+                {
+                    stackblox.playTitleScreenMusic();
+                }
+            }
+            else
+            {
+                if(stackblox.playingMusic())
+                {
+                    stackblox.stopMusic();
+                }
+            }
 
             if (stackblox.over())
             {
