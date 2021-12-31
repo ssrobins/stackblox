@@ -55,10 +55,13 @@ Those packages plus all dependencies are defined in these repos:
 * https://github.com/ssrobins/conan-freetype
 * https://github.com/ssrobins/conan-gtest
 * https://github.com/ssrobins/conan-libpng
+* https://github.com/ssrobins/conan-ogg
 * https://github.com/ssrobins/conan-sdl2
 * https://github.com/ssrobins/conan-sdl2_image
+* https://github.com/ssrobins/conan-sdl2_mixer
 * https://github.com/ssrobins/conan-sdl2_ttf
 * https://github.com/ssrobins/conan-ssrobins_engine
+* https://github.com/ssrobins/conan-vorbis
 * https://github.com/ssrobins/conan-zlib
 
 The .github/workflows/main.yml file in each repo defines the Conan build/packaging process. These packages and more are publically available on https://ssrobins.jfrog.io/ui/repos/tree/General/conan.
