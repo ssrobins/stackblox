@@ -41,14 +41,7 @@ elseif(WIN32)
     target_sources(StackBlox PRIVATE
         ${CONAN_STACKBLOX_ASSETS_ROOT}/icon.rc
     )
-elseif(APPLE AND NOT IOS)
-    target_assets(StackBlox
-        ${CONAN_STACKBLOX_ASSETS_ROOT}/icon.icns
-    )
-    set_target_properties(StackBlox PROPERTIES
-        MACOSX_BUNDLE_ICON_FILE "icon.icns"
-    )
-elseif(IOS)
+elseif(APPLE)
     target_assets(StackBlox
         ${CONAN_STACKBLOX_ASSETS_ROOT}/StackBlox.xcassets
     )
