@@ -13,6 +13,7 @@ target_include_directories(StackBloxPiece
 target_precompile_headers(StackBloxPiece
   PRIVATE
     <assert.h>
+    <chrono>
     <cstdint>
     <random>
     <vector>
