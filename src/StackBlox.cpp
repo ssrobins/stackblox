@@ -2,7 +2,6 @@
 #include "Piece.h"
 #include "Well.h"
 #include "Version.h"
-#include <assert.h>
 
 
 StackBlox& StackBlox::getInstance(const int numTilesWidth, const int numTilesHeight, const char* title, bool fullscreen)

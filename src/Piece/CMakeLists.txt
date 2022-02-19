@@ -10,5 +10,7 @@ target_include_directories(StackBloxPiece
     
 )
 
+target_precompile_headers(StackBloxPiece REUSE_FROM StackBloxPiece)
+
 target_link_libraries(StackBloxPiece
 )

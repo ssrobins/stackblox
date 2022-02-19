@@ -7,6 +7,8 @@ target_sources(StackBloxPieceTest PRIVATE
 target_include_directories(StackBloxPieceTest PRIVATE
 )
 
+target_precompile_headers(StackBloxPieceTest REUSE_FROM StackBloxPiece)
+
 target_link_libraries(StackBloxPieceTest
     StackBloxPiece
 )

@@ -1,6 +1,4 @@
 #include "Piece.h"
-#include <assert.h>
-#include <random>
 
 int xOffsetCenter(const std::vector<std::vector<int>>& piece, int numTilesWidth)
 {

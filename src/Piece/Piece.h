@@ -1,8 +1,5 @@
 #pragma once
 
-#include <cstdint>
-#include <vector>
-
 int xOffsetCenter(const std::vector<std::vector<int>>& piece, int numTilesWidth);
 int yOffsetTop(const std::vector<std::vector<int>>& piece);
 

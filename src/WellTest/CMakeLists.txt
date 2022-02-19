@@ -7,6 +7,8 @@ target_sources(StackBloxWellTest PRIVATE
 target_include_directories(StackBloxWellTest PRIVATE
 )
 
+target_precompile_headers(StackBloxWellTest REUSE_FROM StackBloxPiece)
+
 target_link_libraries(StackBloxWellTest
     StackBloxWell
 )

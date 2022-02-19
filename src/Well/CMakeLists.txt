@@ -10,6 +10,8 @@ target_include_directories(StackBloxWell
     
 )
 
+target_precompile_headers(StackBloxWell REUSE_FROM StackBloxPiece)
+
 target_link_libraries(StackBloxWell
     StackBloxPiece
 )

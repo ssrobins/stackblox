@@ -1,3 +1,8 @@
+add_subdirectory(Piece)
+add_subdirectory(PieceTest)
+add_subdirectory(Well)
+add_subdirectory(WellTest)
+
 add_sdl2_executable(StackBlox MACOSX_BUNDLE WIN32)
 
 configure_file(
@@ -51,6 +56,8 @@ target_include_directories(StackBlox PRIVATE
     ${CMAKE_CURRENT_BINARY_DIR}
 )
 
+target_precompile_headers(StackBlox REUSE_FROM StackBloxPiece)
+
 target_link_libraries(StackBlox
     CONAN_PKG::sdl2_mixer
     CONAN_PKG::ssrobins_engine
@@ -59,8 +66,3 @@ target_link_libraries(StackBlox
 )
 
 install_executable(StackBlox)
-
-add_subdirectory(Piece)
-add_subdirectory(PieceTest)
-add_subdirectory(Well)
-add_subdirectory(WellTest)
