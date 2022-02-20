@@ -175,10 +175,10 @@ void StackBlox::newPiece(const Piece& piece)
     well.newPiece(piece);
     dropTime = time + well.quickDrop(false);
     pieceMoved = false;
-    dragStart = event.tfinger.x * game.getScreenWidth()/game.getTileSize();
     dragDistance = 0;
-    dragVertStart = event.tfinger.y * game.getScreenHeight()/game.getTileSize();
     dragVertDistance = 0;
+    assert(moveOffset == 0);
+    assert(moveOffsetTouch == 0);
 }
 
 bool StackBlox::noPiece()
@@ -335,22 +335,22 @@ void StackBlox::renderStackBlox()
 
     // Render debug text
     /*std::string xString = "x: " + std::to_string(event.tfinger.x);
-    text(xString.c_str(), 5, white, 0, game.heightPercentToPixels(0), false);
+    game.text(xString.c_str(), 5, white, 0, game.heightPercentToPixels(0), false);
 
     std::string dragStartString = "dragStart: " + std::to_string(dragStart);
-    text(dragStartString.c_str(), 5, white, 0, game.heightPercentToPixels(5), false);
+    game.text(dragStartString.c_str(), 5, white, 0, game.heightPercentToPixels(5), false);
 
     std::string dragDistanceString = "dragDistance: " + std::to_string(dragDistance);
-    text(dragDistanceString.c_str(), 5, white, 0, game.heightPercentToPixels(10), false);
+    game.text(dragDistanceString.c_str(), 5, white, 0, game.heightPercentToPixels(10), false);
 
     std::string pieceMovedString = "pieceMoved: " + std::to_string(pieceMoved);
-    text(pieceMovedString.c_str(), 5, white, 0, game.heightPercentToPixels(15), false);
+    game.text(pieceMovedString.c_str(), 5, white, 0, game.heightPercentToPixels(15), false);
 
     std::string dragVertStartString = "dragVertStart: " + std::to_string(dragVertStart);
-    text(dragVertStartString.c_str(), 5, white, 0, game.heightPercentToPixels(20), false);
+    game.text(dragVertStartString.c_str(), 5, white, 0, game.heightPercentToPixels(20), false);
 
     std::string dragVertDistanceString = "dragVertDistance: " + std::to_string(dragVertDistance);
-    text(dragVertDistanceString.c_str(), 5, white, 0, game.heightPercentToPixels(25), false);*/
+    game.text(dragVertDistanceString.c_str(), 5, white, 0, game.heightPercentToPixels(25), false);*/
 
     game.renderPresent();
 }
