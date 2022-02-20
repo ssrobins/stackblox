@@ -13,5 +13,5 @@ class Conan(ConanFile):
 
     def requirements(self):
         self.requires("gtest/1.11.0#8ef69248cd41cd3a29dcfd3340f0589a291c2631")
-        self.requires("ssrobins_engine/1.2.0#f5f260275e36f6cc278bb32787ab24d01b8b1356")
+        self.requires("ssrobins_engine/1.2.0#781bb1f65dcb2ff4f3719dc0ea24e5857606dbd5")
         self.requires("stackblox_assets/2.0.0#d287a5317b98108ba2594c5ed63217990ebc138e")
