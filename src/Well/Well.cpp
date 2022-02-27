@@ -72,6 +72,11 @@ const std::chrono::milliseconds Well::getDropDelay() const
     return dropDelay;
 }
 
+const int Well::getScore() const
+{
+    return score;
+}
+
 std::chrono::milliseconds Well::decreaseDropDelay()
 {
     if (dropDelayNormal > dropDelayLimit)
@@ -150,7 +155,8 @@ void Well::reset()
     }
 
     wellIsFull = false;
-    dropDelayNormal = dropDelayDefault;
+    dropDelayNormal = dropDelayDefault + dropDelayInterval;
+    score = 0;
 }
 
 void Well::rotatePiece()
@@ -168,6 +174,7 @@ void Well::rotatePiece()
 void Well::deleteCompleteLines()
 {
     std::vector<std::vector<Color>> wellValsModified = wellVals;
+    int deleteLineCount = 0;
 
     for (unsigned int y = 0; y < wellVals.size(); y++)
     {
@@ -184,8 +191,10 @@ void Well::deleteCompleteLines()
         {
             wellValsModified.erase(wellValsModified.begin() + y);
             wellValsModified.insert(wellValsModified.begin(), std::vector<Color>(numTilesWidth, { 0, 0, 0, 0 }));
+            deleteLineCount++;
         }
     }
+    score += deleteLineCount * (lineScore + (deleteLineCount - 1) * lineBonus) + (dropDelayDefault.count() - dropDelayNormal.count()) + 1;
 
     wellVals = wellValsModified;
 }

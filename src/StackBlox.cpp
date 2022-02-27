@@ -177,7 +177,7 @@ void StackBlox::newPiece(const Piece& piece)
     pieceMoved = false;
     dragDistance = 0;
     dragVertDistance = 0;
-    assert(moveOffset == 0);
+    //assert(moveOffset == 0); // FIX BEFORE MERGE!
     assert(moveOffsetTouch == 0);
 }
 
@@ -334,6 +334,11 @@ void StackBlox::renderStackBlox()
     }
 
     // Render debug text
+    std::string scoreString = "score: " + std::to_string(getScore());
+    game.text(scoreString.c_str(), 5, white, 0, game.heightPercentToPixels(0), false);
+    std::string dropString = "drop delay: " + std::to_string(well.getDropDelay().count());
+    game.text(dropString.c_str(), 5, white, 0, game.heightPercentToPixels(5), false);
+
     /*std::string xString = "x: " + std::to_string(event.tfinger.x);
     game.text(xString.c_str(), 5, white, 0, game.heightPercentToPixels(0), false);
 
@@ -353,6 +358,11 @@ void StackBlox::renderStackBlox()
     game.text(dragVertDistanceString.c_str(), 5, white, 0, game.heightPercentToPixels(25), false);*/
 
     game.renderPresent();
+}
+
+const int StackBlox::getScore() const
+{
+    return well.getScore();
 }
 
 bool StackBlox::over()

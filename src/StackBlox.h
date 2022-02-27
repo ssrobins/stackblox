@@ -18,6 +18,7 @@ public:
     bool playingMusic() { return isPlayingMusic; }
     bool noPiece();
     void newPiece(const Piece& piece);
+    const int getScore() const;
     bool over();
 
     void reset();
