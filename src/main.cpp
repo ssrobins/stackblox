@@ -49,7 +49,7 @@ int main(int argc, char *argv[])
             frameTime = SDL_GetTicks() - frameStart;
             if (frameDelay > frameTime)
             {
-                SDL_Delay(frameDelay - frameTime);
+                //SDL_Delay(frameDelay - frameTime);
             }
 
             stackblox.handleEvents();

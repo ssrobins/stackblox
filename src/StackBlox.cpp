@@ -336,8 +336,15 @@ void StackBlox::renderStackBlox()
     // Render debug text
     std::string scoreString = "score: " + std::to_string(getScore());
     game.text(scoreString.c_str(), 5, white, 0, game.heightPercentToPixels(0), false);
-    std::string dropString = "drop delay: " + std::to_string(well.getDropDelay().count());
-    game.text(dropString.c_str(), 5, white, 0, game.heightPercentToPixels(5), false);
+    std::string resString = std::to_string(game.getScreenWidth()) + " x " + std::to_string(game.getScreenHeight());
+    game.text(resString.c_str(), 5, white, 0, game.heightPercentToPixels(5), false);
+    std::string fpsString = std::to_string(game.getFPS()) + " fps";
+    game.text(fpsString.c_str(), 5, white, 0, game.heightPercentToPixels(10), false);
+
+
+
+    /*std::string dropString = "drop delay: " + std::to_string(well.getDropDelay().count());
+    game.text(dropString.c_str(), 5, white, 0, game.heightPercentToPixels(5), false);*/
 
     /*std::string xString = "x: " + std::to_string(event.tfinger.x);
     game.text(xString.c_str(), 5, white, 0, game.heightPercentToPixels(0), false);
