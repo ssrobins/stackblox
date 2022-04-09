@@ -15,6 +15,9 @@ StackBlox::StackBlox(const int numTilesWidth, const int numTilesHeight, const ch
     : game(numTilesWidth, numTilesHeight, title, fullscreen)
     , well(numTilesWidth, numTilesHeight)
     , showTitleScreen(true)
+    , titleText("StackBlox", game.heightPercentToPixels(13), game.getBasePath() + "assets/OpenSans-Regular.ttf", SDL_Color{ 255, 255, 255, 255 }, game.getGameWidth(), game.getRenderer(), 0, game.heightPercentToPixels(9), true)
+    , fpsText(std::string{std::to_string(game.getFPS()) + " fps"}.c_str(), game.heightPercentToPixels(2), game.getBasePath() + "assets/OpenSans-Regular.ttf", SDL_Color{ 255, 255, 255, 255 }, game.getGameWidth(), game.getRenderer(), 0, game.heightPercentToPixels(0))
+    , scoreText(std::string{"score: " + std::to_string(getScore())}.c_str(), game.heightPercentToPixels(2), game.getBasePath() + "assets/OpenSans-Regular.ttf", SDL_Color{ 255, 255, 255, 255 }, game.getGameWidth(), game.getRenderer(), 0, game.heightPercentToPixels(2))
 {
     isRunning = true;
 
@@ -188,12 +191,23 @@ bool StackBlox::noPiece()
 
 void StackBlox::update()
 {
+    if (!showTitle())
+    {
+        updateStackBlox();
+    }
+
+    fpsText.updateText(std::string{std::to_string(game.getFPS()) + " fps"}.c_str());
+}
+
+void StackBlox::updateStackBlox()
+{
     time = std::chrono::steady_clock::now();
 
     if (time > dropTime)
     {
         well.movePieceDown(1);
         dropTime += well.getDropDelay();
+        scoreText.updateText(std::string{"score: " + std::to_string(getScore())}.c_str());
     }
 
     if (moveOffsetTouch != 0)
@@ -233,7 +247,8 @@ void StackBlox::renderTitleScreen()
     game.setRenderDrawColor({ 0, 0, 0, 255 });
     game.renderClear();
 
-    game.text("StackBlox", 13, white, 0, game.heightPercentToPixels(9), true);
+    titleText.render();
+    fpsText.render();
 
     game.text("Controls", 5, white, game.widthPercentToPixels(15), game.heightPercentToPixels(32));
 
@@ -332,6 +347,9 @@ void StackBlox::renderStackBlox()
         game.text("GAME", 15, white, 0, game.heightPercentToPixels(15), true);
         game.text("OVER", 15, white, 0, game.heightPercentToPixels(25), true);
     }
+
+    fpsText.render();
+    scoreText.render();
 
     // Render debug text
     std::string scoreString = "score: " + std::to_string(getScore());

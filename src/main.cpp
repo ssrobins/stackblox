@@ -46,11 +46,6 @@ int main(int argc, char *argv[])
         while (stackblox.running())
         {
             frameStart = SDL_GetTicks();
-            frameTime = SDL_GetTicks() - frameStart;
-            if (frameDelay > frameTime)
-            {
-                //SDL_Delay(frameDelay - frameTime);
-            }
 
             stackblox.handleEvents();
 
@@ -60,9 +55,9 @@ int main(int argc, char *argv[])
                 {
                     stackblox.newPiece(pieceCollection.getRandomPiece());
                 }
-
-                stackblox.update();
             }
+
+            stackblox.update();
 
             if (!stackblox.running())
             {
@@ -90,6 +85,12 @@ int main(int argc, char *argv[])
             {
                 SDL_Delay(3000); // in milliseconds
                 stackblox.reset();
+            }
+
+            frameTime = SDL_GetTicks() - frameStart;
+            if (frameDelay > frameTime)
+            {
+                SDL_Delay(frameDelay - frameTime); // comment to uncap FPS
             }
         }
     }

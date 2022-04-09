@@ -13,6 +13,7 @@ public:
 
     void handleEvents();
     void update();
+    void updateStackBlox();
     bool running() { return isRunning; }
     bool showTitle() { return showTitleScreen; }
     bool playingMusic() { return isPlayingMusic; }
@@ -60,4 +61,8 @@ private:
 
     bool isPlayingMusic;
     bool showTitleScreen;
+
+    Text titleText;
+    Text fpsText;
+    Text scoreText;
 };
