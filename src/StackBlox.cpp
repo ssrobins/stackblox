@@ -5,6 +5,56 @@
 #include <assert.h>
 
 
+ControlText::ControlText(const bool hasTouchscreen)
+{
+    if (hasTouchscreen)
+    {
+        moveControls = "Drag Across";
+        rotateControls = "Touch";
+        dropControls = "Drag Down";
+        startControls = "Touch to start";
+    }
+    else
+    {
+        moveControls = "Left / Right";
+        rotateControls = "Spacebar";
+        dropControls = "Down";
+        startControls = "Press Enter to start";
+    }
+}
+
+TitleScreen::TitleScreen(const Game& game, const bool hasTouchscreen)
+    : fontPath(game.getBasePath() + "assets/OpenSans-Regular.ttf")
+    , controlText(hasTouchscreen)
+    , titleText("StackBlox", game.heightPercentToPixels(13), fontPath, white, game.getGameWidth(), game.getRenderer(), game.widthPercentToPixels(0), game.heightPercentToPixels(9), true)
+    , controlHeadingText("Controls", game.heightPercentToPixels(5), fontPath, white, game.getGameWidth(), game.getRenderer(), game.widthPercentToPixels(15), game.heightPercentToPixels(32))
+    , moveControlText(controlText.moveControls, game.heightPercentToPixels(4), fontPath, white, game.getGameWidth(), game.getRenderer(), game.widthPercentToPixels(15), game.heightPercentToPixels(37))
+    , moveControlDescripText("Move piece", game.heightPercentToPixels(4), fontPath, white, game.getGameWidth(), game.getRenderer(), game.widthPercentToPixels(50), game.heightPercentToPixels(37))
+    , rotateControlText(controlText.rotateControls, game.heightPercentToPixels(4), fontPath, white, game.getGameWidth(), game.getRenderer(), game.widthPercentToPixels(15), game.heightPercentToPixels(42))
+    , rotateControlDescripText("Rotate piece", game.heightPercentToPixels(4), fontPath, white, game.getGameWidth(), game.getRenderer(), game.widthPercentToPixels(50), game.heightPercentToPixels(42))
+    , dropControlText(controlText.dropControls, game.heightPercentToPixels(4), fontPath, white, game.getGameWidth(), game.getRenderer(), game.widthPercentToPixels(15), game.heightPercentToPixels(47))
+    , dropControlDescripText("Drop piece faster", game.heightPercentToPixels(4), fontPath, white, game.getGameWidth(), game.getRenderer(), game.widthPercentToPixels(50), game.heightPercentToPixels(47))
+    , startControlText(controlText.startControls, game.heightPercentToPixels(6), fontPath, red, game.getGameWidth(), game.getRenderer(), game.widthPercentToPixels(0), game.heightPercentToPixels(65), true)
+    , versionText(("Version: " + versionMajor + "." + versionMinor + "." + versionPatch).c_str(), game.heightPercentToPixels(3), fontPath, white, game.getGameWidth(), game.getRenderer(), game.widthPercentToPixels(4), game.heightPercentToPixels(92))
+    , websiteText("dnqpy.com", game.heightPercentToPixels(3), fontPath, white, game.getGameWidth(), game.getRenderer(), game.widthPercentToPixels(4), game.heightPercentToPixels(95))
+{
+}
+
+void TitleScreen::render()
+{
+    titleText.render();
+    controlHeadingText.render();
+    moveControlText.render();
+    moveControlDescripText.render();
+    rotateControlText.render();
+    rotateControlDescripText.render();
+    dropControlText.render();
+    dropControlDescripText.render();
+    startControlText.render();
+    versionText.render();
+    websiteText.render();
+}
+
 StackBlox& StackBlox::getInstance(const int numTilesWidth, const int numTilesHeight, const char* title, bool fullscreen)
 {
     static StackBlox instance(numTilesWidth, numTilesHeight, title, fullscreen);
@@ -15,9 +65,12 @@ StackBlox::StackBlox(const int numTilesWidth, const int numTilesHeight, const ch
     : game(numTilesWidth, numTilesHeight, title, fullscreen)
     , well(numTilesWidth, numTilesHeight)
     , showTitleScreen(true)
-    , titleText("StackBlox", game.heightPercentToPixels(13), game.getBasePath() + "assets/OpenSans-Regular.ttf", SDL_Color{ 255, 255, 255, 255 }, game.getGameWidth(), game.getRenderer(), 0, game.heightPercentToPixels(9), true)
-    , fpsText(std::string{std::to_string(game.getFPS()) + " fps"}.c_str(), game.heightPercentToPixels(2), game.getBasePath() + "assets/OpenSans-Regular.ttf", SDL_Color{ 255, 255, 255, 255 }, game.getGameWidth(), game.getRenderer(), 0, game.heightPercentToPixels(0))
-    , scoreText(std::string{"score: " + std::to_string(getScore())}.c_str(), game.heightPercentToPixels(2), game.getBasePath() + "assets/OpenSans-Regular.ttf", SDL_Color{ 255, 255, 255, 255 }, game.getGameWidth(), game.getRenderer(), 0, game.heightPercentToPixels(2))
+    , titleScreen(game, hasTouchscreen)
+    , fontPath(game.getBasePath() + "assets/OpenSans-Regular.ttf")
+    , fpsText(std::string{std::to_string(game.getFPS()) + " fps"}.c_str(), game.heightPercentToPixels(2), fontPath, white, game.getGameWidth(), game.getRenderer(), 0, game.heightPercentToPixels(0))
+    , scoreText(std::string{"score: " + std::to_string(getScore())}.c_str(), game.heightPercentToPixels(2), fontPath, white, game.getGameWidth(), game.getRenderer(), 0, game.heightPercentToPixels(2))
+    , gameText("GAME", game.heightPercentToPixels(15), fontPath, white, game.getGameWidth(), game.getRenderer(), 0, game.heightPercentToPixels(15), true)
+    , overText("OVER", game.heightPercentToPixels(15), fontPath, white, game.getGameWidth(), game.getRenderer(), 0, game.heightPercentToPixels(25), true)
 {
     isRunning = true;
 
@@ -241,52 +294,11 @@ void StackBlox::render()
 
 void StackBlox::renderTitleScreen()
 {
-    SDL_Color white = { 255, 255, 255, 255 };
-    SDL_Color red = { 255, 0, 0, 255 };
-
     game.setRenderDrawColor({ 0, 0, 0, 255 });
     game.renderClear();
 
-    titleText.render();
     fpsText.render();
-
-    game.text("Controls", 5, white, game.widthPercentToPixels(15), game.heightPercentToPixels(32));
-
-    const char * moveControls;
-    const char * rotateControls;
-    const char * dropControls;
-    const char * startControls;
-
-    if (hasTouchscreen)
-    {
-        moveControls = "Drag Across";
-        rotateControls = "Touch";
-        dropControls = "Drag Down";
-        startControls = "Touch to start";
-    }
-    else
-    {
-        moveControls = "Left / Right";
-        rotateControls = "Spacebar";
-        dropControls = "Down";
-        startControls = "Press Enter to start";
-    }
-
-    game.text(moveControls, 4, white, game.widthPercentToPixels(15), game.heightPercentToPixels(37));
-    game.text("Move piece", 4, white, game.widthPercentToPixels(50), game.heightPercentToPixels(37));
-
-    game.text(rotateControls, 4, white, game.widthPercentToPixels(15), game.heightPercentToPixels(42));
-    game.text("Rotate piece", 4, white, game.widthPercentToPixels(50), game.heightPercentToPixels(42));
-
-    game.text(dropControls, 4, white, game.widthPercentToPixels(15), game.heightPercentToPixels(47));
-    game.text("Drop piece faster", 4, white, game.widthPercentToPixels(50), game.heightPercentToPixels(47));
-
-    game.text(startControls, 6, red, 0, game.heightPercentToPixels(65), true);
-
-    const std::string versionString = "Version: " + versionMajor + "." + versionMinor + "." + versionPatch;
-    game.text(versionString.c_str(), 3, white, game.widthPercentToPixels(4), game.heightPercentToPixels(92));
-
-    game.text("dnqpy.com", 3, white, game.widthPercentToPixels(4), game.heightPercentToPixels(95));
+    titleScreen.render();
 
     game.renderPresent();
 }
@@ -344,12 +356,15 @@ void StackBlox::renderStackBlox()
 
     if (over())
     {
-        game.text("GAME", 15, white, 0, game.heightPercentToPixels(15), true);
-        game.text("OVER", 15, white, 0, game.heightPercentToPixels(25), true);
+        gameText.render();
+        overText.render();
+    }
+    else
+    {
+        scoreText.render();
     }
 
     fpsText.render();
-    scoreText.render();
 
     // Render debug text
     std::string scoreString = "score: " + std::to_string(getScore());

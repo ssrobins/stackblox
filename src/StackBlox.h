@@ -3,6 +3,40 @@
 #include "Game.h"
 #include "Well.h"
 
+class ControlText
+{
+public:
+    ControlText(const bool hasTouchscreen);
+    const char * moveControls;
+    const char * rotateControls;
+    const char * dropControls;
+    const char * startControls;
+};
+
+class TitleScreen
+{
+public:
+    TitleScreen(const Game& game, const bool hasTouchscreen);
+    ~TitleScreen() {};
+    void render();
+private:
+    std::string fontPath;
+    SDL_Color white = { 255, 255, 255, 255 };
+    SDL_Color red = { 255, 0, 0, 255 };
+    ControlText controlText;
+    Text titleText;
+    Text controlHeadingText;
+    Text moveControlText;
+    Text moveControlDescripText;
+    Text rotateControlText;
+    Text rotateControlDescripText;
+    Text dropControlText;
+    Text dropControlDescripText;
+    Text startControlText;
+    Text versionText;
+    Text websiteText;
+};
+
 class StackBlox
 {
 public:
@@ -40,7 +74,11 @@ private:
         false;
     #endif
 
+    std::string fontPath;
+    SDL_Color white = { 255, 255, 255, 255 };
+
     Game game;
+    TitleScreen titleScreen;
 
     SDL_Event event;
     bool isRunning;
@@ -62,7 +100,8 @@ private:
     bool isPlayingMusic;
     bool showTitleScreen;
 
-    Text titleText;
     Text fpsText;
     Text scoreText;
+    Text gameText;
+    Text overText;
 };
