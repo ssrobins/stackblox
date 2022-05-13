@@ -218,10 +218,3 @@ TEST(decreaseDropDelay, decreaseToSmallestInterval)
     EXPECT_EQ(std::chrono::milliseconds{ 100 }, well.decreaseDropDelay());
     EXPECT_EQ(std::chrono::milliseconds{ 100 }, well.decreaseDropDelay());
 }
-
-
-int main(int argc, char** argv)
-{
-    testing::InitGoogleTest(&argc, argv);
-    return RUN_ALL_TESTS();
-}
