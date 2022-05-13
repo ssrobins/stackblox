@@ -34,7 +34,7 @@ jobs:
             build_script: ./cmake.py androidarm64 --build --package
             artifact_path: build_androidarm64/_package/*.apk
           - name: ios
-            os: macos-11
+            os: macos-12
             build_script: ./cmake.py ios --build --package
             artifact_path: build_ios/_package/*.ipa
           - name: linux
@@ -42,7 +42,7 @@ jobs:
             build_script: ./cmake.py linux --build --test --package
             artifact_path: build_linux/_package/*.tar.gz
           - name: macos
-            os: macos-11
+            os: macos-12
             build_script: ./cmake.py macos --build --test --package
             artifact_path: build_macos/_package/*.zip
           - name:  windows
@@ -118,7 +118,7 @@ jobs:
       - name: Build
         run:  ${{ matrix.build_script }} --noConanPkgBuild --config Release
         env:
-          DEVELOPER_DIR: /Applications/Xcode_13.1.app/Contents/Developer
+          DEVELOPER_DIR: /Applications/Xcode_13.3.1.app/Contents/Developer
 
       - uses: actions/upload-artifact@v2
         with:
