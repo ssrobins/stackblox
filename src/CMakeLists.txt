@@ -52,8 +52,7 @@ target_include_directories(StackBlox PRIVATE
 )
 
 target_link_libraries(StackBlox
-    CONAN_PKG::sdl2_mixer
-    CONAN_PKG::ssrobins_engine
+    ssrobins_engine::ssrobins_engine
     StackBloxPiece
     StackBloxWell
 )
