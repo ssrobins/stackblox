@@ -100,20 +100,19 @@ list(APPEND CMAKE_MODULE_PATH ${CMAKE_BINARY_DIR})
 list(APPEND CMAKE_PREFIX_PATH ${CMAKE_BINARY_DIR})
 set(CMAKE_FIND_ROOT_PATH ${CMAKE_BINARY_DIR})
 
+find_package(cmake_utils REQUIRED)
 find_package(gtest REQUIRED)
 find_package(ssrobins_engine REQUIRED)
+find_package(stackblox_assets REQUIRED)
 
-include(${CMAKE_BINARY_DIR}/conanbuildinfo.cmake)
-conan_basic_setup(TARGETS NO_OUTPUT_DIRS)
-
-include(${CONAN_CMAKE_UTILS_ROOT}/global_settings.cmake)
+include(${cmake_utils_PACKAGE_FOLDER_RELEASE}/global_settings.cmake)
 
 # Helper functions
-include(${CONAN_CMAKE_UTILS_ROOT}/add_executable_custom.cmake)
-include(${CONAN_CMAKE_UTILS_ROOT}/add_sdl2_executable.cmake)
-include(${CONAN_CMAKE_UTILS_ROOT}/add_test_executable.cmake)
-include(${CONAN_CMAKE_UTILS_ROOT}/install_executable.cmake)
-include(${CONAN_CMAKE_UTILS_ROOT}/target_assets.cmake)
+include(${cmake_utils_PACKAGE_FOLDER_RELEASE}/add_executable_custom.cmake)
+include(${cmake_utils_PACKAGE_FOLDER_RELEASE}/add_sdl2_executable.cmake)
+include(${cmake_utils_PACKAGE_FOLDER_RELEASE}/add_test_executable.cmake)
+include(${cmake_utils_PACKAGE_FOLDER_RELEASE}/install_executable.cmake)
+include(${cmake_utils_PACKAGE_FOLDER_RELEASE}/target_assets.cmake)
 
 enable_testing()
 
