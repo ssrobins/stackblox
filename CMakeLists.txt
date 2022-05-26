@@ -96,8 +96,6 @@ foreach(TYPE ${CMAKE_CONFIGURATION_TYPES})
         SETTINGS ${conan_args};build_type=${TYPE})
 endforeach()
 
-list(APPEND CMAKE_MODULE_PATH ${CMAKE_BINARY_DIR})
-list(APPEND CMAKE_PREFIX_PATH ${CMAKE_BINARY_DIR})
 set(CMAKE_FIND_ROOT_PATH ${CMAKE_BINARY_DIR})
 
 find_package(cmake_utils REQUIRED)
