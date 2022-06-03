@@ -36,32 +36,10 @@ The command line builds combine CMake presets with a thin Python wrapper that le
 1. Run the `./cmake.py` script for the desired platform to run all or part of the build, test, and package processes. Run `./cmake.py -h` for more information.
 
 ## Continuous integration (CI)
-The build process is automated through GitHub Actions, defined in the [main.yml](.github/workflows/main.yml) file. Nothing fancy here, it runs the same `cmake.py` script described above and archives the results.
+The build process is automated through [GitHub Actions](https://github.com/features/actions), defined in the [main.yml](.github/workflows/main.yml) file. Nothing fancy here, it runs the same `cmake.py` script described above and archives the results.
 
-## Docker build setups
-The CI system uses custom Docker containers for Linux and Android builds. You can build and use them for the build setup or look at the Dockerfile for detailed steps on what to install. You can find them here:
-* https://github.com/ssrobins/docker-linux-build
-* https://github.com/ssrobins/docker-android-build
-
-The .github/workflows/main.yml file in each repo defines the Docker image build process (yup, even the CI environments have a CI!).
+## Build environments
+All the builds run on the Windows, Linux, and macOS build environments provided by GitHub. More information at https://github.com/actions/virtual-environments.
 
 ## Conan packages
-The packages directly used in StackBlox are listed in [conanfile.py](conanfile.py).
-
-Those packages plus all dependencies are defined in these repos:
-* https://github.com/ssrobins/conan-android_sdl2
-* https://github.com/ssrobins/conan-bzip2
-* https://github.com/ssrobins/conan-cmake_utils
-* https://github.com/ssrobins/conan-freetype
-* https://github.com/ssrobins/conan-gtest
-* https://github.com/ssrobins/conan-libpng
-* https://github.com/ssrobins/conan-ogg
-* https://github.com/ssrobins/conan-sdl2
-* https://github.com/ssrobins/conan-sdl2_image
-* https://github.com/ssrobins/conan-sdl2_mixer
-* https://github.com/ssrobins/conan-sdl2_ttf
-* https://github.com/ssrobins/conan-ssrobins_engine
-* https://github.com/ssrobins/conan-vorbis
-* https://github.com/ssrobins/conan-zlib
-
-The .github/workflows/main.yml file in each repo defines the Conan build/packaging process. These packages and more are publically available on https://ssrobins.jfrog.io/ui/repos/tree/General/conan.
+The [Conan](https://conan.io/) packages directly used in StackBlox are listed in [conanfile.py](conanfile.py). For more details, check out https://github.com/ssrobins/conan-recipes.
