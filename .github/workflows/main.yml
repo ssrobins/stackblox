@@ -120,7 +120,7 @@ jobs:
       - name: Build
         run:  ${{ matrix.build_script }} --noConanPkgBuild --config Release
         env:
-          DEVELOPER_DIR: ${{ env.XCODE_13_DEVELOPER_DIR }}
+          DEVELOPER_DIR: $XCODE_13_DEVELOPER_DIR
 
       - uses: actions/upload-artifact@v2
         with:
