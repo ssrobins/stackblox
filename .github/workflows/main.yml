@@ -8,9 +8,8 @@ on:
   workflow_dispatch:
     inputs:
       publish:
+        type: boolean
         description: 'Publish'
-        required: false
-        default: '0'
 
 env:
   CONAN_REVISIONS_ENABLED: 1
@@ -129,5 +128,5 @@ jobs:
           if-no-files-found: error
 
       - name: 'Publish to App Store'
-        if: matrix.name == 'ios' && github.event.inputs.publish == '1'
+        if: matrix.name == 'ios' && github.event.inputs.publish == 'true'
         run: xcrun altool --upload-app --file $(find . -name *.ipa | head -n 1) --type ios --username ssrobins@gmail.com --password ${{ secrets.APPLE_APP_SPECIFIC_PASSWORD }}
