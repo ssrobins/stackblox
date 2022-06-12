@@ -1,4 +1,4 @@
-add_sdl2_executable(StackBlox MACOSX_BUNDLE WIN32)
+add_sdl_executable(StackBlox MACOSX_BUNDLE WIN32)
 
 configure_file(
     ${CMAKE_CURRENT_SOURCE_DIR}/Version.h.in
