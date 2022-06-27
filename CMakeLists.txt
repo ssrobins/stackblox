@@ -45,7 +45,6 @@ endif()
 
 if(ANDROID)
     set(conan_args  -s os=Android -s os.api_level=${android_min_sdk_version} -s arch=${android_arch} -s compiler=clang -s compiler.version=${compiler_version} -s compiler.libcxx=c++_static -s compiler.cppstd=${CMAKE_CXX_STANDARD})
-    set(conan_profile_host -pr:h ${CMAKE_SOURCE_DIR}/profiles/android.jinja)
 elseif(IOS)
     set(CMAKE_OSX_ARCHITECTURES "armv7 arm64")
     set(CMAKE_OSX_DEPLOYMENT_TARGET 9.0)
@@ -62,8 +61,7 @@ elseif(UNIX)
     else()
         message("Unhandled compiler, ${CMAKE_CXX_COMPILER_ID}, Conan install command may fail")
     endif()
-    set(conan_args -s os=Linux -s arch=${CMAKE_SYSTEM_PROCESSOR} -s compiler=${compiler}-s compiler.version=${compiler_version} -s compiler.libcxx=libstdc++11 -s compiler.cppstd=${CMAKE_CXX_STANDARD})
-    set(conan_profile_host -pr:h ${CMAKE_SOURCE_DIR}/profiles/linux)
+    set(conan_args -s os=Linux -s arch=${CMAKE_SYSTEM_PROCESSOR} -s compiler=${compiler} -s compiler.version=${compiler_version} -s compiler.libcxx=libstdc++11 -s compiler.cppstd=${CMAKE_CXX_STANDARD})
 elseif(MSVC)
     set(conan_args arch=x86 -s compiler=msvc -s compiler.version=${compiler_version} -s compiler.runtime=static -s compiler.cppstd=${CMAKE_CXX_STANDARD})
 else()
@@ -95,7 +93,7 @@ endif()
 set(CMAKE_CONFIGURATION_TYPES "Debug;Release")
 foreach(TYPE ${CMAKE_CONFIGURATION_TYPES})
     execute_process(
-        COMMAND conan install --output-folder ${CMAKE_BINARY_DIR} --remote ${conan_remote_name} --update ${CMAKE_SOURCE_DIR} ${conan_build_option} ${conan_args} -s build_type=${TYPE} ${conan_profile_host}
+        COMMAND conan install --output-folder ${CMAKE_BINARY_DIR} --remote ${conan_remote_name} --update ${CMAKE_SOURCE_DIR} ${conan_build_option} ${conan_args} -s build_type=${TYPE} -pr:h ${CMAKE_SOURCE_DIR}/profile.jinja
         RESULT_VARIABLE conan_result
     )
     if(conan_result)
