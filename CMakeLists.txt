@@ -68,6 +68,19 @@ else()
     message("Unhandled platform, Conan install command may fail")
 endif()
 
+execute_process(
+    COMMAND conan --version
+    ERROR_QUIET
+    OUTPUT_VARIABLE conan_output
+    RESULT_VARIABLE conan_result
+    OUTPUT_STRIP_TRAILING_WHITESPACE
+)
+if(conan_result)
+    message(FATAL_ERROR "Conan not found, is it installed?")
+elseif(conan_output MATCHES 1.)
+    message(FATAL_ERROR "Conan 1.x found, you must install Conan 2.x.")
+endif()
+
 option(CONAN_BUILD_MISSING_PKGS "Build missing Conan packages" ON)
 if(CONAN_BUILD_MISSING_PKGS)
     set(conan_build_option --build=missing)
