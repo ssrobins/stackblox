@@ -359,12 +359,9 @@ void StackBlox::renderStackBlox()
         gameText.render();
         overText.render();
     }
-    else
-    {
-        scoreText.render();
-    }
 
     fpsText.render();
+    scoreText.render();
 
     // Render debug text
     std::string scoreString = "score: " + std::to_string(getScore());
