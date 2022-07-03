@@ -260,7 +260,10 @@ void StackBlox::updateStackBlox()
     {
         well.movePieceDown(1);
         dropTime += well.getDropDelay();
-        scoreText.updateText(std::string{"score: " + std::to_string(getScore())}.c_str());
+        if (noPiece())
+        {
+            scoreText.updateText(std::string{"score: " + std::to_string(getScore())}.c_str());
+        }
     }
 
     if (moveOffsetTouch != 0)
@@ -410,6 +413,8 @@ bool StackBlox::over()
 void StackBlox::reset()
 {
     well.reset();
+    scoreText.updateText(std::string{"score: " + std::to_string(getScore())}.c_str());
+
     dropTime = time + well.quickDrop(false);
     showTitleScreen = true;
 }
