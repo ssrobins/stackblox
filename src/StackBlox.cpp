@@ -67,10 +67,18 @@ StackBlox::StackBlox(const int numTilesWidth, const int numTilesHeight, const ch
     , showTitleScreen(true)
     , titleScreen(game, hasTouchscreen)
     , fontPath(game.getBasePath() + "assets/OpenSans-Regular.ttf")
-    , fpsText(std::string{std::to_string(game.getFPS()) + " fps"}.c_str(), game.heightPercentToPixels(2), fontPath, white, game.getGameWidth(), game.getRenderer(), 0, game.heightPercentToPixels(0))
-    , scoreText(std::string{"score: " + std::to_string(getScore())}.c_str(), game.heightPercentToPixels(2), fontPath, white, game.getGameWidth(), game.getRenderer(), 0, game.heightPercentToPixels(2))
+    , scoreText(std::string{"score: " + std::to_string(getScore())}.c_str(), game.heightPercentToPixels(3), fontPath, white, game.getGameWidth(), game.getRenderer(), game.widthPercentToPixels(1), game.heightPercentToPixels(0))
     , gameText("GAME", game.heightPercentToPixels(15), fontPath, white, game.getGameWidth(), game.getRenderer(), 0, game.heightPercentToPixels(15), true)
     , overText("OVER", game.heightPercentToPixels(15), fontPath, white, game.getGameWidth(), game.getRenderer(), 0, game.heightPercentToPixels(25), true)
+    , dragStartText("", game.heightPercentToPixels(2), fontPath, white, game.getGameWidth(), game.getRenderer(), game.widthPercentToPixels(0), game.heightPercentToPixels(10), false, false)
+    , dragDistanceText("", game.heightPercentToPixels(2), fontPath, white, game.getGameWidth(), game.getRenderer(), game.widthPercentToPixels(25), game.heightPercentToPixels(10), false, false)
+    , dragVertStartText("", game.heightPercentToPixels(2), fontPath, white, game.getGameWidth(), game.getRenderer(), game.widthPercentToPixels(50), game.heightPercentToPixels(10), false, false)
+    , dragVertDistanceText("", game.heightPercentToPixels(2), fontPath, white, game.getGameWidth(), game.getRenderer(), game.widthPercentToPixels(75), game.heightPercentToPixels(10), false, false)
+    , dropDelayText("", game.heightPercentToPixels(2), fontPath, white, game.getGameWidth(), game.getRenderer(), game.widthPercentToPixels(0), game.heightPercentToPixels(20), false, false)
+    , fingerHorizCoordText("", game.heightPercentToPixels(2), fontPath, white, game.getGameWidth(), game.getRenderer(), game.widthPercentToPixels(0), game.heightPercentToPixels(25), false, false)
+    , fpsText("", game.heightPercentToPixels(2), fontPath, white, game.getGameWidth(), game.getRenderer(), game.widthPercentToPixels(25), game.heightPercentToPixels(0), false, false)
+    , pieceMovedText("", game.heightPercentToPixels(2), fontPath, white, game.getGameWidth(), game.getRenderer(), game.widthPercentToPixels(0), game.heightPercentToPixels(30), false, false)
+    , screenResText("", game.heightPercentToPixels(2), fontPath, white, game.getGameWidth(), game.getRenderer(), game.widthPercentToPixels(0), game.heightPercentToPixels(40), false, false)
 {
     isRunning = true;
 
@@ -363,39 +371,28 @@ void StackBlox::renderStackBlox()
         overText.render();
     }
 
-    fpsText.render();
+    if (hasTouchscreen)
+    {
+        dragStartText.updateText(std::string{"dragStart: " + std::to_string(dragStart)}.c_str());
+        dragDistanceText.updateText(std::string{"dragDistance: " + std::to_string(dragDistance)}.c_str());
+        dragVertStartText.updateText(std::string{"dragVertStart: " + std::to_string(dragVertStart)}.c_str());
+        dragVertDistanceText.updateText(std::string{"dragVertDistance: " + std::to_string(dragVertDistance)}.c_str());
+        dragVertDistanceText.updateText(std::string{"dragVertDistance: " + std::to_string(dragVertDistance)}.c_str());
+        pieceMovedText.updateText(std::string{"x: " + std::to_string(event.tfinger.x)}.c_str());
+        dragStartText.render();
+        dragDistanceText.render();
+        dragVertStartText.render();
+        dragVertDistanceText.render();
+        fingerHorizCoordText.render();
+        pieceMovedText.render();
+    }
+
+    dropDelayText.updateText(std::string{"dropDelay: " + std::to_string(well.getDropDelay().count())}.c_str());
+    screenResText.updateText(std::string{std::to_string(game.getScreenWidth()) + " x " + std::to_string(game.getScreenHeight())}.c_str());
     scoreText.render();
-
-    // Render debug text
-    std::string scoreString = "score: " + std::to_string(getScore());
-    game.text(scoreString.c_str(), 5, white, 0, game.heightPercentToPixels(0), false);
-    std::string resString = std::to_string(game.getScreenWidth()) + " x " + std::to_string(game.getScreenHeight());
-    game.text(resString.c_str(), 5, white, 0, game.heightPercentToPixels(5), false);
-    std::string fpsString = std::to_string(game.getFPS()) + " fps";
-    game.text(fpsString.c_str(), 5, white, 0, game.heightPercentToPixels(10), false);
-
-
-
-    /*std::string dropString = "drop delay: " + std::to_string(well.getDropDelay().count());
-    game.text(dropString.c_str(), 5, white, 0, game.heightPercentToPixels(5), false);*/
-
-    /*std::string xString = "x: " + std::to_string(event.tfinger.x);
-    game.text(xString.c_str(), 5, white, 0, game.heightPercentToPixels(0), false);
-
-    std::string dragStartString = "dragStart: " + std::to_string(dragStart);
-    game.text(dragStartString.c_str(), 5, white, 0, game.heightPercentToPixels(5), false);
-
-    std::string dragDistanceString = "dragDistance: " + std::to_string(dragDistance);
-    game.text(dragDistanceString.c_str(), 5, white, 0, game.heightPercentToPixels(10), false);
-
-    std::string pieceMovedString = "pieceMoved: " + std::to_string(pieceMoved);
-    game.text(pieceMovedString.c_str(), 5, white, 0, game.heightPercentToPixels(15), false);
-
-    std::string dragVertStartString = "dragVertStart: " + std::to_string(dragVertStart);
-    game.text(dragVertStartString.c_str(), 5, white, 0, game.heightPercentToPixels(20), false);
-
-    std::string dragVertDistanceString = "dragVertDistance: " + std::to_string(dragVertDistance);
-    game.text(dragVertDistanceString.c_str(), 5, white, 0, game.heightPercentToPixels(25), false);*/
+    dropDelayText.render();
+    fpsText.render();
+    screenResText.render();
 
     game.renderPresent();
 }

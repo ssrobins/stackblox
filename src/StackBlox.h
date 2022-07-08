@@ -90,10 +90,20 @@ private:
 
     bool pieceMoved = false;
     std::chrono::steady_clock::time_point touchTime;
+
     float dragStart = 0;
     float dragVertStart = 0;
     float dragDistance = 0;
     float dragVertDistance = 0;
+
+    Text dragStartText;
+    Text dragDistanceText;
+    Text dragVertStartText;
+    Text dragVertDistanceText;
+    Text dropDelayText;
+    Text fingerHorizCoordText;
+    Text pieceMovedText;
+    Text screenResText;
 
     Well well;
 
