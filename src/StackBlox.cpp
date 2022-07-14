@@ -24,7 +24,7 @@ ControlText::ControlText(const bool hasTouchscreen)
 }
 
 TitleScreen::TitleScreen(const Game& game, const bool hasTouchscreen)
-    : fontPath(game.getBasePath() + "assets/OpenSans-Regular.ttf")
+    : fontPath(Game::getBasePath() + "assets/OpenSans-Regular.ttf")
     , controlText(hasTouchscreen)
     , titleText("StackBlox", game.heightPercentToPixels(13), fontPath, white, game.getGameWidth(), game.getRenderer(), game.widthPercentToPixels(0), game.heightPercentToPixels(9), true)
     , controlHeadingText("Controls", game.heightPercentToPixels(5), fontPath, white, game.getGameWidth(), game.getRenderer(), game.widthPercentToPixels(15), game.heightPercentToPixels(32))
@@ -66,7 +66,7 @@ StackBlox::StackBlox(const int numTilesWidth, const int numTilesHeight, const ch
     , well(numTilesWidth, numTilesHeight)
     , showTitleScreen(true)
     , titleScreen(game, hasTouchscreen)
-    , fontPath(game.getBasePath() + "assets/OpenSans-Regular.ttf")
+    , fontPath(Game::getBasePath() + "assets/OpenSans-Regular.ttf")
     , scoreText(std::string{"score: " + std::to_string(getScore())}.c_str(), game.heightPercentToPixels(3), fontPath, white, game.getGameWidth(), game.getRenderer(), game.widthPercentToPixels(1), game.heightPercentToPixels(0))
     , gameText("GAME", game.heightPercentToPixels(15), fontPath, white, game.getGameWidth(), game.getRenderer(), 0, game.heightPercentToPixels(15), true)
     , overText("OVER", game.heightPercentToPixels(15), fontPath, white, game.getGameWidth(), game.getRenderer(), 0, game.heightPercentToPixels(25), true)
