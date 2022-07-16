@@ -96,22 +96,20 @@ private:
     float dragDistance = 0;
     float dragVertDistance = 0;
 
-    Text dragStartText;
-    Text dragDistanceText;
-    Text dragVertStartText;
-    Text dragVertDistanceText;
-    Text dropDelayText;
-    Text fingerHorizCoordText;
-    Text pieceMovedText;
-    Text screenResText;
-
     Well well;
 
     bool isPlayingMusic;
     bool showTitleScreen;
 
-    Text fpsText;
     Text scoreText;
     Text gameText;
     Text overText;
+    Text fpsText;
+    Text screenResText;
+    Text dropDelayText;
+    Text dragStartText;
+    Text dragDistanceText;
+    Text pieceMovedText;
+    Text dragVertStartText;
+    Text dragVertDistanceText;
 };

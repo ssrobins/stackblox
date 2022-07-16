@@ -70,15 +70,14 @@ StackBlox::StackBlox(const int numTilesWidth, const int numTilesHeight, const ch
     , scoreText(std::string{"score: " + std::to_string(getScore())}.c_str(), game.heightPercentToPixels(3), fontPath, white, game.getGameWidth(), game.getRenderer(), game.widthPercentToPixels(1), game.heightPercentToPixels(0))
     , gameText("GAME", game.heightPercentToPixels(15), fontPath, white, game.getGameWidth(), game.getRenderer(), 0, game.heightPercentToPixels(15), true)
     , overText("OVER", game.heightPercentToPixels(15), fontPath, white, game.getGameWidth(), game.getRenderer(), 0, game.heightPercentToPixels(25), true)
-    , dragStartText("", game.heightPercentToPixels(2), fontPath, white, game.getGameWidth(), game.getRenderer(), game.widthPercentToPixels(0), game.heightPercentToPixels(10), false, false)
-    , dragDistanceText("", game.heightPercentToPixels(2), fontPath, white, game.getGameWidth(), game.getRenderer(), game.widthPercentToPixels(25), game.heightPercentToPixels(10), false, false)
-    , dragVertStartText("", game.heightPercentToPixels(2), fontPath, white, game.getGameWidth(), game.getRenderer(), game.widthPercentToPixels(50), game.heightPercentToPixels(10), false, false)
-    , dragVertDistanceText("", game.heightPercentToPixels(2), fontPath, white, game.getGameWidth(), game.getRenderer(), game.widthPercentToPixels(75), game.heightPercentToPixels(10), false, false)
-    , dropDelayText("", game.heightPercentToPixels(2), fontPath, white, game.getGameWidth(), game.getRenderer(), game.widthPercentToPixels(0), game.heightPercentToPixels(20), false, false)
-    , fingerHorizCoordText("", game.heightPercentToPixels(2), fontPath, white, game.getGameWidth(), game.getRenderer(), game.widthPercentToPixels(0), game.heightPercentToPixels(25), false, false)
-    , fpsText("", game.heightPercentToPixels(2), fontPath, white, game.getGameWidth(), game.getRenderer(), game.widthPercentToPixels(25), game.heightPercentToPixels(0), false, false)
-    , pieceMovedText("", game.heightPercentToPixels(2), fontPath, white, game.getGameWidth(), game.getRenderer(), game.widthPercentToPixels(0), game.heightPercentToPixels(30), false, false)
-    , screenResText("", game.heightPercentToPixels(2), fontPath, white, game.getGameWidth(), game.getRenderer(), game.widthPercentToPixels(0), game.heightPercentToPixels(40), false, false)
+    , fpsText("", game.heightPercentToPixels(2), fontPath, white, game.getGameWidth(), game.getRenderer(), game.widthPercentToPixels(25), game.heightPercentToPixels(1), false, false)
+    , screenResText(std::string{"res: " + std::to_string(game.getScreenWidth()) + " x " + std::to_string(game.getScreenHeight())}.c_str(), game.heightPercentToPixels(2), fontPath, white, game.getGameWidth(), game.getRenderer(), game.widthPercentToPixels(35), game.heightPercentToPixels(1))
+    , dropDelayText("", game.heightPercentToPixels(2), fontPath, white, game.getGameWidth(), game.getRenderer(), game.widthPercentToPixels(56), game.heightPercentToPixels(1), false, false)
+    , dragStartText("", game.heightPercentToPixels(2), fontPath, white, game.getGameWidth(), game.getRenderer(), game.widthPercentToPixels(25), game.heightPercentToPixels(3), false, false)
+    , dragDistanceText("", game.heightPercentToPixels(2), fontPath, white, game.getGameWidth(), game.getRenderer(), game.widthPercentToPixels(50), game.heightPercentToPixels(3), false, false)
+    , pieceMovedText("", game.heightPercentToPixels(2), fontPath, white, game.getGameWidth(), game.getRenderer(), game.widthPercentToPixels(73), game.heightPercentToPixels(3), false, false)
+    , dragVertStartText("", game.heightPercentToPixels(2), fontPath, white, game.getGameWidth(), game.getRenderer(), game.widthPercentToPixels(25), game.heightPercentToPixels(5), false, false)
+    , dragVertDistanceText("", game.heightPercentToPixels(2), fontPath, white, game.getGameWidth(), game.getRenderer(), game.widthPercentToPixels(54), game.heightPercentToPixels(5), false, false)
 {
     isRunning = true;
 
@@ -256,8 +255,6 @@ void StackBlox::update()
     {
         updateStackBlox();
     }
-
-    fpsText.updateText(std::string{std::to_string(game.getFPS()) + " fps"}.c_str());
 }
 
 void StackBlox::updateStackBlox()
@@ -291,6 +288,8 @@ void StackBlox::updateStackBlox()
 void StackBlox::render()
 {
     game.renderSetViewport();
+
+    fpsText.updateText(std::string{std::to_string(game.getFPS()) + " fps"}.c_str());
 
     if (showTitle())
     {
@@ -374,21 +373,18 @@ void StackBlox::renderStackBlox()
     if (hasTouchscreen)
     {
         dragStartText.updateText(std::string{"dragStart: " + std::to_string(dragStart)}.c_str());
-        dragDistanceText.updateText(std::string{"dragDistance: " + std::to_string(dragDistance)}.c_str());
+        dragDistanceText.updateText(std::string{"dragDist: " + std::to_string(dragDistance)}.c_str());
+        pieceMovedText.updateText(std::string{"pieceMoved: " + std::to_string(pieceMoved)}.c_str());
         dragVertStartText.updateText(std::string{"dragVertStart: " + std::to_string(dragVertStart)}.c_str());
-        dragVertDistanceText.updateText(std::string{"dragVertDistance: " + std::to_string(dragVertDistance)}.c_str());
-        dragVertDistanceText.updateText(std::string{"dragVertDistance: " + std::to_string(dragVertDistance)}.c_str());
-        pieceMovedText.updateText(std::string{"x: " + std::to_string(event.tfinger.x)}.c_str());
+        dragVertDistanceText.updateText(std::string{"dragVertDist: " + std::to_string(dragVertDistance)}.c_str());
         dragStartText.render();
         dragDistanceText.render();
+        pieceMovedText.render();
         dragVertStartText.render();
         dragVertDistanceText.render();
-        fingerHorizCoordText.render();
-        pieceMovedText.render();
     }
 
     dropDelayText.updateText(std::string{"dropDelay: " + std::to_string(well.getDropDelay().count())}.c_str());
-    screenResText.updateText(std::string{std::to_string(game.getScreenWidth()) + " x " + std::to_string(game.getScreenHeight())}.c_str());
     scoreText.render();
     dropDelayText.render();
     fpsText.render();
