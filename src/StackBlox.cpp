@@ -289,7 +289,8 @@ void StackBlox::render()
 {
     game.renderSetViewport();
 
-    fpsText.updateText(std::string{std::to_string(game.getFPS()) + " fps"}.c_str());
+    if (showDebugText)
+        fpsText.updateText(std::string{std::to_string(game.getFPS()) + " fps"}.c_str());
 
     if (showTitle())
     {
@@ -307,7 +308,9 @@ void StackBlox::renderTitleScreen()
     game.setRenderDrawColor({ 0, 0, 0, 255 });
     game.renderClear();
 
-    fpsText.render();
+    if (showDebugText)
+        fpsText.render();
+
     titleScreen.render();
 
     game.renderPresent();
@@ -364,31 +367,35 @@ void StackBlox::renderStackBlox()
         game.renderFillRect(rect, { color.r, color.g, color.b, color.a });
     }
 
+    scoreText.render();
+
     if (over())
     {
         gameText.render();
         overText.render();
     }
 
-    if (hasTouchscreen)
+    if (showDebugText)
     {
-        dragStartText.updateText(std::string{"dragStart: " + std::to_string(dragStart)}.c_str());
-        dragDistanceText.updateText(std::string{"dragDist: " + std::to_string(dragDistance)}.c_str());
-        pieceMovedText.updateText(std::string{"pieceMoved: " + std::to_string(pieceMoved)}.c_str());
-        dragVertStartText.updateText(std::string{"dragVertStart: " + std::to_string(dragVertStart)}.c_str());
-        dragVertDistanceText.updateText(std::string{"dragVertDist: " + std::to_string(dragVertDistance)}.c_str());
-        dragStartText.render();
-        dragDistanceText.render();
-        pieceMovedText.render();
-        dragVertStartText.render();
-        dragVertDistanceText.render();
-    }
+        fpsText.render();
+        screenResText.render();
+        dropDelayText.updateText(std::string{"dropDelay: " + std::to_string(well.getDropDelay().count())}.c_str());
+        dropDelayText.render();
 
-    dropDelayText.updateText(std::string{"dropDelay: " + std::to_string(well.getDropDelay().count())}.c_str());
-    scoreText.render();
-    dropDelayText.render();
-    fpsText.render();
-    screenResText.render();
+        if (hasTouchscreen)
+        {
+            dragStartText.updateText(std::string{"dragStart: " + std::to_string(dragStart)}.c_str());
+            dragStartText.render();
+            dragDistanceText.updateText(std::string{"dragDist: " + std::to_string(dragDistance)}.c_str());
+            dragDistanceText.render();
+            pieceMovedText.updateText(std::string{"pieceMoved: " + std::to_string(pieceMoved)}.c_str());
+            pieceMovedText.render();
+            dragVertStartText.updateText(std::string{"dragVertStart: " + std::to_string(dragVertStart)}.c_str());
+            dragVertStartText.render();
+            dragVertDistanceText.updateText(std::string{"dragVertDist: " + std::to_string(dragVertDistance)}.c_str());
+            dragVertDistanceText.render();
+        }
+    }
 
     game.renderPresent();
 }

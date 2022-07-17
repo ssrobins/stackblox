@@ -101,6 +101,7 @@ private:
     bool isPlayingMusic;
     bool showTitleScreen;
 
+    bool showDebugText = false;
     Text scoreText;
     Text gameText;
     Text overText;
