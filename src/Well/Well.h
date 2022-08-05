@@ -37,7 +37,7 @@ private:
     const std::chrono::milliseconds dropDelayInterval = std::chrono::milliseconds{ 5 };
     const std::chrono::milliseconds dropDelayLimit = std::chrono::milliseconds{ 100 };
     const std::chrono::milliseconds dropDelayForce = std::chrono::milliseconds{ 50 };
-    std::chrono::milliseconds dropDelayNormal = dropDelayDefault + dropDelayInterval;
+    std::chrono::milliseconds dropDelayNormal = dropDelayDefault;
     std::chrono::milliseconds dropDelay;
     int score;
     const int lineScore = 100;

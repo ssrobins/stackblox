@@ -268,6 +268,7 @@ void StackBlox::updateStackBlox()
         if (noPiece())
         {
             scoreText.updateText(std::string{"score: " + std::to_string(getScore())}.c_str());
+            well.decreaseDropDelay();
         }
     }
 

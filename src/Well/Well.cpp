@@ -139,7 +139,6 @@ void Well::movePieceDown(int y)
 
 void Well::newPiece(const Piece& newPiece)
 {
-    decreaseDropDelay();
     piece = newPiece;
     wellHasNoPiece = false;
 }
@@ -155,7 +154,7 @@ void Well::reset()
     }
 
     wellIsFull = false;
-    dropDelayNormal = dropDelayDefault + dropDelayInterval;
+    dropDelayNormal = dropDelayDefault;
     score = 0;
 }
 
