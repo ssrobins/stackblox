@@ -240,7 +240,7 @@ void StackBlox::newPiece(const Piece& piece)
     pieceMoved = false;
     dragDistance = 0;
     dragVertDistance = 0;
-    //assert(moveOffset == 0); // FIX BEFORE MERGE!
+    assert(moveOffset == 0);
     assert(moveOffsetTouch == 0);
 }
 
