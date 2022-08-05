@@ -67,7 +67,7 @@ StackBlox::StackBlox(const int numTilesWidth, const int numTilesHeight, const ch
     , showTitleScreen(true)
     , titleScreen(game, hasTouchscreen)
     , fontPath(Game::getBasePath() + "assets/OpenSans-Regular.ttf")
-    , scoreText(std::string{"score: " + std::to_string(getScore())}.c_str(), game.heightPercentToPixels(3), fontPath, white, game.getGameWidth(), game.getRenderer(), game.widthPercentToPixels(1), game.heightPercentToPixels(0))
+    , scoreText(std::string{std::to_string(getScore())}.c_str(), game.heightPercentToPixels(4), fontPath, white, game.getGameWidth(), game.getRenderer(), game.widthPercentToPixels(2), game.heightPercentToPixels(0))
     , gameText("GAME", game.heightPercentToPixels(15), fontPath, white, game.getGameWidth(), game.getRenderer(), 0, game.heightPercentToPixels(15), true)
     , overText("OVER", game.heightPercentToPixels(15), fontPath, white, game.getGameWidth(), game.getRenderer(), 0, game.heightPercentToPixels(25), true)
     , fpsText("", game.heightPercentToPixels(2), fontPath, white, game.getGameWidth(), game.getRenderer(), game.widthPercentToPixels(25), game.heightPercentToPixels(1), false, false)
@@ -267,7 +267,7 @@ void StackBlox::updateStackBlox()
         dropTime += well.getDropDelay();
         if (noPiece())
         {
-            scoreText.updateText(std::string{"score: " + std::to_string(getScore())}.c_str());
+            scoreText.updateText(std::string{std::to_string(getScore())}.c_str());
             well.decreaseDropDelay();
         }
     }
@@ -414,7 +414,7 @@ bool StackBlox::over()
 void StackBlox::reset()
 {
     well.reset();
-    scoreText.updateText(std::string{"score: " + std::to_string(getScore())}.c_str());
+    scoreText.updateText(std::string{std::to_string(getScore())}.c_str());
 
     dropTime = time + well.quickDrop(false);
     showTitleScreen = true;
