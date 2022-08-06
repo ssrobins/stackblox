@@ -81,12 +81,6 @@ int main(int argc, char *argv[])
                 }
             }
 
-            if (stackblox.over())
-            {
-                SDL_Delay(3000); // in milliseconds
-                stackblox.reset();
-            }
-
             frameTime = SDL_GetTicks() - frameStart;
             if (frameDelay > frameTime)
             {

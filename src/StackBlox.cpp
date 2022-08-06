@@ -13,6 +13,7 @@ ControlText::ControlText(const bool hasTouchscreen)
         rotateControls = "Touch";
         dropControls = "Drag Down";
         startControls = "Touch to start";
+        continueControls = "Touch to continue";
     }
     else
     {
@@ -20,6 +21,7 @@ ControlText::ControlText(const bool hasTouchscreen)
         rotateControls = "Spacebar";
         dropControls = "Down";
         startControls = "Press Enter to start";
+        continueControls = "Press Enter to continue";
     }
 }
 
@@ -67,9 +69,12 @@ StackBlox::StackBlox(const int numTilesWidth, const int numTilesHeight, const ch
     , showTitleScreen(true)
     , titleScreen(game, hasTouchscreen)
     , fontPath(Game::getBasePath() + "assets/OpenSans-Regular.ttf")
+    , controlText(hasTouchscreen)
     , scoreText(std::string{std::to_string(getScore())}.c_str(), game.heightPercentToPixels(4), fontPath, white, game.getGameWidth(), game.getRenderer(), game.widthPercentToPixels(2), game.heightPercentToPixels(0))
     , gameText("GAME", game.heightPercentToPixels(15), fontPath, white, game.getGameWidth(), game.getRenderer(), 0, game.heightPercentToPixels(15), true)
     , overText("OVER", game.heightPercentToPixels(15), fontPath, white, game.getGameWidth(), game.getRenderer(), 0, game.heightPercentToPixels(25), true)
+    , finalScoreText("", game.heightPercentToPixels(4), fontPath, white, game.getGameWidth(), game.getRenderer(), 0, game.heightPercentToPixels(49), true, false)
+    , continueControlText(controlText.continueControls, game.heightPercentToPixels(6), fontPath, red, game.getGameWidth(), game.getRenderer(), 0, game.heightPercentToPixels(65), true)
     , fpsText("", game.heightPercentToPixels(2), fontPath, white, game.getGameWidth(), game.getRenderer(), game.widthPercentToPixels(25), game.heightPercentToPixels(1), false, false)
     , screenResText(std::string{"res: " + std::to_string(game.getScreenWidth()) + " x " + std::to_string(game.getScreenHeight())}.c_str(), game.heightPercentToPixels(2), fontPath, white, game.getGameWidth(), game.getRenderer(), game.widthPercentToPixels(35), game.heightPercentToPixels(1))
     , dropDelayText("", game.heightPercentToPixels(2), fontPath, white, game.getGameWidth(), game.getRenderer(), game.widthPercentToPixels(56), game.heightPercentToPixels(1), false, false)
@@ -105,6 +110,11 @@ void StackBlox::handleEvents()
             {
                 showTitleScreen = false;
                 start();
+            }
+            else if (over())
+            {
+                showTitleScreen = true;
+                reset();
             }
             else
             {
@@ -180,6 +190,11 @@ void StackBlox::handleEvents()
                         showTitleScreen = false;
                         start();
                     }
+                    else if (over())
+                    {
+                        showTitleScreen = true;
+                        reset();
+                    }
                     break;
                 case SDLK_ESCAPE:
                     if (showTitleScreen)
@@ -251,7 +266,7 @@ bool StackBlox::noPiece()
 
 void StackBlox::update()
 {
-    if (!showTitle())
+    if (!showTitle() && !over())
     {
         updateStackBlox();
     }
@@ -368,12 +383,24 @@ void StackBlox::renderStackBlox()
         game.renderFillRect(rect, { color.r, color.g, color.b, color.a });
     }
 
-    scoreText.render();
-
     if (over())
     {
+        SDL_Rect overlay;
+        overlay.w = game.getGameWidth();
+        overlay.h = game.getGameHeight();
+        overlay.x = 0;
+        overlay.y = 0;
+        game.renderFillRect(overlay, { 0, 0, 0, 128 });
+
         gameText.render();
         overText.render();
+        finalScoreText.updateText(std::string{"Final score: " + std::to_string(well.getScore())}.c_str());
+        finalScoreText.render();
+        continueControlText.render();
+    }
+    else
+    {
+        scoreText.render();
     }
 
     if (showDebugText)

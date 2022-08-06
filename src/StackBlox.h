@@ -11,6 +11,7 @@ public:
     const char * rotateControls;
     const char * dropControls;
     const char * startControls;
+    const char * continueControls;
 };
 
 class TitleScreen
@@ -76,6 +77,7 @@ private:
 
     std::string fontPath;
     SDL_Color white = { 255, 255, 255, 255 };
+    SDL_Color red = { 255, 0, 0, 255 };
 
     Game game;
     TitleScreen titleScreen;
@@ -102,9 +104,12 @@ private:
     bool showTitleScreen;
 
     bool showDebugText = false;
+    ControlText controlText;
     Text scoreText;
     Text gameText;
     Text overText;
+    Text finalScoreText;
+    Text continueControlText;
     Text fpsText;
     Text screenResText;
     Text dropDelayText;
