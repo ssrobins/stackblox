@@ -3,6 +3,19 @@
 #include "Piece.h"
 #include <chrono>
 
+class Score
+{
+public:
+    Score();
+    const int getScore() const { return score; };
+    void resetScore() { score = 0; };
+    void setScore(int deleteLineCount, int dropDelayDiff);
+private:
+    int score;
+    const int lineScore = 100;
+    const int lineBonus = 25;
+};
+
 class Well
 {
 public:
@@ -39,7 +52,5 @@ private:
     const std::chrono::milliseconds dropDelayForce = std::chrono::milliseconds{ 50 };
     std::chrono::milliseconds dropDelayNormal = dropDelayDefault;
     std::chrono::milliseconds dropDelay;
-    int score;
-    const int lineScore = 100;
-    const int lineBonus = 25;
+    Score score;
 };

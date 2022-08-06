@@ -1,6 +1,16 @@
 #include "Well.h"
 #include "Piece.h"
 
+Score::Score()
+: score(0)
+{
+}
+
+void Score::setScore(int deleteLineCount, int dropDelayDiff)
+{
+    score += deleteLineCount * (lineScore + (deleteLineCount - 1) * lineBonus) + dropDelayDiff + 1;
+}
+
 Well::Well(const int numTilesWidth, const int numTilesHeight)
     : numTilesWidth(numTilesWidth), numTilesHeight(numTilesHeight)
     , wellVals(numTilesHeight, std::vector<Color>(numTilesWidth))
@@ -74,7 +84,7 @@ const std::chrono::milliseconds Well::getDropDelay() const
 
 const int Well::getScore() const
 {
-    return score;
+    return score.getScore();
 }
 
 std::chrono::milliseconds Well::decreaseDropDelay()
@@ -155,7 +165,7 @@ void Well::reset()
 
     wellIsFull = false;
     dropDelayNormal = dropDelayDefault;
-    score = 0;
+    score.resetScore();
 }
 
 void Well::rotatePiece()
@@ -193,7 +203,7 @@ void Well::deleteCompleteLines()
             deleteLineCount++;
         }
     }
-    score += deleteLineCount * (lineScore + (deleteLineCount - 1) * lineBonus) + (dropDelayDefault.count() - dropDelayNormal.count()) + 1;
+    score.setScore(deleteLineCount, dropDelayDefault.count() - dropDelayNormal.count());
 
     wellVals = wellValsModified;
 }
