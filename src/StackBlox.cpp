@@ -390,7 +390,7 @@ void StackBlox::renderStackBlox()
         overlay.h = game.getGameHeight();
         overlay.x = 0;
         overlay.y = 0;
-        game.renderFillRect(overlay, { 0, 0, 0, 128 });
+        game.renderFillRect(overlay, { 0, 0, 0, 160 });
 
         gameText.render();
         overText.render();
