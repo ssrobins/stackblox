@@ -1,6 +1,16 @@
 #include "Well.h"
 #include "Piece.h"
 
+Score::Score()
+: score(0)
+{
+}
+
+void Score::updateScore(unsigned int deleteLineCount, unsigned int dropDelayDiff)
+{
+    score += deleteLineCount * (lineScore + (deleteLineCount - 1) * lineBonus) + dropDelayDiff + 1;
+}
+
 Well::Well(const int numTilesWidth, const int numTilesHeight)
     : numTilesWidth(numTilesWidth), numTilesHeight(numTilesHeight)
     , wellVals(numTilesHeight, std::vector<Color>(numTilesWidth))
@@ -72,6 +82,11 @@ const std::chrono::milliseconds Well::getDropDelay() const
     return dropDelay;
 }
 
+const int Well::getScore() const
+{
+    return score.getScore();
+}
+
 std::chrono::milliseconds Well::decreaseDropDelay()
 {
     if (dropDelayNormal > dropDelayLimit)
@@ -134,7 +149,6 @@ void Well::movePieceDown(int y)
 
 void Well::newPiece(const Piece& newPiece)
 {
-    decreaseDropDelay();
     piece = newPiece;
     wellHasNoPiece = false;
 }
@@ -151,6 +165,7 @@ void Well::reset()
 
     wellIsFull = false;
     dropDelayNormal = dropDelayDefault;
+    score.reupdateScore();
 }
 
 void Well::rotatePiece()
@@ -168,6 +183,7 @@ void Well::rotatePiece()
 void Well::deleteCompleteLines()
 {
     std::vector<std::vector<Color>> wellValsModified = wellVals;
+    int deleteLineCount = 0;
 
     for (unsigned int y = 0; y < wellVals.size(); y++)
     {
@@ -184,8 +200,10 @@ void Well::deleteCompleteLines()
         {
             wellValsModified.erase(wellValsModified.begin() + y);
             wellValsModified.insert(wellValsModified.begin(), std::vector<Color>(numTilesWidth, { 0, 0, 0, 0 }));
+            deleteLineCount++;
         }
     }
+    score.updateScore(deleteLineCount, static_cast<unsigned int>(dropDelayDefault.count()) - static_cast<unsigned int>(dropDelayNormal.count()));
 
     wellVals = wellValsModified;
 }

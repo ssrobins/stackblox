@@ -5,6 +5,58 @@
 #include <assert.h>
 
 
+ControlText::ControlText(const bool hasTouchscreen)
+{
+    if (hasTouchscreen)
+    {
+        moveControls = "Drag Across";
+        rotateControls = "Touch";
+        dropControls = "Drag Down";
+        startControls = "Touch to start";
+        continueControls = "Touch to continue";
+    }
+    else
+    {
+        moveControls = "Left / Right";
+        rotateControls = "Spacebar";
+        dropControls = "Down";
+        startControls = "Press Enter to start";
+        continueControls = "Press Enter to continue";
+    }
+}
+
+TitleScreen::TitleScreen(const Game& game, const bool hasTouchscreen)
+    : fontPath(Game::getBasePath() + "assets/OpenSans-Regular.ttf")
+    , controlText(hasTouchscreen)
+    , titleText("StackBlox", game.heightPercentToPixels(13), fontPath, white, game.getGameWidth(), game.getRenderer(), game.widthPercentToPixels(0), game.heightPercentToPixels(9), true)
+    , controlHeadingText("Controls", game.heightPercentToPixels(5), fontPath, white, game.getGameWidth(), game.getRenderer(), game.widthPercentToPixels(15), game.heightPercentToPixels(32))
+    , moveControlText(controlText.moveControls, game.heightPercentToPixels(4), fontPath, white, game.getGameWidth(), game.getRenderer(), game.widthPercentToPixels(15), game.heightPercentToPixels(37))
+    , moveControlDescripText("Move piece", game.heightPercentToPixels(4), fontPath, white, game.getGameWidth(), game.getRenderer(), game.widthPercentToPixels(50), game.heightPercentToPixels(37))
+    , rotateControlText(controlText.rotateControls, game.heightPercentToPixels(4), fontPath, white, game.getGameWidth(), game.getRenderer(), game.widthPercentToPixels(15), game.heightPercentToPixels(42))
+    , rotateControlDescripText("Rotate piece", game.heightPercentToPixels(4), fontPath, white, game.getGameWidth(), game.getRenderer(), game.widthPercentToPixels(50), game.heightPercentToPixels(42))
+    , dropControlText(controlText.dropControls, game.heightPercentToPixels(4), fontPath, white, game.getGameWidth(), game.getRenderer(), game.widthPercentToPixels(15), game.heightPercentToPixels(47))
+    , dropControlDescripText("Drop piece faster", game.heightPercentToPixels(4), fontPath, white, game.getGameWidth(), game.getRenderer(), game.widthPercentToPixels(50), game.heightPercentToPixels(47))
+    , startControlText(controlText.startControls, game.heightPercentToPixels(6), fontPath, red, game.getGameWidth(), game.getRenderer(), game.widthPercentToPixels(0), game.heightPercentToPixels(65), true)
+    , versionText(("Version: " + versionMajor + "." + versionMinor + "." + versionPatch).c_str(), game.heightPercentToPixels(3), fontPath, white, game.getGameWidth(), game.getRenderer(), game.widthPercentToPixels(4), game.heightPercentToPixels(92))
+    , websiteText("dnqpy.com", game.heightPercentToPixels(3), fontPath, white, game.getGameWidth(), game.getRenderer(), game.widthPercentToPixels(4), game.heightPercentToPixels(95))
+{
+}
+
+void TitleScreen::render()
+{
+    titleText.render();
+    controlHeadingText.render();
+    moveControlText.render();
+    moveControlDescripText.render();
+    rotateControlText.render();
+    rotateControlDescripText.render();
+    dropControlText.render();
+    dropControlDescripText.render();
+    startControlText.render();
+    versionText.render();
+    websiteText.render();
+}
+
 StackBlox& StackBlox::getInstance(const int numTilesWidth, const int numTilesHeight, const char* title, bool fullscreen)
 {
     static StackBlox instance(numTilesWidth, numTilesHeight, title, fullscreen);
@@ -15,6 +67,22 @@ StackBlox::StackBlox(const int numTilesWidth, const int numTilesHeight, const ch
     : game(numTilesWidth, numTilesHeight, title, fullscreen)
     , well(numTilesWidth, numTilesHeight)
     , showTitleScreen(true)
+    , titleScreen(game, hasTouchscreen)
+    , fontPath(Game::getBasePath() + "assets/OpenSans-Regular.ttf")
+    , controlText(hasTouchscreen)
+    , scoreText(std::string{std::to_string(getScore())}.c_str(), game.heightPercentToPixels(4), fontPath, white, game.getGameWidth(), game.getRenderer(), game.widthPercentToPixels(2), game.heightPercentToPixels(0))
+    , gameText("GAME", game.heightPercentToPixels(15), fontPath, white, game.getGameWidth(), game.getRenderer(), 0, game.heightPercentToPixels(15), true)
+    , overText("OVER", game.heightPercentToPixels(15), fontPath, white, game.getGameWidth(), game.getRenderer(), 0, game.heightPercentToPixels(25), true)
+    , finalScoreText("", game.heightPercentToPixels(4), fontPath, white, game.getGameWidth(), game.getRenderer(), 0, game.heightPercentToPixels(49), true, false)
+    , continueControlText(controlText.continueControls, game.heightPercentToPixels(6), fontPath, red, game.getGameWidth(), game.getRenderer(), 0, game.heightPercentToPixels(65), true)
+    , fpsText("", game.heightPercentToPixels(2), fontPath, white, game.getGameWidth(), game.getRenderer(), game.widthPercentToPixels(25), game.heightPercentToPixels(1), false, false)
+    , screenResText(std::string{"res: " + std::to_string(game.getScreenWidth()) + " x " + std::to_string(game.getScreenHeight())}.c_str(), game.heightPercentToPixels(2), fontPath, white, game.getGameWidth(), game.getRenderer(), game.widthPercentToPixels(35), game.heightPercentToPixels(1))
+    , dropDelayText("", game.heightPercentToPixels(2), fontPath, white, game.getGameWidth(), game.getRenderer(), game.widthPercentToPixels(56), game.heightPercentToPixels(1), false, false)
+    , dragStartText("", game.heightPercentToPixels(2), fontPath, white, game.getGameWidth(), game.getRenderer(), game.widthPercentToPixels(25), game.heightPercentToPixels(3), false, false)
+    , dragDistanceText("", game.heightPercentToPixels(2), fontPath, white, game.getGameWidth(), game.getRenderer(), game.widthPercentToPixels(50), game.heightPercentToPixels(3), false, false)
+    , pieceMovedText("", game.heightPercentToPixels(2), fontPath, white, game.getGameWidth(), game.getRenderer(), game.widthPercentToPixels(73), game.heightPercentToPixels(3), false, false)
+    , dragVertStartText("", game.heightPercentToPixels(2), fontPath, white, game.getGameWidth(), game.getRenderer(), game.widthPercentToPixels(25), game.heightPercentToPixels(5), false, false)
+    , dragVertDistanceText("", game.heightPercentToPixels(2), fontPath, white, game.getGameWidth(), game.getRenderer(), game.widthPercentToPixels(54), game.heightPercentToPixels(5), false, false)
 {
     isRunning = true;
 
@@ -42,6 +110,11 @@ void StackBlox::handleEvents()
             {
                 showTitleScreen = false;
                 start();
+            }
+            else if (over())
+            {
+                showTitleScreen = true;
+                reset();
             }
             else
             {
@@ -117,6 +190,11 @@ void StackBlox::handleEvents()
                         showTitleScreen = false;
                         start();
                     }
+                    else if (over())
+                    {
+                        showTitleScreen = true;
+                        reset();
+                    }
                     break;
                 case SDLK_ESCAPE:
                     if (showTitleScreen)
@@ -188,12 +266,25 @@ bool StackBlox::noPiece()
 
 void StackBlox::update()
 {
+    if (!showTitle() && !over())
+    {
+        updateStackBlox();
+    }
+}
+
+void StackBlox::updateStackBlox()
+{
     time = std::chrono::steady_clock::now();
 
     if (time > dropTime)
     {
         well.movePieceDown(1);
         dropTime += well.getDropDelay();
+        if (noPiece())
+        {
+            scoreText.updateText(std::string{std::to_string(getScore())}.c_str());
+            well.decreaseDropDelay();
+        }
     }
 
     if (moveOffsetTouch != 0)
@@ -214,6 +305,9 @@ void StackBlox::render()
 {
     game.renderSetViewport();
 
+    if (showDebugText)
+        fpsText.updateText(std::string{std::to_string(game.getFPS()) + " fps"}.c_str());
+
     if (showTitle())
     {
         renderTitleScreen();
@@ -227,51 +321,13 @@ void StackBlox::render()
 
 void StackBlox::renderTitleScreen()
 {
-    SDL_Color white = { 255, 255, 255, 255 };
-    SDL_Color red = { 255, 0, 0, 255 };
-
     game.setRenderDrawColor({ 0, 0, 0, 255 });
     game.renderClear();
 
-    game.text("StackBlox", 13, white, 0, game.heightPercentToPixels(9), true);
+    if (showDebugText)
+        fpsText.render();
 
-    game.text("Controls", 5, white, game.widthPercentToPixels(15), game.heightPercentToPixels(32));
-
-    const char * moveControls;
-    const char * rotateControls;
-    const char * dropControls;
-    const char * startControls;
-
-    if (hasTouchscreen)
-    {
-        moveControls = "Drag Across";
-        rotateControls = "Touch";
-        dropControls = "Drag Down";
-        startControls = "Touch to start";
-    }
-    else
-    {
-        moveControls = "Left / Right";
-        rotateControls = "Spacebar";
-        dropControls = "Down";
-        startControls = "Press Enter to start";
-    }
-
-    game.text(moveControls, 4, white, game.widthPercentToPixels(15), game.heightPercentToPixels(37));
-    game.text("Move piece", 4, white, game.widthPercentToPixels(50), game.heightPercentToPixels(37));
-
-    game.text(rotateControls, 4, white, game.widthPercentToPixels(15), game.heightPercentToPixels(42));
-    game.text("Rotate piece", 4, white, game.widthPercentToPixels(50), game.heightPercentToPixels(42));
-
-    game.text(dropControls, 4, white, game.widthPercentToPixels(15), game.heightPercentToPixels(47));
-    game.text("Drop piece faster", 4, white, game.widthPercentToPixels(50), game.heightPercentToPixels(47));
-
-    game.text(startControls, 6, red, 0, game.heightPercentToPixels(65), true);
-
-    const std::string versionString = "Version: " + versionMajor + "." + versionMinor + "." + versionPatch;
-    game.text(versionString.c_str(), 3, white, game.widthPercentToPixels(4), game.heightPercentToPixels(92));
-
-    game.text("dnqpy.com", 3, white, game.widthPercentToPixels(4), game.heightPercentToPixels(95));
+    titleScreen.render();
 
     game.renderPresent();
 }
@@ -329,30 +385,52 @@ void StackBlox::renderStackBlox()
 
     if (over())
     {
-        game.text("GAME", 15, white, 0, game.heightPercentToPixels(15), true);
-        game.text("OVER", 15, white, 0, game.heightPercentToPixels(25), true);
+        SDL_Rect overlay;
+        overlay.w = game.getGameWidth();
+        overlay.h = game.getGameHeight();
+        overlay.x = 0;
+        overlay.y = 0;
+        game.renderFillRect(overlay, { 0, 0, 0, 160 });
+
+        gameText.render();
+        overText.render();
+        finalScoreText.updateText(std::string{"Final score: " + std::to_string(well.getScore())}.c_str());
+        finalScoreText.render();
+        continueControlText.render();
+    }
+    else
+    {
+        scoreText.render();
     }
 
-    // Render debug text
-    /*std::string xString = "x: " + std::to_string(event.tfinger.x);
-    game.text(xString.c_str(), 5, white, 0, game.heightPercentToPixels(0), false);
+    if (showDebugText)
+    {
+        fpsText.render();
+        screenResText.render();
+        dropDelayText.updateText(std::string{"dropDelay: " + std::to_string(well.getDropDelay().count())}.c_str());
+        dropDelayText.render();
 
-    std::string dragStartString = "dragStart: " + std::to_string(dragStart);
-    game.text(dragStartString.c_str(), 5, white, 0, game.heightPercentToPixels(5), false);
-
-    std::string dragDistanceString = "dragDistance: " + std::to_string(dragDistance);
-    game.text(dragDistanceString.c_str(), 5, white, 0, game.heightPercentToPixels(10), false);
-
-    std::string pieceMovedString = "pieceMoved: " + std::to_string(pieceMoved);
-    game.text(pieceMovedString.c_str(), 5, white, 0, game.heightPercentToPixels(15), false);
-
-    std::string dragVertStartString = "dragVertStart: " + std::to_string(dragVertStart);
-    game.text(dragVertStartString.c_str(), 5, white, 0, game.heightPercentToPixels(20), false);
-
-    std::string dragVertDistanceString = "dragVertDistance: " + std::to_string(dragVertDistance);
-    game.text(dragVertDistanceString.c_str(), 5, white, 0, game.heightPercentToPixels(25), false);*/
+        if (hasTouchscreen)
+        {
+            dragStartText.updateText(std::string{"dragStart: " + std::to_string(dragStart)}.c_str());
+            dragStartText.render();
+            dragDistanceText.updateText(std::string{"dragDist: " + std::to_string(dragDistance)}.c_str());
+            dragDistanceText.render();
+            pieceMovedText.updateText(std::string{"pieceMoved: " + std::to_string(pieceMoved)}.c_str());
+            pieceMovedText.render();
+            dragVertStartText.updateText(std::string{"dragVertStart: " + std::to_string(dragVertStart)}.c_str());
+            dragVertStartText.render();
+            dragVertDistanceText.updateText(std::string{"dragVertDist: " + std::to_string(dragVertDistance)}.c_str());
+            dragVertDistanceText.render();
+        }
+    }
 
     game.renderPresent();
+}
+
+const int StackBlox::getScore() const
+{
+    return well.getScore();
 }
 
 bool StackBlox::over()
@@ -363,6 +441,8 @@ bool StackBlox::over()
 void StackBlox::reset()
 {
     well.reset();
+    scoreText.updateText(std::string{std::to_string(getScore())}.c_str());
+
     dropTime = time + well.quickDrop(false);
     showTitleScreen = true;
 }

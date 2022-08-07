@@ -3,6 +3,41 @@
 #include "Game.h"
 #include "Well.h"
 
+class ControlText
+{
+public:
+    ControlText(const bool hasTouchscreen);
+    const char * moveControls;
+    const char * rotateControls;
+    const char * dropControls;
+    const char * startControls;
+    const char * continueControls;
+};
+
+class TitleScreen
+{
+public:
+    TitleScreen(const Game& game, const bool hasTouchscreen);
+    ~TitleScreen() {};
+    void render();
+private:
+    std::string fontPath;
+    SDL_Color white = { 255, 255, 255, 255 };
+    SDL_Color red = { 255, 0, 0, 255 };
+    ControlText controlText;
+    Text titleText;
+    Text controlHeadingText;
+    Text moveControlText;
+    Text moveControlDescripText;
+    Text rotateControlText;
+    Text rotateControlDescripText;
+    Text dropControlText;
+    Text dropControlDescripText;
+    Text startControlText;
+    Text versionText;
+    Text websiteText;
+};
+
 class StackBlox
 {
 public:
@@ -13,11 +48,13 @@ public:
 
     void handleEvents();
     void update();
+    void updateStackBlox();
     bool running() { return isRunning; }
     bool showTitle() { return showTitleScreen; }
     bool playingMusic() { return isPlayingMusic; }
     bool noPiece();
     void newPiece(const Piece& piece);
+    const int getScore() const;
     bool over();
 
     void reset();
@@ -38,7 +75,12 @@ private:
         false;
     #endif
 
+    std::string fontPath;
+    SDL_Color white = { 255, 255, 255, 255 };
+    SDL_Color red = { 255, 0, 0, 255 };
+
     Game game;
+    TitleScreen titleScreen;
 
     SDL_Event event;
     bool isRunning;
@@ -50,6 +92,7 @@ private:
 
     bool pieceMoved = false;
     std::chrono::steady_clock::time_point touchTime;
+
     float dragStart = 0;
     float dragVertStart = 0;
     float dragDistance = 0;
@@ -59,4 +102,20 @@ private:
 
     bool isPlayingMusic;
     bool showTitleScreen;
+
+    bool showDebugText = false;
+    ControlText controlText;
+    Text scoreText;
+    Text gameText;
+    Text overText;
+    Text finalScoreText;
+    Text continueControlText;
+    Text fpsText;
+    Text screenResText;
+    Text dropDelayText;
+    Text dragStartText;
+    Text dragDistanceText;
+    Text pieceMovedText;
+    Text dragVertStartText;
+    Text dragVertDistanceText;
 };

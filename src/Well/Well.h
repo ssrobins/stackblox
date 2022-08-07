@@ -3,6 +3,19 @@
 #include "Piece.h"
 #include <chrono>
 
+class Score
+{
+public:
+    Score();
+    const unsigned int getScore() const { return score; };
+    void reupdateScore() { score = 0; };
+    void updateScore(unsigned int deleteLineCount, unsigned int dropDelayDiff);
+private:
+    int score;
+    const int lineScore = 100;
+    const int lineBonus = 25;
+};
+
 class Well
 {
 public:
@@ -11,6 +24,7 @@ public:
     bool collision();
     bool isFull() const;
     const std::chrono::milliseconds getDropDelay() const;
+    const int getScore() const;
     std::chrono::milliseconds decreaseDropDelay();
     std::chrono::milliseconds quickDrop(bool force);
     std::vector<std::vector<Color>> getWellValues() const;
@@ -38,4 +52,5 @@ private:
     const std::chrono::milliseconds dropDelayForce = std::chrono::milliseconds{ 50 };
     std::chrono::milliseconds dropDelayNormal = dropDelayDefault;
     std::chrono::milliseconds dropDelay;
+    Score score;
 };

@@ -2,6 +2,78 @@
 #include "gtest/gtest.h"
 
 
+TEST(score, zero)
+{
+    Score score;
+    EXPECT_EQ(0, score.getScore());
+}
+
+TEST(score, firstPiece)
+{
+    Score score;
+    score.updateScore(0, 0);
+    EXPECT_EQ(1, score.getScore());
+}
+
+TEST(score, maxDropDelay)
+{
+    Score score;
+    score.updateScore(0, 900);
+    EXPECT_EQ(901, score.getScore());
+}
+
+TEST(score, oneLine)
+{
+    Score score;
+    score.updateScore(1, 0);
+    EXPECT_EQ(101, score.getScore());
+}
+
+TEST(score, twoLines)
+{
+    Score score;
+    score.updateScore(2, 0);
+    EXPECT_EQ(251, score.getScore());
+}
+
+TEST(score, threeLines)
+{
+    Score score;
+    score.updateScore(3, 0);
+    EXPECT_EQ(451, score.getScore());
+}
+
+TEST(score, fourLines)
+{
+    Score score;
+    score.updateScore(4, 0);
+    EXPECT_EQ(701, score.getScore());
+}
+
+TEST(score, fiveLines)
+{
+    Score score;
+    score.updateScore(5, 0);
+    EXPECT_EQ(1001, score.getScore());
+}
+
+TEST(score, maxPieceScore)
+{
+    Score score;
+    score.updateScore(5, 900);
+    EXPECT_EQ(1901, score.getScore());
+}
+
+TEST(score, overflow)
+{
+    Score score;
+    score.updateScore(0, 4294967294);
+    EXPECT_EQ(4294967295, score.getScore());
+    score.updateScore(0, 0);
+    EXPECT_EQ(0, score.getScore());
+}
+
+
 TEST(collision, blankNoPiece)
 {
     Well well(0, 0);
