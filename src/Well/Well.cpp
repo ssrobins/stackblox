@@ -6,7 +6,7 @@ Score::Score()
 {
 }
 
-void Score::updateScore(int deleteLineCount, int dropDelayDiff)
+void Score::updateScore(unsigned int deleteLineCount, unsigned int dropDelayDiff)
 {
     score += deleteLineCount * (lineScore + (deleteLineCount - 1) * lineBonus) + dropDelayDiff + 1;
 }
@@ -203,7 +203,7 @@ void Well::deleteCompleteLines()
             deleteLineCount++;
         }
     }
-    score.updateScore(deleteLineCount, dropDelayDefault.count() - dropDelayNormal.count());
+    score.updateScore(deleteLineCount, static_cast<unsigned int>(dropDelayDefault.count()) - static_cast<unsigned int>(dropDelayNormal.count()));
 
     wellVals = wellValsModified;
 }

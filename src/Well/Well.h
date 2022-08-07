@@ -9,7 +9,7 @@ public:
     Score();
     const unsigned int getScore() const { return score; };
     void reupdateScore() { score = 0; };
-    void updateScore(int deleteLineCount, int dropDelayDiff);
+    void updateScore(unsigned int deleteLineCount, unsigned int dropDelayDiff);
 private:
     int score;
     const int lineScore = 100;
