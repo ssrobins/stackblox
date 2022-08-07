@@ -67,10 +67,10 @@ TEST(score, maxPieceScore)
 TEST(score, overflow)
 {
     Score score;
-    score.updateScore(0, 2147483646);
-    EXPECT_EQ(2147483647, score.getScore());
+    score.updateScore(0, 4294967294);
+    EXPECT_EQ(4294967295, score.getScore());
     score.updateScore(0, 0);
-    EXPECT_EQ(-2147483648, score.getScore());
+    EXPECT_EQ(0, score.getScore());
 }
 
 
