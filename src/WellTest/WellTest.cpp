@@ -11,57 +11,66 @@ TEST(score, zero)
 TEST(score, firstPiece)
 {
     Score score;
-    score.setScore(0, 0);
+    score.updateScore(0, 0);
     EXPECT_EQ(1, score.getScore());
 }
 
 TEST(score, maxDropDelay)
 {
     Score score;
-    score.setScore(0, 900);
+    score.updateScore(0, 900);
     EXPECT_EQ(901, score.getScore());
 }
 
 TEST(score, oneLine)
 {
     Score score;
-    score.setScore(1, 0);
+    score.updateScore(1, 0);
     EXPECT_EQ(101, score.getScore());
 }
 
 TEST(score, twoLines)
 {
     Score score;
-    score.setScore(2, 0);
+    score.updateScore(2, 0);
     EXPECT_EQ(251, score.getScore());
 }
 
 TEST(score, threeLines)
 {
     Score score;
-    score.setScore(3, 0);
+    score.updateScore(3, 0);
     EXPECT_EQ(451, score.getScore());
 }
 
 TEST(score, fourLines)
 {
     Score score;
-    score.setScore(4, 0);
+    score.updateScore(4, 0);
     EXPECT_EQ(701, score.getScore());
 }
 
 TEST(score, fiveLines)
 {
     Score score;
-    score.setScore(5, 0);
+    score.updateScore(5, 0);
     EXPECT_EQ(1001, score.getScore());
 }
 
 TEST(score, maxPieceScore)
 {
     Score score;
-    score.setScore(5, 900);
+    score.updateScore(5, 900);
     EXPECT_EQ(1901, score.getScore());
+}
+
+TEST(score, overflow)
+{
+    Score score;
+    score.updateScore(0, 2147483646);
+    EXPECT_EQ(2147483647, score.getScore());
+    score.updateScore(0, 0);
+    EXPECT_EQ(-2147483648, score.getScore());
 }
 
 

@@ -6,7 +6,7 @@ Score::Score()
 {
 }
 
-void Score::setScore(int deleteLineCount, int dropDelayDiff)
+void Score::updateScore(int deleteLineCount, int dropDelayDiff)
 {
     score += deleteLineCount * (lineScore + (deleteLineCount - 1) * lineBonus) + dropDelayDiff + 1;
 }
@@ -165,7 +165,7 @@ void Well::reset()
 
     wellIsFull = false;
     dropDelayNormal = dropDelayDefault;
-    score.resetScore();
+    score.reupdateScore();
 }
 
 void Well::rotatePiece()
@@ -203,7 +203,7 @@ void Well::deleteCompleteLines()
             deleteLineCount++;
         }
     }
-    score.setScore(deleteLineCount, dropDelayDefault.count() - dropDelayNormal.count());
+    score.updateScore(deleteLineCount, dropDelayDefault.count() - dropDelayNormal.count());
 
     wellVals = wellValsModified;
 }

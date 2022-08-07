@@ -8,8 +8,8 @@ class Score
 public:
     Score();
     const int getScore() const { return score; };
-    void resetScore() { score = 0; };
-    void setScore(int deleteLineCount, int dropDelayDiff);
+    void reupdateScore() { score = 0; };
+    void updateScore(int deleteLineCount, int dropDelayDiff);
 private:
     int score;
     const int lineScore = 100;
