@@ -89,9 +89,9 @@ TEST(move, negativeX)
     piece.move(-1, 0);
     std::vector<Point> tilesRef {
         { -1, 1 }, // O O O O
-        { 0, 1 }, // X X X X
-        { 1, 1 }, // O O O O
-        { 2, 1 }, // O O O O
+        { 0, 1 }, //  X X X X
+        { 1, 1 }, //  O O O O
+        { 2, 1 }, //  O O O O
     };
     expectTileCoordinatesEqual(tilesRef, piece.getTileCoordinates(), "");
 }
@@ -133,7 +133,7 @@ TEST(move, thenRotate)
         { 6, -3 }, // O O X O
         { 6, -2 }, // O O X O
         { 6, -1 }, // O O X O
-        { 6, 0 }, // O O X O
+        { 6, 0 }, //  O O X O
     };
     expectTileCoordinatesEqual(tilesRef, piece.rotate(), "");
 }
