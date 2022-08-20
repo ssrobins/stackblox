@@ -12,12 +12,9 @@ int yOffsetTop(const std::vector<std::vector<int>>& piece)
     unsigned int ytop;
 
     [&] {
-        for (unsigned int y = 0; y < piece.size(); y++)
-        {
-            for (unsigned int x = 0; x < piece[y].size(); x++)
-            {
-                if (piece.at(y).at(x) == 1)
-                {
+        for (unsigned int y = 0; y < piece.size(); y++) {
+            for (unsigned int x = 0; x < piece[y].size(); x++) {
+                if (piece.at(y).at(x) == 1) {
                     ytop = y;
                     return;
                 }
@@ -30,25 +27,23 @@ int yOffsetTop(const std::vector<std::vector<int>>& piece)
 
 bool Color::operator==(const Color& other) const
 {
-    return (r == other.r) &&
-           (g == other.g) &&
-           (b == other.b) &&
-           (a == other.a);
+    return (r == other.r) && (g == other.g) && (b == other.b) && (a == other.a);
 }
 
 bool Color::operator!=(const Color& other) const
 {
-    return (r != other.r) ||
-           (g != other.g) ||
-           (b != other.b) ||
-           (a != other.a);
+    return (r != other.r) || (g != other.g) || (b != other.b) || (a != other.a);
 }
 
 Piece::Piece()
-{}
+{
+}
 
 Piece::Piece(std::vector<std::vector<int>> piece, int x, int y, Color color)
-    : color(color), xOffset(x), yOffset(y), yDefaultOffset(y)
+    : color(color)
+    , xOffset(x)
+    , yOffset(y)
+    , yDefaultOffset(y)
 {
     assert(matrixIsSquare(piece));
 
@@ -66,10 +61,8 @@ bool Piece::matrixIsSquare(const std::vector<std::vector<int>>& piece)
     bool matrixIsSquare = true;
 
     auto firstDimension = piece.size();
-    for (unsigned int i = 0; i < firstDimension; ++i)
-    {
-        if (firstDimension != piece.at(i).size())
-        {
+    for (unsigned int i = 0; i < firstDimension; ++i) {
+        if (firstDimension != piece.at(i).size()) {
             matrixIsSquare = false;
             break;
         }
@@ -86,8 +79,7 @@ std::vector<Point> Piece::getTileCoordinates() const
 {
     std::vector<Point> tileCoordsOffset = tileCoords;
 
-    for (unsigned int tile = 0; tile < tileCoords.size(); ++tile)
-    {
+    for (unsigned int tile = 0; tile < tileCoords.size(); ++tile) {
         tileCoordsOffset.at(tile).x += xOffset;
         tileCoordsOffset.at(tile).y += yOffset;
     }
@@ -102,17 +94,21 @@ std::vector<Point> Piece::rotate()
     else
         rotation++;
 
-    switch (rotation)
-    {
-        case 0: tileCoords = tileCoords0;
-            break;
-        case 1: tileCoords = tileCoords90;
-            break;
-        case 2: tileCoords = tileCoords180;
-            break;
-        case 3: tileCoords = tileCoords270;
-            break;
-        default: break;
+    switch (rotation) {
+    case 0:
+        tileCoords = tileCoords0;
+        break;
+    case 1:
+        tileCoords = tileCoords90;
+        break;
+    case 2:
+        tileCoords = tileCoords180;
+        break;
+    case 3:
+        tileCoords = tileCoords270;
+        break;
+    default:
+        break;
     }
 
     return getTileCoordinates();
@@ -132,12 +128,9 @@ bool Piece::atTop()
 std::vector<Point> Piece::calcTileCoordinates(const std::vector<std::vector<int>>& piece)
 {
     std::vector<Point> tiles;
-    for (int row = 0; row < static_cast<int>(piece.size()); ++row)
-    {
-        for (int col = 0; col < static_cast<int>(piece[row].size()); ++col)
-        {
-            if (piece.at(row).at(col) == 1)
-            {
+    for (int row = 0; row < static_cast<int>(piece.size()); ++row) {
+        for (int col = 0; col < static_cast<int>(piece[row].size()); ++col) {
+            if (piece.at(row).at(col) == 1) {
                 tiles.push_back({ col, row });
             }
         }
@@ -192,12 +185,10 @@ std::vector<std::vector<int>>& Piece::calcRotation(std::vector<std::vector<int>>
 {
     auto length = piece.size();
     auto maxIndex = length - 1;
-    for (unsigned int layer = 0; layer < length / 2; ++layer)
-    {
+    for (unsigned int layer = 0; layer < length / 2; ++layer) {
         auto first = layer;
         auto last = maxIndex - layer;
-        for (unsigned int i = first; i < last; ++i)
-        {
+        for (unsigned int i = first; i < last; ++i) {
             auto offset = maxIndex - i;
 
             // save top
@@ -235,7 +226,7 @@ Piece& PieceCollection::getRandomPiece()
 {
     static std::random_device rd;
     static std::mt19937 engine(rd());
-    static std::uniform_int_distribution<int> dist{ 0, static_cast<int>(pieceCollection.size() - 1) };
+    static std::uniform_int_distribution<int> dist { 0, static_cast<int>(pieceCollection.size() - 1) };
 
     currentPieceIndex = dist(engine);
 

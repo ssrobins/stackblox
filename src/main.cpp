@@ -1,8 +1,8 @@
 #include "ErrorHandler.h"
-#include "StackBlox.h"
 #include "SDL_mixer.h"
+#include "StackBlox.h"
 
-int main(int argc, char *argv[])
+int main(int argc, char* argv[])
 {
     const int numTilesWidth = 12;
     const int numTilesHeight = 20;
@@ -10,15 +10,14 @@ int main(int argc, char *argv[])
     ErrorHandler errorHandler("error.log");
     int errorCode = EXIT_SUCCESS;
 
-    bool fullscreen = 
-    #if __ANDROID__ || TARGET_OS_IPHONE
+    bool fullscreen =
+#if __ANDROID__ || TARGET_OS_IPHONE
         true;
-    #else
+#else
         false;
-    #endif
+#endif
 
-    try
-    {
+    try {
         auto& stackblox = StackBlox::getInstance(
             numTilesWidth,
             numTilesHeight,
@@ -43,53 +42,41 @@ int main(int argc, char *argv[])
         Uint32 frameStart;
         int frameTime;
 
-        while (stackblox.running())
-        {
+        while (stackblox.running()) {
             frameStart = SDL_GetTicks();
 
             stackblox.handleEvents();
 
-            if (!stackblox.showTitle())
-            {
-                if (stackblox.noPiece())
-                {
+            if (!stackblox.showTitle()) {
+                if (stackblox.noPiece()) {
                     stackblox.newPiece(pieceCollection.getRandomPiece());
                 }
             }
 
             stackblox.update();
 
-            if (!stackblox.running())
-            {
+            if (!stackblox.running()) {
                 break;
             }
 
             stackblox.render();
 
-            if(stackblox.showTitle())
-            {
-                if(!stackblox.playingMusic())
-                {
+            if (stackblox.showTitle()) {
+                if (!stackblox.playingMusic()) {
                     stackblox.playTitleScreenMusic();
                 }
-            }
-            else
-            {
-                if(stackblox.playingMusic())
-                {
+            } else {
+                if (stackblox.playingMusic()) {
                     stackblox.stopMusic();
                 }
             }
 
             frameTime = SDL_GetTicks() - frameStart;
-            if (frameDelay > frameTime)
-            {
+            if (frameDelay > frameTime) {
                 SDL_Delay(frameDelay - frameTime); // comment to uncap FPS
             }
         }
-    }
-    catch (Exception& error)
-    {
+    } catch (Exception& error) {
         errorHandler.showError(error);
         errorCode = EXIT_FAILURE;
     }

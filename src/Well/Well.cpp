@@ -2,7 +2,7 @@
 #include "Piece.h"
 
 Score::Score()
-: score(0)
+    : score(0)
 {
 }
 
@@ -12,7 +12,8 @@ void Score::updateScore(unsigned int deleteLineCount, unsigned int dropDelayDiff
 }
 
 Well::Well(const int numTilesWidth, const int numTilesHeight)
-    : numTilesWidth(numTilesWidth), numTilesHeight(numTilesHeight)
+    : numTilesWidth(numTilesWidth)
+    , numTilesHeight(numTilesHeight)
     , wellVals(numTilesHeight, std::vector<Color>(numTilesWidth))
     , wellIsFull(false)
     , wellHasNoPiece(true)
@@ -25,10 +26,8 @@ void Well::addPieceToWell()
     std::vector<Point> pieceCoords = getPieceTileCoordinates();
     Color pieceColor = getPieceColor();
 
-    for (auto& p : pieceCoords)
-    {
-        if (p.y >= 0 && p.x >=0)
-        {
+    for (auto& p : pieceCoords) {
+        if (p.y >= 0 && p.x >= 0) {
             wellVals.at(p.y).at(p.x) = pieceColor;
         }
     }
@@ -41,26 +40,18 @@ bool Well::collision()
     bool result = false;
 
     std::vector<Point> pieceCoords = getPieceTileCoordinates();
-    for (auto& p : pieceCoords)
-    {
+    for (auto& p : pieceCoords) {
         // Collision detection between active piece and well boundaries
-        if (p.x < 0 ||
-            p.x >= numTilesWidth ||
-            p.y >= numTilesHeight)
-        {
+        if (p.x < 0 || p.x >= numTilesWidth || p.y >= numTilesHeight) {
             result = true;
             break;
         }
 
         // Collision detection between active piece and well pieces
-        for (unsigned int y = 0; y < wellVals.size(); y++)
-        {
-            for (unsigned int x = 0; x < wellVals[y].size(); x++)
-            {
-                if (wellVals.at(y).at(x) != Color{ 0, 0, 0, 0 })
-                {
-                    if (p.x == x && p.y == y)
-                    {
+        for (unsigned int y = 0; y < wellVals.size(); y++) {
+            for (unsigned int x = 0; x < wellVals[y].size(); x++) {
+                if (wellVals.at(y).at(x) != Color { 0, 0, 0, 0 }) {
+                    if (p.x == x && p.y == y) {
                         result = true;
                         break;
                     }
@@ -89,8 +80,7 @@ const int Well::getScore() const
 
 std::chrono::milliseconds Well::decreaseDropDelay()
 {
-    if (dropDelayNormal > dropDelayLimit)
-    {
+    if (dropDelayNormal > dropDelayLimit) {
         dropDelayNormal -= dropDelayInterval;
     }
     return dropDelayNormal;
@@ -98,12 +88,9 @@ std::chrono::milliseconds Well::decreaseDropDelay()
 
 std::chrono::milliseconds Well::quickDrop(bool force)
 {
-    if (force)
-    {
+    if (force) {
         dropDelay = dropDelayForce;
-    }
-    else
-    {
+    } else {
         dropDelay = dropDelayNormal;
     }
     return dropDelay;
@@ -115,14 +102,13 @@ std::vector<std::vector<Color>> Well::getWellValues() const
 }
 
 void Well::movePieceHorizontally(int x)
-{   if (x != 0)
-    {
+{
+    if (x != 0) {
         Piece pieceOriginal = piece;
 
         piece.move(x, 0);
 
-        if (collision())
-        {
+        if (collision()) {
             piece = pieceOriginal;
         }
     }
@@ -134,10 +120,8 @@ void Well::movePieceDown(int y)
 
     piece.move(0, y);
 
-    if (collision())
-    {
-        if (pieceOriginal.atTop())
-        {
+    if (collision()) {
+        if (pieceOriginal.atTop()) {
             wellIsFull = true;
         }
 
@@ -155,11 +139,9 @@ void Well::newPiece(const Piece& newPiece)
 
 void Well::reset()
 {
-    for (unsigned int y = 0; y < wellVals.size(); y++)
-    {
-        for (unsigned int x = 0; x < wellVals[y].size(); x++)
-        {
-            wellVals.at(y).at(x) = Color{ 0, 0, 0, 0 };
+    for (unsigned int y = 0; y < wellVals.size(); y++) {
+        for (unsigned int x = 0; x < wellVals[y].size(); x++) {
+            wellVals.at(y).at(x) = Color { 0, 0, 0, 0 };
         }
     }
 
@@ -174,8 +156,7 @@ void Well::rotatePiece()
 
     piece.rotate();
 
-    if (collision())
-    {
+    if (collision()) {
         piece = pieceOriginal;
     }
 }
@@ -185,19 +166,15 @@ void Well::deleteCompleteLines()
     std::vector<std::vector<Color>> wellValsModified = wellVals;
     int deleteLineCount = 0;
 
-    for (unsigned int y = 0; y < wellVals.size(); y++)
-    {
+    for (unsigned int y = 0; y < wellVals.size(); y++) {
         bool lineComplete = true;
-        for (unsigned int x = 0; x < wellVals[y].size(); x++)
-        {
-            if (wellVals.at(y).at(x) == Color{ 0, 0, 0, 0 })
-            {
+        for (unsigned int x = 0; x < wellVals[y].size(); x++) {
+            if (wellVals.at(y).at(x) == Color { 0, 0, 0, 0 }) {
                 lineComplete = false;
             }
         }
 
-        if (lineComplete)
-        {
+        if (lineComplete) {
             wellValsModified.erase(wellValsModified.begin() + y);
             wellValsModified.insert(wellValsModified.begin(), std::vector<Color>(numTilesWidth, { 0, 0, 0, 0 }));
             deleteLineCount++;

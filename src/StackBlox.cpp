@@ -1,22 +1,18 @@
 #include "StackBlox.h"
 #include "Piece.h"
-#include "Well.h"
 #include "Version.h"
+#include "Well.h"
 #include <assert.h>
-
 
 ControlText::ControlText(const bool hasTouchscreen)
 {
-    if (hasTouchscreen)
-    {
+    if (hasTouchscreen) {
         moveControls = "Drag Across";
         rotateControls = "Touch";
         dropControls = "Drag Down";
         startControls = "Touch to start";
         continueControls = "Touch to continue";
-    }
-    else
-    {
+    } else {
         moveControls = "Left / Right";
         rotateControls = "Spacebar";
         dropControls = "Down";
@@ -70,13 +66,13 @@ StackBlox::StackBlox(const int numTilesWidth, const int numTilesHeight, const ch
     , titleScreen(game, hasTouchscreen)
     , fontPath(Game::getBasePath() + "assets/OpenSans-Regular.ttf")
     , controlText(hasTouchscreen)
-    , scoreText(std::string{std::to_string(getScore())}.c_str(), game.heightPercentToPixels(4), fontPath, white, game.getGameWidth(), game.getRenderer(), game.widthPercentToPixels(2), game.heightPercentToPixels(0))
+    , scoreText(std::string { std::to_string(getScore()) }.c_str(), game.heightPercentToPixels(4), fontPath, white, game.getGameWidth(), game.getRenderer(), game.widthPercentToPixels(2), game.heightPercentToPixels(0))
     , gameText("GAME", game.heightPercentToPixels(15), fontPath, white, game.getGameWidth(), game.getRenderer(), 0, game.heightPercentToPixels(15), true)
     , overText("OVER", game.heightPercentToPixels(15), fontPath, white, game.getGameWidth(), game.getRenderer(), 0, game.heightPercentToPixels(25), true)
     , finalScoreText("", game.heightPercentToPixels(4), fontPath, white, game.getGameWidth(), game.getRenderer(), 0, game.heightPercentToPixels(49), true, false)
     , continueControlText(controlText.continueControls, game.heightPercentToPixels(6), fontPath, red, game.getGameWidth(), game.getRenderer(), 0, game.heightPercentToPixels(65), true)
     , fpsText("", game.heightPercentToPixels(2), fontPath, white, game.getGameWidth(), game.getRenderer(), game.widthPercentToPixels(25), game.heightPercentToPixels(1), false, false)
-    , screenResText(std::string{"res: " + std::to_string(game.getScreenWidth()) + " x " + std::to_string(game.getScreenHeight())}.c_str(), game.heightPercentToPixels(2), fontPath, white, game.getGameWidth(), game.getRenderer(), game.widthPercentToPixels(35), game.heightPercentToPixels(1))
+    , screenResText(std::string { "res: " + std::to_string(game.getScreenWidth()) + " x " + std::to_string(game.getScreenHeight()) }.c_str(), game.heightPercentToPixels(2), fontPath, white, game.getGameWidth(), game.getRenderer(), game.widthPercentToPixels(35), game.heightPercentToPixels(1))
     , dropDelayText("", game.heightPercentToPixels(2), fontPath, white, game.getGameWidth(), game.getRenderer(), game.widthPercentToPixels(56), game.heightPercentToPixels(1), false, false)
     , dragStartText("", game.heightPercentToPixels(2), fontPath, white, game.getGameWidth(), game.getRenderer(), game.widthPercentToPixels(25), game.heightPercentToPixels(3), false, false)
     , dragDistanceText("", game.heightPercentToPixels(2), fontPath, white, game.getGameWidth(), game.getRenderer(), game.widthPercentToPixels(50), game.heightPercentToPixels(3), false, false)
@@ -96,73 +92,56 @@ StackBlox::~StackBlox()
 
 void StackBlox::handleEvents()
 {
-    while(SDL_PollEvent(&event))
-    {
-        if (event.type == SDL_QUIT)
-        {
+    while (SDL_PollEvent(&event)) {
+        if (event.type == SDL_QUIT) {
             isRunning = false;
             return;
         }
 
-        if (event.type == SDL_FINGERDOWN)
-        {
-            if (showTitleScreen)
-            {
+        if (event.type == SDL_FINGERDOWN) {
+            if (showTitleScreen) {
                 showTitleScreen = false;
                 start();
-            }
-            else if (over())
-            {
+            } else if (over()) {
                 showTitleScreen = true;
                 reset();
-            }
-            else
-            {
+            } else {
                 touchTime = std::chrono::steady_clock::now();
             }
 
-            dragStart = event.tfinger.x * game.getScreenWidth()/game.getTileSize();
-            dragVertStart = event.tfinger.y * game.getScreenHeight()/game.getTileSize();
+            dragStart = event.tfinger.x * game.getScreenWidth() / game.getTileSize();
+            dragVertStart = event.tfinger.y * game.getScreenHeight() / game.getTileSize();
             pieceMoved = false;
         }
 
-        if (event.type == SDL_FINGERMOTION)
-        {
-            dragDistance = event.tfinger.x*game.getScreenWidth()/game.getTileSize() - dragStart;
-            dragVertDistance = event.tfinger.y*game.getScreenHeight()/game.getTileSize() - dragVertStart;
+        if (event.type == SDL_FINGERMOTION) {
+            dragDistance = event.tfinger.x * game.getScreenWidth() / game.getTileSize() - dragStart;
+            dragVertDistance = event.tfinger.y * game.getScreenHeight() / game.getTileSize() - dragVertStart;
 
-            if (dragDistance <= -1)
-            {
+            if (dragDistance <= -1) {
                 moveOffsetTouch = -1;
                 dragStart += moveOffsetTouch;
                 well.quickDrop(false);
                 pieceMoved = true;
-            }
-            else if (dragDistance >= 1)
-            {
+            } else if (dragDistance >= 1) {
                 moveOffsetTouch = 1;
                 dragStart += moveOffsetTouch;
                 well.quickDrop(false);
                 pieceMoved = true;
             }
 
-            if (dragVertDistance >= 1)
-            {
+            if (dragVertDistance >= 1) {
                 well.quickDrop(true);
                 dropTime = time;
-                dragVertStart = event.tfinger.y * game.getScreenHeight()/game.getTileSize();
+                dragVertStart = event.tfinger.y * game.getScreenHeight() / game.getTileSize();
             }
         }
 
-        if (event.type == SDL_FINGERUP)
-        {
-            auto touchDuration =
-                std::chrono::duration_cast<std::chrono::milliseconds>(
+        if (event.type == SDL_FINGERUP) {
+            auto touchDuration = std::chrono::duration_cast<std::chrono::milliseconds>(
                 std::chrono::steady_clock::now() - touchTime);
 
-            if (touchDuration < std::chrono::milliseconds(250) &&
-                !pieceMoved)
-            {
+            if (touchDuration < std::chrono::milliseconds(250) && !pieceMoved) {
                 well.rotatePiece();
             }
 
@@ -178,27 +157,20 @@ void StackBlox::handleEvents()
         }
 
         // If the key stays down, only one event is actually processed
-        if (event.key.repeat == 0)
-        {
-            if (event.type == SDL_KEYDOWN)
-            {
-                switch (event.key.keysym.sym)
-                {
+        if (event.key.repeat == 0) {
+            if (event.type == SDL_KEYDOWN) {
+                switch (event.key.keysym.sym) {
                 case SDLK_RETURN:
-                    if (showTitleScreen)
-                    {
+                    if (showTitleScreen) {
                         showTitleScreen = false;
                         start();
-                    }
-                    else if (over())
-                    {
+                    } else if (over()) {
                         showTitleScreen = true;
                         reset();
                     }
                     break;
                 case SDLK_ESCAPE:
-                    if (showTitleScreen)
-                    {
+                    if (showTitleScreen) {
                         showTitleScreen = false;
                         isRunning = false;
                     }
@@ -218,14 +190,13 @@ void StackBlox::handleEvents()
                 case SDLK_SPACE:
                     well.rotatePiece();
                     break;
-                default: break;
+                default:
+                    break;
                 }
             }
 
-            if (event.type == SDL_KEYUP)
-            {
-                switch (event.key.keysym.sym)
-                {
+            if (event.type == SDL_KEYUP) {
+                switch (event.key.keysym.sym) {
                 case SDLK_RIGHT:
                     moveOffset -= 1;
                     moveTime = time;
@@ -237,7 +208,8 @@ void StackBlox::handleEvents()
                 case SDLK_DOWN:
                     dropTime = time + well.quickDrop(false);
                     break;
-                default: break;
+                default:
+                    break;
                 }
             }
         }
@@ -246,7 +218,6 @@ void StackBlox::handleEvents()
         assert((moveOffsetTouch == 0) || (moveOffsetTouch == -1) || (moveOffsetTouch == 1));
     }
 }
-
 
 void StackBlox::newPiece(const Piece& piece)
 {
@@ -266,8 +237,7 @@ bool StackBlox::noPiece()
 
 void StackBlox::update()
 {
-    if (!showTitle() && !over())
-    {
+    if (!showTitle() && !over()) {
         updateStackBlox();
     }
 }
@@ -276,25 +246,21 @@ void StackBlox::updateStackBlox()
 {
     time = std::chrono::steady_clock::now();
 
-    if (time > dropTime)
-    {
+    if (time > dropTime) {
         well.movePieceDown(1);
         dropTime += well.getDropDelay();
-        if (noPiece())
-        {
-            scoreText.updateText(std::string{std::to_string(getScore())}.c_str());
+        if (noPiece()) {
+            scoreText.updateText(std::string { std::to_string(getScore()) }.c_str());
             well.decreaseDropDelay();
         }
     }
 
-    if (moveOffsetTouch != 0)
-    {
+    if (moveOffsetTouch != 0) {
         well.movePieceHorizontally(moveOffsetTouch);
         moveOffsetTouch = 0;
     }
 
-    if (time > moveTime)
-    {
+    if (time > moveTime) {
         well.movePieceHorizontally(moveOffset);
 
         moveTime += well.getMoveDelay();
@@ -306,18 +272,14 @@ void StackBlox::render()
     game.renderSetViewport();
 
     if (showDebugText)
-        fpsText.updateText(std::string{std::to_string(game.getFPS()) + " fps"}.c_str());
+        fpsText.updateText(std::string { std::to_string(game.getFPS()) + " fps" }.c_str());
 
-    if (showTitle())
-    {
+    if (showTitle()) {
         renderTitleScreen();
-    }
-    else
-    {
+    } else {
         renderStackBlox();
     }
 }
-
 
 void StackBlox::renderTitleScreen()
 {
@@ -349,20 +311,16 @@ void StackBlox::renderStackBlox()
 
     // Render pieces in well
     std::vector<std::vector<Color>> wellVals = well.getWellValues();
-    for (unsigned int y = 0; y < wellVals.size(); y++)
-    {
-        for (unsigned int x = 0; x < wellVals[y].size(); x++)
-        {
-            if (wellVals.at(y).at(x) != Color{ 0, 0, 0, 0 })
-            {
+    for (unsigned int y = 0; y < wellVals.size(); y++) {
+        for (unsigned int x = 0; x < wellVals[y].size(); x++) {
+            if (wellVals.at(y).at(x) != Color { 0, 0, 0, 0 }) {
                 tileColor = {
                     wellVals.at(y).at(x).r,
                     wellVals.at(y).at(x).g,
                     wellVals.at(y).at(x).b,
-                    wellVals.at(y).at(x).a};
-            }
-            else
-            {
+                    wellVals.at(y).at(x).a
+                };
+            } else {
                 tileColor = { 0, 0, 0, 255 };
             }
 
@@ -376,15 +334,13 @@ void StackBlox::renderStackBlox()
 
     // Render active piece
     std::vector<Point> pieceCoords = well.getPieceTileCoordinates();
-    for (auto& p : pieceCoords)
-    {
+    for (auto& p : pieceCoords) {
         rect.x = p.x * game.getTileSize() + game.getOutlineOffsetWidth();
         rect.y = p.y * game.getTileSize() + game.getOutlineOffsetHeight();
         game.renderFillRect(rect, { color.r, color.g, color.b, color.a });
     }
 
-    if (over())
-    {
+    if (over()) {
         SDL_Rect overlay;
         overlay.w = game.getGameWidth();
         overlay.h = game.getGameHeight();
@@ -394,33 +350,29 @@ void StackBlox::renderStackBlox()
 
         gameText.render();
         overText.render();
-        finalScoreText.updateText(std::string{"Final score: " + std::to_string(well.getScore())}.c_str());
+        finalScoreText.updateText(std::string { "Final score: " + std::to_string(well.getScore()) }.c_str());
         finalScoreText.render();
         continueControlText.render();
-    }
-    else
-    {
+    } else {
         scoreText.render();
     }
 
-    if (showDebugText)
-    {
+    if (showDebugText) {
         fpsText.render();
         screenResText.render();
-        dropDelayText.updateText(std::string{"dropDelay: " + std::to_string(well.getDropDelay().count())}.c_str());
+        dropDelayText.updateText(std::string { "dropDelay: " + std::to_string(well.getDropDelay().count()) }.c_str());
         dropDelayText.render();
 
-        if (hasTouchscreen)
-        {
-            dragStartText.updateText(std::string{"dragStart: " + std::to_string(dragStart)}.c_str());
+        if (hasTouchscreen) {
+            dragStartText.updateText(std::string { "dragStart: " + std::to_string(dragStart) }.c_str());
             dragStartText.render();
-            dragDistanceText.updateText(std::string{"dragDist: " + std::to_string(dragDistance)}.c_str());
+            dragDistanceText.updateText(std::string { "dragDist: " + std::to_string(dragDistance) }.c_str());
             dragDistanceText.render();
-            pieceMovedText.updateText(std::string{"pieceMoved: " + std::to_string(pieceMoved)}.c_str());
+            pieceMovedText.updateText(std::string { "pieceMoved: " + std::to_string(pieceMoved) }.c_str());
             pieceMovedText.render();
-            dragVertStartText.updateText(std::string{"dragVertStart: " + std::to_string(dragVertStart)}.c_str());
+            dragVertStartText.updateText(std::string { "dragVertStart: " + std::to_string(dragVertStart) }.c_str());
             dragVertStartText.render();
-            dragVertDistanceText.updateText(std::string{"dragVertDist: " + std::to_string(dragVertDistance)}.c_str());
+            dragVertDistanceText.updateText(std::string { "dragVertDist: " + std::to_string(dragVertDistance) }.c_str());
             dragVertDistanceText.render();
         }
     }
@@ -441,7 +393,7 @@ bool StackBlox::over()
 void StackBlox::reset()
 {
     well.reset();
-    scoreText.updateText(std::string{std::to_string(getScore())}.c_str());
+    scoreText.updateText(std::string { std::to_string(getScore()) }.c_str());
 
     dropTime = time + well.quickDrop(false);
     showTitleScreen = true;
