@@ -56,6 +56,12 @@ jobs:
       - name: Print environment variables
         run: env
 
+      - name: Check formatting
+        if: contains(matrix.name, 'android')
+        run: |
+          clang-format --version
+          find . -iname "*.cpp" -or -iname "*.h" | xargs clang-format --dry-run --Werror
+
       - name: Install Android key store
         if: contains(matrix.name, 'android')
         run: |

@@ -3,23 +3,22 @@
 #include "Game.h"
 #include "Well.h"
 
-class ControlText
-{
+class ControlText {
 public:
     ControlText(const bool hasTouchscreen);
-    const char * moveControls;
-    const char * rotateControls;
-    const char * dropControls;
-    const char * startControls;
-    const char * continueControls;
+    const char* moveControls;
+    const char* rotateControls;
+    const char* dropControls;
+    const char* startControls;
+    const char* continueControls;
 };
 
-class TitleScreen
-{
+class TitleScreen {
 public:
     TitleScreen(const Game& game, const bool hasTouchscreen);
     ~TitleScreen() {};
     void render();
+
 private:
     std::string fontPath;
     SDL_Color white = { 255, 255, 255, 255 };
@@ -38,8 +37,7 @@ private:
     Text websiteText;
 };
 
-class StackBlox
-{
+class StackBlox {
 public:
     static StackBlox& getInstance(const int numTilesWidth, const int numTilesHeight, const char* title, bool fullscreen);
     ~StackBlox();
@@ -69,11 +67,11 @@ private:
     StackBlox(const int numTilesWidth, const int numTilesHeight, const char* title, bool fullscreen);
 
     const bool hasTouchscreen =
-    #if __ANDROID__ || TARGET_OS_IPHONE
+#if __ANDROID__ || TARGET_OS_IPHONE
         true;
-    #else
+#else
         false;
-    #endif
+#endif
 
     std::string fontPath;
     SDL_Color white = { 255, 255, 255, 255 };

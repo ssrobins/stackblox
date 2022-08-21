@@ -6,14 +6,12 @@
 int xOffsetCenter(const std::vector<std::vector<int>>& piece, int numTilesWidth);
 int yOffsetTop(const std::vector<std::vector<int>>& piece);
 
-struct Point
-{
+struct Point {
     int x;
     int y;
 };
 
-struct Color
-{
+struct Color {
     uint8_t r;
     uint8_t g;
     uint8_t b;
@@ -25,8 +23,7 @@ struct Color
 
 static Color black = { 0, 0, 0, 255 };
 
-class Piece
-{
+class Piece {
 public:
     Piece();
     Piece(std::vector<std::vector<int>> piece, int x = 0, int y = 0, Color color = black);
@@ -36,10 +33,11 @@ public:
     std::vector<Point> rotate();
     void move(int xOffset, int yOffset);
     bool atTop();
+
 private:
     std::vector<Point> calcTileCoordinates(const std::vector<std::vector<int>>& piece);
     std::vector<std::vector<int>>& calcRotation(std::vector<std::vector<int>>& piece);
-    int rotation;  // 0, 1, 2, 3
+    int rotation; // 0, 1, 2, 3
     std::vector<Point> tileCoords;
     std::vector<Point> tileCoords0;
     std::vector<Point> tileCoords90;
@@ -51,18 +49,18 @@ private:
     int yDefaultOffset;
 };
 
-class PieceCollection
-{
+class PieceCollection {
 public:
     PieceCollection(std::initializer_list<Piece> pieceCollection);
     Piece& getCurrentPiece();
     Piece& getRandomPiece();
+
 private:
     std::vector<Piece> pieceCollection;
     int currentPieceIndex;
 };
 
-const std::vector<std::vector<int>> pieceI{
+const std::vector<std::vector<int>> pieceI {
     { 0, 0, 0, 0, 0 },
     { 0, 0, 0, 0, 0 },
     { 1, 1, 1, 1, 1 },
@@ -71,7 +69,7 @@ const std::vector<std::vector<int>> pieceI{
 };
 const Color pieceIcolor = { 255, 0, 153, 255 };
 
-const std::vector<std::vector<int>> pieceJ{
+const std::vector<std::vector<int>> pieceJ {
     { 0, 0, 0, 0 },
     { 1, 1, 1, 1 },
     { 0, 0, 0, 1 },
@@ -79,7 +77,7 @@ const std::vector<std::vector<int>> pieceJ{
 };
 const Color pieceJcolor = { 243, 243, 21, 255 };
 
-const std::vector<std::vector<int>> pieceL{
+const std::vector<std::vector<int>> pieceL {
     { 0, 0, 0, 0 },
     { 1, 1, 1, 1 },
     { 1, 0, 0, 0 },
@@ -87,14 +85,14 @@ const std::vector<std::vector<int>> pieceL{
 };
 const Color pieceLcolor = { 131, 249, 44, 255 };
 
-const std::vector<std::vector<int>> pieceO{
+const std::vector<std::vector<int>> pieceO {
     { 1, 1, 1 },
     { 1, 1, 0 },
     { 0, 0, 0 }
 };
 const Color pieceOcolor = { 255, 102, 0, 255 };
 
-const std::vector<std::vector<int>> pieceS{
+const std::vector<std::vector<int>> pieceS {
     { 0, 0, 0, 0 },
     { 0, 1, 1, 1 },
     { 1, 1, 0, 0 },
@@ -102,21 +100,20 @@ const std::vector<std::vector<int>> pieceS{
 };
 const Color pieceScolor = { 110, 13, 208, 255 };
 
-const std::vector<std::vector<int>> pieceT{
+const std::vector<std::vector<int>> pieceT {
     { 1, 1, 1 },
     { 0, 1, 0 },
     { 0, 1, 0 }
 };
 const Color pieceTcolor = { 0, 255, 255, 255 };
 
-const std::vector<std::vector<int>> pieceZ{
+const std::vector<std::vector<int>> pieceZ {
     { 0, 0, 0, 0 },
     { 1, 1, 0, 0 },
     { 0, 1, 1, 1 },
     { 0, 0, 0, 0 }
 };
 const Color pieceZcolor = { 16, 52, 156, 255 };
-
 
 /*const std::vector<std::vector<int>> pieceI{
     { 0, 0, 0, 0 },

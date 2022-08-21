@@ -3,21 +3,20 @@
 #include "Piece.h"
 #include <chrono>
 
-class Score
-{
+class Score {
 public:
     Score();
     const unsigned int getScore() const { return score; };
     void reupdateScore() { score = 0; };
     void updateScore(unsigned int deleteLineCount, unsigned int dropDelayDiff);
+
 private:
     int score;
     const int lineScore = 100;
     const int lineBonus = 25;
 };
 
-class Well
-{
+class Well {
 public:
     Well(const int numTilesWidth, const int numTilesHeight);
     void addPieceToWell();
@@ -38,6 +37,7 @@ public:
     const Color getPieceColor() const;
     const std::vector<Point> getPieceTileCoordinates() const;
     const std::chrono::milliseconds getMoveDelay() const { return moveDelay; }
+
 private:
     const int numTilesWidth;
     const int numTilesHeight;
@@ -46,10 +46,10 @@ private:
     bool wellIsFull;
     bool wellHasNoPiece;
     const std::chrono::milliseconds moveDelay = std::chrono::milliseconds(100);
-    const std::chrono::milliseconds dropDelayDefault = std::chrono::milliseconds{ 1000 };
-    const std::chrono::milliseconds dropDelayInterval = std::chrono::milliseconds{ 5 };
-    const std::chrono::milliseconds dropDelayLimit = std::chrono::milliseconds{ 100 };
-    const std::chrono::milliseconds dropDelayForce = std::chrono::milliseconds{ 50 };
+    const std::chrono::milliseconds dropDelayDefault = std::chrono::milliseconds { 1000 };
+    const std::chrono::milliseconds dropDelayInterval = std::chrono::milliseconds { 5 };
+    const std::chrono::milliseconds dropDelayLimit = std::chrono::milliseconds { 100 };
+    const std::chrono::milliseconds dropDelayForce = std::chrono::milliseconds { 50 };
     std::chrono::milliseconds dropDelayNormal = dropDelayDefault;
     std::chrono::milliseconds dropDelay;
     Score score;
