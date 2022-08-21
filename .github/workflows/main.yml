@@ -60,7 +60,7 @@ jobs:
         if: contains(matrix.name, 'android')
         run: |
           clang-format --version
-          clang-format --dry-run --Werror **/*.cpp **/*.h
+          find . -iname "*.cpp" -or -iname "*.h" | xargs clang-format --dry-run --Werror
 
       - name: Install Android key store
         if: contains(matrix.name, 'android')
