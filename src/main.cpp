@@ -1,5 +1,4 @@
 #include "ErrorHandler.h"
-#include "SDL_mixer.h"
 #include "StackBlox.h"
 
 int main(int argc, char* argv[])

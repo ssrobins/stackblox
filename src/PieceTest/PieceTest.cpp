@@ -1,7 +1,6 @@
 #include "Piece.h"
 #include "gmock/gmock.h"
 #include "gtest/gtest.h"
-#include <iostream>
 
 // This plus the gmock include above are simply to test that gmock works. Remove when any tests start using gmock for real.
 using ::testing::AtLeast;
