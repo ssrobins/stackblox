@@ -70,20 +70,7 @@ def main():
         if command_args.iwyu:
             cmake_build_cmd += " --clean-first"
         print(cmake_build_cmd, flush=True)
-        if command_args.iwyu:
-            print("Running Include what you use...", flush=True)
-            build_output = subprocess.run(cmake_build_cmd, cwd=script_path,
-                shell=True, check=True, capture_output=True).stdout.decode("utf-8")
-            if "include-what-you-use reported diagnostics" in build_output:
-                print(build_output, flush=True)
-                print("Include what you use suggestions listed above", flush=True)
-                sys.exit(1)
-            else:
-                print("No suggestions from Include what you use", flush=True)
-                sys.exit(0)
-        else:
-            subprocess.run(cmake_build_cmd, cwd=script_path, shell=True, check=True)
-
+        subprocess.run(cmake_build_cmd, cwd=script_path, shell=True, check=True)
 
     if command_args.test:
         ctest_cmd = f"ctest -C {config} --output-on-failure"
