@@ -135,7 +135,7 @@ jobs:
         env:
           DEVELOPER_DIR: /Applications/Xcode_13.4.1.app/Contents/Developer
 
-      - name: Install Include what you use
+      - name: Install 'Include What You Use'
         if: matrix.clang_version && github.event.inputs.include_check == 'true'
         uses: ssrobins/install-include-what-you-use@main
         with:

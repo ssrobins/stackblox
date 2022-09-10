@@ -20,7 +20,7 @@ def main():
     parser.add_argument("platform", choices=platform, help="Build platform")
     parser.add_argument("--config", help="Build config")
     parser.add_argument("--build", action="store_true", help="Run build in CMake")
-    parser.add_argument("--iwyu", action="store_true", help="Enable Include what you use")
+    parser.add_argument("--iwyu", action="store_true", help="Enable 'Include What You Use' tool")
     parser.add_argument("--noConanPkgBuild", action="store_true", help="Use pre-built Conan packages and fail if they don't exist")
     parser.add_argument("--test", action="store_true", help="Run tests in CTest")
     parser.add_argument("--package", action="store_true", help="Run packaging in CPack")
