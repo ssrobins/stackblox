@@ -130,6 +130,7 @@ jobs:
         run: echo "ANDROID_NDK_ROOT=$ANDROID_HOME/ndk/23.2.8568313" >> $GITHUB_ENV
 
       - name: Build
+        if: github.event.inputs.include_check != 'true'
         run:  ${{ matrix.build_script }} --noConanPkgBuild --config Release
         env:
           DEVELOPER_DIR: /Applications/Xcode_13.4.1.app/Contents/Developer
@@ -145,11 +146,12 @@ jobs:
         run: ./cmake.py ${{ matrix.name }} --iwyu
 
       - uses: actions/upload-artifact@v2
+        if: github.event.inputs.include_check != 'true'
         with:
           name: ${{ env.app_name }}_artifact${{ github.run_number }}
           path: ${{ matrix.artifact_path }}
           if-no-files-found: error
 
       - name: 'Publish to App Store'
-        if: matrix.name == 'ios' && github.event.inputs.publish == 'true'
+        if: matrix.name == 'ios' && github.event.inputs.publish == 'true' && github.event.inputs.include_check != 'true'
         run: xcrun altool --upload-app --file $(find . -name *.ipa | head -n 1) --type ios --username ssrobins@gmail.com --password ${{ secrets.APPLE_APP_SPECIFIC_PASSWORD }}
