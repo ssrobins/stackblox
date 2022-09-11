@@ -7,9 +7,12 @@ on:
     branches: [ main ]
   workflow_dispatch:
     inputs:
-      publish:
+      include_check:
+        description: 'Include check'
         type: boolean
+      publish:
         description: 'Publish'
+        type: boolean
 
 env:
   CONAN_REVISIONS_ENABLED: 1
@@ -28,14 +31,17 @@ jobs:
             os: ubuntu-20.04
             build_script: ./cmake.py androidarm --build --package
             artifact_path: build_androidarm/_package/*.apk
+            clang_version: 12
           - name: androidarm64
             os: ubuntu-20.04
             build_script: ./cmake.py androidarm64 --build --package
             artifact_path: build_androidarm64/_package/*.apk
+            clang_version: 12
           - name: ios
             os: macos-12
             build_script: ./cmake.py ios --build --package
             artifact_path: build_ios/_package/*.ipa
+            clang_version: 13
           - name: linux
             os: ubuntu-18.04
             build_script: ./cmake.py linux --build --test --package
@@ -44,6 +50,7 @@ jobs:
             os: macos-12
             build_script: ./cmake.py macos --build --test --package
             artifact_path: build_macos/_package/*.zip
+            clang_version: 13
           - name:  windows
             os: windows-2022
             build_script: py cmake.py windows --build --test --package
@@ -123,16 +130,28 @@ jobs:
         run: echo "ANDROID_NDK_ROOT=$ANDROID_HOME/ndk/23.2.8568313" >> $GITHUB_ENV
 
       - name: Build
+        if: github.event.inputs.include_check != 'true'
         run:  ${{ matrix.build_script }} --noConanPkgBuild --config Release
         env:
           DEVELOPER_DIR: /Applications/Xcode_13.4.1.app/Contents/Developer
 
+      - name: Install 'Include What You Use'
+        if: matrix.clang_version && github.event.inputs.include_check == 'true'
+        uses: ssrobins/install-include-what-you-use@main
+        with:
+          clang_version: ${{ matrix.clang_version }}
+
+      - name: Check includes
+        if: matrix.clang_version && github.event.inputs.include_check == 'true'
+        run: ./cmake.py ${{ matrix.name }} --iwyu
+
       - uses: actions/upload-artifact@v2
+        if: github.event.inputs.include_check != 'true'
         with:
           name: ${{ env.app_name }}_artifact${{ github.run_number }}
           path: ${{ matrix.artifact_path }}
           if-no-files-found: error
 
       - name: 'Publish to App Store'
-        if: matrix.name == 'ios' && github.event.inputs.publish == 'true'
+        if: matrix.name == 'ios' && github.event.inputs.publish == 'true' && github.event.inputs.include_check != 'true'
         run: xcrun altool --upload-app --file $(find . -name *.ipa | head -n 1) --type ios --username ssrobins@gmail.com --password ${{ secrets.APPLE_APP_SPECIFIC_PASSWORD }}

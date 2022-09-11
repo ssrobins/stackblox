@@ -1,0 +1,7 @@
+[
+  { include: ["<__random/uniform_int_distribution.h>", "private", "<random>", "public"] },
+  { symbol: ["EXIT_FAILURE", "private", "<cstdlib>", "public"] },
+  { symbol: ["EXIT_SUCCESS", "private", "<cstdlib>", "public"] },
+  { symbol: ["uint32_t", "private", "<cstdlib>", "public"] },
+  { symbol: ["std::uniform_int_distribution", "private", "<random>", "public"] }
+]
