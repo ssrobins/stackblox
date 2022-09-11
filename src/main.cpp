@@ -1,4 +1,5 @@
 #include "ErrorHandler.h"
+#include "Exceptions.h"
 #include "StackBlox.h"
 
 int main(int argc, char* argv[])
