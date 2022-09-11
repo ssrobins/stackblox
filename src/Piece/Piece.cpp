@@ -9,7 +9,7 @@ int xOffsetCenter(const std::vector<std::vector<int>>& piece, int numTilesWidth)
 
 int yOffsetTop(const std::vector<std::vector<int>>& piece)
 {
-    unsigned int ytop;
+    unsigned int ytop = 0;
 
     [&] {
         for (unsigned int y = 0; y < piece.size(); y++) {

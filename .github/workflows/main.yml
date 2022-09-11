@@ -141,7 +141,9 @@ jobs:
 
       - name: Run Cppcheck
         if: matrix.name != 'windows'
-        run: cppcheck . --force --error-exitcode=1
+        run: |
+          cppcheck --version
+          cppcheck . --force --error-exitcode=1
 
       - name: Install 'Include What You Use'
         if: matrix.clang_version && github.event.inputs.include_check == 'true'
