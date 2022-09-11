@@ -133,17 +133,17 @@ jobs:
         if: contains(matrix.name, 'android')
         run: echo "ANDROID_NDK_ROOT=$ANDROID_HOME/ndk/23.2.8568313" >> $GITHUB_ENV
 
-      - name: Build
-        if: github.event.inputs.include_check != 'true'
-        run: ${{ matrix.build_script }} --noConanPkgBuild --config Release
-        env:
-          DEVELOPER_DIR: /Applications/Xcode_13.4.1.app/Contents/Developer
-
       - name: Run Cppcheck
         if: matrix.name != 'windows'
         run: |
           cppcheck --version
           cppcheck . --force --error-exitcode=1
+
+      - name: Build
+        if: github.event.inputs.include_check != 'true'
+        run: ${{ matrix.build_script }} --noConanPkgBuild --config Release
+        env:
+          DEVELOPER_DIR: /Applications/Xcode_13.4.1.app/Contents/Developer
 
       - name: Install 'Include What You Use'
         if: matrix.clang_version && github.event.inputs.include_check == 'true'
