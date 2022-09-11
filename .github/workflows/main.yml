@@ -118,10 +118,6 @@ jobs:
         if: matrix.name == 'ios' || matrix.name == 'macos'
         run: brew install cppcheck
 
-      - name: Install required Windows packages
-        if: matrix.name == 'windows'
-        run: choco install cppcheck
-
       - name: Install CMake
         uses: ssrobins/install-cmake@main
 
@@ -138,6 +134,7 @@ jobs:
         run: echo "ANDROID_NDK_ROOT=$ANDROID_HOME/ndk/23.2.8568313" >> $GITHUB_ENV
 
       - name: Run Cppcheck
+        if: matrix.name != 'windows'
         run: |
           cppcheck --version
           cppcheck . --force --error-exitcode=1
