@@ -46,7 +46,7 @@ else()
 endif()
 
 if(ANDROID)
-    set(conan_args  -s os=Android -s os.api_level=${android_min_sdk_version} -s arch=${android_arch} -s compiler=clang -s compiler.version=${compiler_version} -s compiler.libcxx=c++_static -s compiler.cppstd=${CMAKE_CXX_STANDARD})
+    set(conan_args -s os=Android -s os.api_level=${android_min_sdk_version} -s arch=${android_arch} -s compiler=clang -s compiler.version=${compiler_version} -s compiler.libcxx=c++_static -s compiler.cppstd=${CMAKE_CXX_STANDARD})
 elseif(IOS)
     if(NOT CMAKE_OSX_ARCHITECTURES)
         set(CMAKE_OSX_ARCHITECTURES "armv7;arm64")
@@ -115,7 +115,7 @@ endif()
 set(CMAKE_CONFIGURATION_TYPES "Debug;Release")
 foreach(TYPE ${CMAKE_CONFIGURATION_TYPES})
     execute_process(
-        COMMAND conan install --output-folder ${CMAKE_BINARY_DIR} --remote ${conan_remote_name} --update ${CMAKE_SOURCE_DIR} ${conan_build_option} ${conan_args} -s build_type=${TYPE} -pr:b ${CMAKE_SOURCE_DIR}/profile.jinja -pr:h ${CMAKE_SOURCE_DIR}/profile.jinja
+        COMMAND conan install --output-folder ${CMAKE_BINARY_DIR} --remote ${conan_remote_name} --update ${CMAKE_SOURCE_DIR} ${conan_build_option} ${conan_args} -s build_type=${TYPE} --profile:host ${CMAKE_SOURCE_DIR}/profile.jinja
         RESULT_VARIABLE conan_result
     )
     if(conan_result)
