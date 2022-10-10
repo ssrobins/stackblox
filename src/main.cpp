@@ -4,7 +4,7 @@
 
 int main(int argc, char* argv[])
 {
-    const int numTilesWidth = 12;
+    const int numTilesWidth = 30;
     const int numTilesHeight = 20;
 
     ErrorHandler errorHandler("error.log");
@@ -47,11 +47,11 @@ int main(int argc, char* argv[])
 
             stackblox.handleEvents();
 
-            if (!stackblox.showTitle()) {
-                if (stackblox.noPiece()) {
-                    stackblox.newPiece(pieceCollection.getRandomPiece());
-                }
-            }
+            //if (!stackblox.showTitle()) {
+            //    if (stackblox.noPiece()) {
+            //        stackblox.newPiece(pieceCollection.getRandomPiece());
+            //    }
+            //}
 
             stackblox.update();
 
@@ -61,15 +61,15 @@ int main(int argc, char* argv[])
 
             stackblox.render();
 
-            if (stackblox.showTitle()) {
-                if (!stackblox.playingMusic()) {
-                    stackblox.playTitleScreenMusic();
-                }
-            } else {
-                if (stackblox.playingMusic()) {
-                    stackblox.stopMusic();
-                }
-            }
+            //if (stackblox.showTitle()) {
+            //    if (!stackblox.playingMusic()) {
+            //        stackblox.playTitleScreenMusic();
+            //    }
+            //} else {
+            //    if (stackblox.playingMusic()) {
+            //        stackblox.stopMusic();
+            //    }
+            //}
 
             frameTime = SDL_GetTicks() - frameStart;
             if (frameDelay > frameTime) {

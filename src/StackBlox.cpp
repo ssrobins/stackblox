@@ -4,6 +4,13 @@
 #include "Well.h"
 #include <assert.h>
 
+// For POC, move later
+#include "SDL_image.h"
+
+GameObject* player;
+GameObject* enemy;
+Map* map;
+
 ControlText::ControlText(const bool hasTouchscreen)
 {
     if (hasTouchscreen) {
@@ -81,6 +88,11 @@ StackBlox::StackBlox(const int numTilesWidth, const int numTilesHeight, const ch
     , dragVertDistanceText("", game.heightPercentToPixels(2), fontPath, white, game.getGameWidth(), game.getRenderer(), game.widthPercentToPixels(54), game.heightPercentToPixels(5), false, false)
 {
     isRunning = true;
+
+    // POC
+    player = new GameObject("assets/Blox.png", game.getRenderer(), 0, 0);
+    enemy = new GameObject("assets/pox.png", game.getRenderer(), 50, 50);
+    map = new Map(game.getRenderer());
 
     // LG G4 Android device doesn't show the title screen in the proper position without this
     game.renderPresent();
@@ -237,9 +249,17 @@ bool StackBlox::noPiece()
 
 void StackBlox::update()
 {
-    if (!showTitle() && !over()) {
-        updateStackBlox();
-    }
+    //if (!showTitle() && !over()) {
+    //    updateStackBlox();
+    //}
+
+    updateAdventureBlox();
+}
+
+void StackBlox::updateAdventureBlox()
+{
+    player->Update();
+    enemy->Update();
 }
 
 void StackBlox::updateStackBlox()
@@ -274,11 +294,24 @@ void StackBlox::render()
     if (showDebugText)
         fpsText.updateText(std::string { std::to_string(game.getFPS()) + " fps" }.c_str());
 
-    if (showTitle()) {
-        renderTitleScreen();
-    } else {
-        renderStackBlox();
-    }
+    renderAdventureBlox();
+    //if (showTitle()) {
+    //    renderTitleScreen();
+    //} else {
+    //    renderStackBlox();
+    //}
+}
+
+void StackBlox::renderAdventureBlox()
+{
+    game.setRenderDrawColor({ 0, 0, 0, 255 });
+    game.renderClear();
+    
+    map->DrawMap();
+    player->Render();
+    enemy->Render();
+    
+    game.renderPresent();
 }
 
 void StackBlox::renderTitleScreen()
@@ -416,4 +449,113 @@ void StackBlox::start()
     time = std::chrono::steady_clock::now();
     dropTime = time + well.quickDrop(false);
     moveTime = time + well.getMoveDelay();
+}
+
+// POC
+SDL_Texture* TextureManager::loadTexture(const char* filename, SDL_Renderer* ren)
+{
+    SDL_Surface* tempSurface = IMG_Load(filename);
+    SDL_Texture* tex = SDL_CreateTextureFromSurface(ren, tempSurface);
+    SDL_FreeSurface(tempSurface);
+    
+    return tex;
+}
+
+void TextureManager::Draw(SDL_Texture* tex, SDL_Rect src, SDL_Rect dest, SDL_Renderer* ren)
+{
+    SDL_RenderCopy(ren, tex, &src, &dest);
+}
+
+GameObject::GameObject(const char* texturesheet, SDL_Renderer* ren, int x, int y)
+{
+    renderer = ren;
+    objTexture = TextureManager::loadTexture(texturesheet, ren);
+    
+    xpos = x;
+    ypos = y;
+}
+
+void GameObject::Update()
+{
+    xpos++;
+    ypos++;
+    
+    srcRect.h = 42;
+    srcRect.w = 64;
+    srcRect.x = 0;
+    srcRect.y = 0;
+    destRect.x = xpos;
+    destRect.y = ypos;
+    destRect.h = srcRect.h;
+    destRect.w = srcRect.w;
+}
+
+void GameObject::Render()
+{
+    SDL_RenderCopy(renderer, objTexture, &srcRect, &destRect);
+}
+
+int lvl1[10][10] = {
+    {0,0,0,0,1,1,1,1,0,0},
+    {0,0,0,0,0,0,0,0,0,0},
+    {0,0,0,0,0,0,0,0,0,0},
+    {0,0,0,0,0,0,0,0,0,0},
+    {0,0,0,0,0,0,0,0,0,0},
+    {0,0,0,0,0,0,0,0,0,0},
+    {0,0,0,0,0,0,0,0,0,0},
+    {0,0,0,0,0,0,0,0,0,0},
+    {0,0,0,0,0,0,0,0,0,0}
+};
+
+Map::Map(SDL_Renderer* ren)
+{
+    renderer = ren;
+    
+    wall = TextureManager::loadTexture("assets/wall.png", renderer);
+                                       
+    floor = TextureManager::loadTexture("assets/floor.png", renderer);
+    
+    LoadMap(lvl1);
+    
+    src.x = 0;
+    src.y = 0;
+    dest.x = dest.y = 0;
+    src.w = dest.w = 32;
+    src.h = dest.h = 32;
+}
+
+void Map::LoadMap(int arr[10][10])
+{
+    for (int row = 0; row < 10; row++)
+    {
+        for (int column = 0; column < 10; column++)
+        {
+            map[row][column] = arr[row][column];
+        }
+    }
+}
+
+void Map::DrawMap()
+{
+    int type = 0;
+    for (int row = 0; row < 10; row++)
+    {
+        for (int column = 0; column < 10; column++)
+        {
+            type = map[row][column];
+            
+            dest.x = column * 32;
+            dest.y = row * 32;
+            
+            switch (type)
+            {
+                case 0:
+                    TextureManager::Draw(floor, src, dest, renderer);
+                    break;
+                case 1:
+                    TextureManager::Draw(wall, src, dest, renderer);
+                    break;
+            }
+        }
+    }
 }

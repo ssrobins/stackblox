@@ -59,6 +59,8 @@ public:
     void render();
     void renderStackBlox();
     void renderTitleScreen();
+    void renderAdventureBlox();
+    void updateAdventureBlox();
     void playTitleScreenMusic();
     void stopMusic();
     void start();
@@ -116,4 +118,54 @@ private:
     Text pieceMovedText;
     Text dragVertStartText;
     Text dragVertDistanceText;
+    
+    // POC move to final location later
+    SDL_Texture* playerTex;
+    SDL_Rect playerRect;
+    int cnt = 0;
+};
+
+// POC
+class TextureManager {
+public:
+    static SDL_Texture* loadTexture(const char* filename, SDL_Renderer* ren);
+    static void Draw(SDL_Texture* tex, SDL_Rect src, SDL_Rect dest, SDL_Renderer* ren);
+
+};
+
+
+class GameObject {
+
+public:
+    GameObject(const char* texturesheet, SDL_Renderer* ren, int x, int y);
+    ~GameObject();
+
+    void Update();
+    void Render();
+
+private:
+    int xpos;
+    int ypos;
+
+    SDL_Texture* objTexture;
+    SDL_Rect srcRect, destRect;
+    SDL_Renderer* renderer;
+};
+
+class Map
+{
+public:
+    Map(SDL_Renderer* ren);
+    ~Map();
+    void LoadMap(int arr[10][10]);
+    void DrawMap();
+private:
+    SDL_Rect src, dest;
+    SDL_Texture* wall;
+    SDL_Texture* floor;
+    
+    SDL_Renderer* renderer;
+    
+    int map[10][10];
+    
 };
