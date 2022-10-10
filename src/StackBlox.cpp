@@ -11,6 +11,9 @@ GameObject* player;
 GameObject* enemy;
 Map* map;
 
+Manager manager;
+auto& newPlayer(manager.addEntity());
+
 ControlText::ControlText(const bool hasTouchscreen)
 {
     if (hasTouchscreen) {
@@ -93,6 +96,9 @@ StackBlox::StackBlox(const int numTilesWidth, const int numTilesHeight, const ch
     player = new GameObject("assets/Blox.png", game.getRenderer(), 0, 0);
     enemy = new GameObject("assets/pox.png", game.getRenderer(), 50, 50);
     map = new Map(game.getRenderer());
+    
+    newPlayer.addComponent<PositionComponent>();
+    newPlayer.getComponent<PositionComponent>().setPos(500, 500);
 
     // LG G4 Android device doesn't show the title screen in the proper position without this
     game.renderPresent();
@@ -260,6 +266,8 @@ void StackBlox::updateAdventureBlox()
 {
     player->Update();
     enemy->Update();
+    manager.update();
+    std::cout << newPlayer.getComponent<PositionComponent>().x() << "," << newPlayer.getComponent<PositionComponent>().y() << std::endl;
 }
 
 void StackBlox::updateStackBlox()
