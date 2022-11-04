@@ -129,6 +129,10 @@ jobs:
       - name: Install CMake
         uses: ssrobins/install-cmake@main
 
+      - name: Add Python bin to PATH
+        if: matrix.name == 'ios' || matrix.name == 'macos'
+        run: echo "/Library/Frameworks/Python.framework/Versions/Current/bin" >> $GITHUB_PATH
+
       - name: Install Conan
         run: |
           pip3 install conan --pre --upgrade
