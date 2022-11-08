@@ -56,7 +56,7 @@ jobs:
             build_script: py cmake.py windows --build --test --package
             artifact_path: build_windows/_package/*.zip
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v3
         with:
           lfs: 'true'
 
@@ -85,7 +85,7 @@ jobs:
 
       - name: 'Download development provisioning profile'
         if: matrix.name == 'ios'
-        uses: apple-actions/download-provisioning-profiles@v1
+        uses: ssrobins/download-provisioning-profiles@v2
         with:
           bundle-id: '*'
           profile-type: 'IOS_APP_DEVELOPMENT'
@@ -95,7 +95,7 @@ jobs:
 
       - name: 'Download App Store provisioning profile'
         if: matrix.name == 'ios'
-        uses: apple-actions/download-provisioning-profiles@v1
+        uses: ssrobins/download-provisioning-profiles@v2
         with:
           bundle-id: 'com.dnqpy.${{ env.app_name }}'
           profile-type: 'IOS_APP_STORE'
@@ -105,7 +105,7 @@ jobs:
 
       - name: Import Code-Signing Certificates
         if: matrix.name == 'ios' || matrix.name == 'macos'
-        uses: apple-actions/import-codesign-certs@v1
+        uses: ssrobins/import-codesign-certs@v2
         with:
           p12-file-base64: ${{ secrets.APPLE_CERTIFICATES }}
           p12-password: ${{ secrets.APPLE_CERTIFICATES_PASSWORD }}
@@ -163,7 +163,7 @@ jobs:
         if: matrix.clang_version && github.event.inputs.include_check == 'true'
         run: ./cmake.py ${{ matrix.name }} --iwyu
 
-      - uses: actions/upload-artifact@v2
+      - uses: actions/upload-artifact@v3
         if: github.event.inputs.include_check != 'true'
         with:
           name: ${{ env.app_name }}_artifact${{ github.run_number }}
