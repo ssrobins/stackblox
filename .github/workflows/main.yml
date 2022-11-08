@@ -128,6 +128,8 @@ jobs:
 
       - name: Install CMake
         uses: ssrobins/install-cmake@main
+        with:
+          release-candidate: true
 
       - name: Add Python bin to PATH
         if: matrix.name == 'ios' || matrix.name == 'macos'
