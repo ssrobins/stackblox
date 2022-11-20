@@ -127,6 +127,7 @@
         {
             "name": "default",
             "hidden": true,
+            "jobs": 0,
             "verbose": true
         },
         {

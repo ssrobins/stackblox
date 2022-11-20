@@ -36,6 +36,7 @@ if(ANDROID)
         COMMAND ${CMAKE_COMMAND} -E copy
             ${CMAKE_CURRENT_SOURCE_DIR}/assets_dontship/Android/icon_512x512.png
             ${CMAKE_BINARY_DIR}/AndroidStudio/StackBlox/app/src/main/ic_launcher-web.png
+        COMMAND_ECHO STDOUT
     )
 elseif(WIN32)
     target_sources(StackBlox PRIVATE
