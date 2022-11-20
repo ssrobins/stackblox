@@ -32,6 +32,8 @@ project(StackBlox VERSION 1.3.0)
 set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
+set(CMAKE_OPTIMIZE_DEPENDENCIES true)
+
 if(CMAKE_CXX_INCLUDE_WHAT_YOU_USE)
     find_program(iwyu_path include-what-you-use)
     if(NOT iwyu_path)
@@ -84,8 +86,11 @@ else()
     message("Unhandled platform, Conan install command may fail")
 endif()
 
+find_program(conan_path conan
+    /Library/Frameworks/Python.framework/Versions/Current/bin)
 execute_process(
-    COMMAND conan --version
+    COMMAND ${conan_path} --version
+    COMMAND_ECHO STDOUT
     ERROR_QUIET
     OUTPUT_VARIABLE conan_output
     RESULT_VARIABLE conan_result
@@ -105,13 +110,15 @@ endif()
 set(conan_remote_name artifactory-ssrobins)
 set(conan_remote_url https://ssrobins.jfrog.io/artifactory/api/conan/conan)
 execute_process(
-    COMMAND conan remote update ${conan_remote_name} --url ${conan_remote_url}
+    COMMAND ${conan_path} remote update ${conan_remote_name} --url ${conan_remote_url}
+    COMMAND_ECHO STDOUT
     ERROR_QUIET
     RESULT_VARIABLE conan_result
 )
 if(conan_result)
     execute_process(
         COMMAND conan remote add ${conan_remote_name} ${conan_remote_url}
+        COMMAND_ECHO STDOUT
         RESULT_VARIABLE conan_result
     )
     if(conan_result)
@@ -122,7 +129,8 @@ endif()
 set(CMAKE_CONFIGURATION_TYPES "Debug;Release")
 foreach(TYPE ${CMAKE_CONFIGURATION_TYPES})
     execute_process(
-        COMMAND conan install --output-folder ${CMAKE_BINARY_DIR} --remote ${conan_remote_name} ${CMAKE_SOURCE_DIR} ${conan_build_option} ${conan_args} -s build_type=${TYPE} --profile:host ${CMAKE_SOURCE_DIR}/profile.jinja
+        COMMAND ${conan_path} install --output-folder ${CMAKE_BINARY_DIR} --remote ${conan_remote_name} ${CMAKE_SOURCE_DIR} ${conan_build_option} ${conan_args} -s build_type=${TYPE} --profile:host ${CMAKE_SOURCE_DIR}/profile.jinja
+        COMMAND_ECHO STDOUT
         RESULT_VARIABLE conan_result
     )
     if(conan_result)
