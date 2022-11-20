@@ -1,5 +1,5 @@
 # Building happiness in your life...with StackBlox
-I couldn't find a simple C++ CMake/Conan build setup with continuous integration that uses the latest compilers and builds a shippable application on mobile and desktop platforms so I made one! And in the process, I also made StackBlox.
+I couldn't find a simple C++ CMake/Conan build setup with continuous integration that uses the latest compilers and builds a shippable application on mobile and desktop platforms so I made one! And in the process, I also made StackBlox. I even did a [CppCon lightning talk](https://youtu.be/uu143M26z5E)
 
 ## Whoa, I didn't sign up for this code stuff, I just want to play the game!
 [Get StackBlox now](http://dnqpy.com/stackblox/)
@@ -22,7 +22,7 @@ Then, Clone this repo
 
 ### Build
 The whole development workflow is driven by [CMake presets](
-https://cmake.org/cmake/help/latest/manual/cmake-presets.7.html) to make it easy to select all the supported configurations! Presets are defined in [CMakePresets.json](CMakePresets.json). In the preset names, you'll see references to the platform name, build configuration, and `Iwyu`, which runs the [https://github.com/include-what-you-use/include-what-you-use](include-what-you-use) check.
+https://cmake.org/cmake/help/latest/manual/cmake-presets.7.html) to make it easy to select all the supported configurations! Presets are defined in [CMakePresets.json](CMakePresets.json). In the preset names, you'll see references to the platform name, build configuration, and `Iwyu`, which runs the [include-what-you-use](https://github.com/include-what-you-use/include-what-you-use) check.
 
 #### Build with the CMake GUI
 1. Open the CMake GUI. On macOS, make sure to open from the terminal with the command `open -a cmake` so that environment variables are loaded.
