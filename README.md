@@ -22,7 +22,7 @@ Then, Clone this repo
 
 ### Build with the CMake GUI
 Use CMake's new [CMake presets](
-https://cmake.org/cmake/help/git-stage/manual/cmake-presets.7.html) feature to make it easy to select all the supported platforms! Its configuration is stored in [CMakePresets.json](CMakePresets.json).
+https://cmake.org/cmake/help/latest/manual/cmake-presets.7.html) feature to make it easy to select all the supported platforms! Its configuration is stored in [CMakePresets.json](CMakePresets.json).
 1. Open the CMake GUI. On macOS, make sure to open from the terminal with the command `open -a cmake` so that environment variables are loaded.
 1. Click Browse Source... and navigate to the repo
 1. Click the Preset dropdown and select the platform you want to build
@@ -31,12 +31,14 @@ https://cmake.org/cmake/help/git-stage/manual/cmake-presets.7.html) feature to m
 1. Build from the IDE as you normally would
 
 ### Build at the command line
-The command line builds combine CMake presets with a thin Python wrapper that lets you run one or more steps of the CMake workflow with one command.
+The command line builds also use [CMake presets](
+https://cmake.org/cmake/help/latest/manual/cmake-presets.7.html).
 1. At the command line, `cd` to the repo
-1. Run the `./cmake.py` script for the desired platform to run all or part of the build, test, and package processes. Run `./cmake.py -h` for more information.
+1. Run `cmake --workflow --list-presets` to see available presets
+1. Run `cmake --workflow --preset=<preset-name>` to run the full CMake workflow for that build (example: macOS build/test/packaging with for release build config would be `cmake --workflow --preset=macosRelease`). The presets marked with `Iwyu` run the [https://github.com/include-what-you-use/include-what-you-use](include-what-you-use) check.
 
 ## Continuous integration (CI)
-The build process is automated through [GitHub Actions](https://github.com/features/actions), defined in the [main.yml](.github/workflows/main.yml) file. Nothing fancy here, it runs the same `cmake.py` script described above and archives the results.
+The build process is automated through [GitHub Actions](https://github.com/features/actions), defined in the [main.yml](.github/workflows/main.yml) file. Nothing fancy here, it runs CMake's configure, build, test, and package commands and archives the results.
 
 ## Build environments
 All the builds run on the Windows, Linux, and macOS build environments provided by GitHub. More information at https://github.com/actions/virtual-environments.
