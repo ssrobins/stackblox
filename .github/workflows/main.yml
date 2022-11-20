@@ -149,7 +149,7 @@ jobs:
           cmake --build --preset=${{ matrix.name }}Release
 
       - name: Test
-        if: matrix.name != 'linux' || matrix.name != 'macos' || matrix.name != 'windows'
+        if: matrix.name == 'linux' || matrix.name == 'macos' || matrix.name == 'windows'
         run: |
           ctest --preset=${{ matrix.name }}Debug
           ctest --preset=${{ matrix.name }}Release
