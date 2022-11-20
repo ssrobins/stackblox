@@ -25,7 +25,7 @@ The whole development workflow is driven by [CMake presets](
 https://cmake.org/cmake/help/latest/manual/cmake-presets.7.html) to make it easy to select all the supported configurations! Presets are defined in [CMakePresets.json](CMakePresets.json). In the preset names, you'll see references to the platform name, build configuration, and `Iwyu`, which runs the [Include What You Use](https://github.com/include-what-you-use/include-what-you-use) check.
 
 #### Build with the CMake GUI
-1. Open the CMake GUI. On macOS, make sure to open from the terminal with the command `open -a cmake` so that environment variables are loaded.
+1. Open the CMake GUI
 1. Click Browse Source... and navigate to the repo
 1. Click the Preset dropdown and select the platform you want to build
 1. Click Generate
