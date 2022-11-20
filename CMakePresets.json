@@ -13,6 +13,17 @@
             "cmakeExecutable": "cmake.exe"
         },
         {
+            "name": "iwyu",
+            "hidden": true,
+            "generator": "Ninja Multi-Config",
+            "cacheVariables": {
+                "CMAKE_CXX_INCLUDE_WHAT_YOU_USE": {
+                    "type": "STRING",
+                    "value": "include-what-you-use;-Xiwyu;--mapping_file=${sourceDir}/iwyu.imp"
+                }
+            }
+        },
+        {
             "name": "androidarm",
             "inherits": "default",
             "generator": "Ninja Multi-Config",
@@ -24,6 +35,10 @@
             }
         },
         {
+            "name": "androidarmIwyu",
+            "inherits": ["iwyu", "androidarm"]
+        },
+        {
             "name": "androidarm64",
             "inherits": "default",
             "generator": "Ninja Multi-Config",
@@ -33,6 +48,10 @@
                     "value": "arm64-v8a"
                 }
             }
+        },
+        {
+            "name": "androidarm64Iwyu",
+            "inherits": ["iwyu", "androidarm64"]
         },
         {
             "name": "ios",
@@ -51,6 +70,16 @@
             }
         },
         {
+            "name": "iosIwyu",
+            "inherits": ["iwyu", "ios"],
+            "cacheVariables": {
+                "CMAKE_OSX_ARCHITECTURES": {
+                    "type": "STRING",
+                    "value": "arm64"
+                }
+            }
+        },
+        {
             "name": "linux",
             "inherits": "default",
             "generator": "Ninja Multi-Config",
@@ -59,6 +88,10 @@
                 "lhs": "${hostSystemName}",
                 "rhs": "Linux"
             }
+        },
+        {
+            "name": "linuxIwyu",
+            "inherits": ["iwyu", "linux"]
         },
         {
             "name": "macos",
@@ -71,6 +104,10 @@
             }
         },
         {
+            "name": "macosIwyu",
+            "inherits": ["iwyu", "macos"]
+        },
+        {
             "name": "windows",
             "inherits": "default",
             "generator": "Visual Studio 17 2022",
@@ -80,6 +117,10 @@
                 "lhs": "${hostSystemName}",
                 "rhs": "Windows"
             }
+        },
+        {
+            "name": "windowsIwyu",
+            "inherits": ["iwyu", "windows"]
         }
     ],
     "buildPresets": [
@@ -87,6 +128,11 @@
             "name": "default",
             "hidden": true,
             "verbose": true
+        },
+        {
+            "name": "iwyu",
+            "hidden": true,
+            "cleanFirst": true
         },
         {
             "name": "androidarmDebug",
@@ -101,6 +147,11 @@
             "configuration": "Release"
         },
         {
+            "name": "androidarmIwyu",
+            "inherits": ["default", "iwyu"],
+            "configurePreset": "androidarmIwyu"
+        },
+        {
             "name": "androidarm64Debug",
             "inherits": "default",
             "configurePreset": "androidarm64",
@@ -111,6 +162,11 @@
             "inherits": "default",
             "configurePreset": "androidarm64",
             "configuration": "Release"
+        },
+        {
+            "name": "androidarm64Iwyu",
+            "inherits": ["default", "iwyu"],
+            "configurePreset": "androidarm64Iwyu"
         },
         {
             "name": "iosDebug",
@@ -125,6 +181,11 @@
             "configuration": "Release"
         },
         {
+            "name": "iosIwyu",
+            "inherits": ["default", "iwyu"],
+            "configurePreset": "iosIwyu"
+        },
+        {
             "name": "linuxDebug",
             "inherits": "default",
             "configurePreset": "linux",
@@ -135,6 +196,11 @@
             "inherits": "default",
             "configurePreset": "linux",
             "configuration": "Release"
+        },
+        {
+            "name": "linuxIwyu",
+            "inherits": ["default", "iwyu"],
+            "configurePreset": "linuxIwyu"
         },
         {
             "name": "macosDebug",
@@ -149,6 +215,11 @@
             "configuration": "Release"
         },
         {
+            "name": "macosIwyu",
+            "inherits": ["default", "iwyu"],
+            "configurePreset": "macosIwyu"
+        },
+        {
             "name": "windowsDebug",
             "inherits": "default",
             "configurePreset": "windows",
@@ -159,6 +230,11 @@
             "inherits": "default",
             "configurePreset": "windows",
             "configuration": "Release"
+        },
+        {
+            "name": "windowsIwyu",
+            "inherits": ["default", "iwyu"],
+            "configurePreset": "windowsIwyu"
         }
     ],
     "testPresets": [
@@ -302,6 +378,19 @@
             ]
         },
         {
+            "name": "androidarmIwyu",
+            "steps": [
+                {
+                    "type": "configure",
+                    "name": "androidarmIwyu"
+                },
+                {
+                    "type": "build",
+                    "name": "androidarmIwyu"
+                }
+            ]
+        },
+        {
             "name": "androidarm64Debug",
             "steps": [
                 {
@@ -336,6 +425,19 @@
             ]
         },
         {
+            "name": "androidarm64Iwyu",
+            "steps": [
+                {
+                    "type": "configure",
+                    "name": "androidarm64Iwyu"
+                },
+                {
+                    "type": "build",
+                    "name": "androidarm64Iwyu"
+                }
+            ]
+        },
+        {
             "name": "iosDebug",
             "steps": [
                 {
@@ -358,6 +460,19 @@
                 {
                     "type": "package",
                     "name": "iosRelease"
+                }
+            ]
+        },
+        {
+            "name": "iosIwyu",
+            "steps": [
+                {
+                    "type": "configure",
+                    "name": "iosIwyu"
+                },
+                {
+                    "type": "build",
+                    "name": "iosIwyu"
                 }
             ]
         },
@@ -404,6 +519,19 @@
             ]
         },
         {
+            "name": "linuxIwyu",
+            "steps": [
+                {
+                    "type": "configure",
+                    "name": "linuxIwyu"
+                },
+                {
+                    "type": "build",
+                    "name": "linuxIwyu"
+                }
+            ]
+        },
+        {
             "name": "macosDebug",
             "steps": [
                 {
@@ -446,6 +574,19 @@
             ]
         },
         {
+            "name": "macosIwyu",
+            "steps": [
+                {
+                    "type": "configure",
+                    "name": "macosIwyu"
+                },
+                {
+                    "type": "build",
+                    "name": "macosIwyu"
+                }
+            ]
+        },
+        {
             "name": "windowsDebug",
             "steps": [
                 {
@@ -484,6 +625,19 @@
                 {
                     "type": "package",
                     "name": "windowsRelease"
+                }
+            ]
+        },
+        {
+            "name": "windowsIwyu",
+            "steps": [
+                {
+                    "type": "configure",
+                    "name": "windowsIwyu"
+                },
+                {
+                    "type": "build",
+                    "name": "windowsIwyu"
                 }
             ]
         }
