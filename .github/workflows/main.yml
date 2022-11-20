@@ -29,32 +29,20 @@ jobs:
         include:
           - name: androidarm
             os: ubuntu-20.04
-            build_script: ./cmake.py androidarm --build --package
-            artifact_path: build_androidarm/_package/*.apk
             clang_version: 12
           - name: androidarm64
             os: ubuntu-20.04
-            build_script: ./cmake.py androidarm64 --build --package
-            artifact_path: build_androidarm64/_package/*.apk
             clang_version: 12
           - name: ios
             os: macos-12
-            build_script: ./cmake.py ios --build --package
-            artifact_path: build_ios/_package/*.ipa
             clang_version: 13
           - name: linux
             os: ubuntu-18.04
-            build_script: ./cmake.py linux --build --test --package
-            artifact_path: build_linux/_package/*.tar.gz
           - name: macos
             os: macos-12
-            build_script: ./cmake.py macos --build --test --package
-            artifact_path: build_macos/_package/*.zip
             clang_version: 13
           - name:  windows
             os: windows-2022
-            build_script: py cmake.py windows --build --test --package
-            artifact_path: build_windows/_package/*.zip
     steps:
       - uses: actions/checkout@v3
         with:
@@ -151,9 +139,25 @@ jobs:
           cppcheck --version
           cppcheck . --force --error-exitcode=1
 
+      - name: Configure
+        run: cmake --preset=${{ matrix.name }} -D CONAN_BUILD_MISSING_PKGS=OFF
+
       - name: Build
-        if: github.event.inputs.include_check != 'true'
-        run: ${{ matrix.build_script }} --noConanPkgBuild --config Release
+        if: matrix.name != 'ios'
+        run: |
+          cmake --build --preset=${{ matrix.name }}Debug
+          cmake --build --preset=${{ matrix.name }}Release
+
+      - name: Test
+        if: matrix.name == 'linux' || matrix.name == 'macos' || matrix.name == 'windows'
+        run: |
+          ctest --preset=${{ matrix.name }}Debug
+          ctest --preset=${{ matrix.name }}Release
+
+      - name: Package
+        run: |
+          cpack --preset=${{ matrix.name }}Debug
+          cpack --preset=${{ matrix.name }}Release
 
       - name: Install 'Include What You Use'
         if: matrix.clang_version && github.event.inputs.include_check == 'true'
@@ -163,13 +167,15 @@ jobs:
 
       - name: Check includes
         if: matrix.clang_version && github.event.inputs.include_check == 'true'
-        run: ./cmake.py ${{ matrix.name }} --iwyu
+        run: cmake --workflow --preset ${{ matrix.name }}Iwyu
 
       - uses: actions/upload-artifact@v3
         if: github.event.inputs.include_check != 'true'
         with:
           name: ${{ env.app_name }}_artifact${{ github.run_number }}
-          path: ${{ matrix.artifact_path }}
+          path: |
+            build_${{ matrix.name }}/_package/*.*
+            !build_${{ matrix.name }}/_package/*.json
           if-no-files-found: error
 
       - name: 'Publish to App Store'

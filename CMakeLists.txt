@@ -1,4 +1,4 @@
-cmake_minimum_required(VERSION 3.21)
+cmake_minimum_required(VERSION 3.25)
 
 if(ANDROID_ABI)
     if(NOT EXISTS $ENV{ANDROID_NDK_ROOT})
@@ -31,6 +31,13 @@ project(StackBlox VERSION 1.3.0)
 
 set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
+
+if(CMAKE_CXX_INCLUDE_WHAT_YOU_USE)
+    find_program(iwyu_path include-what-you-use)
+    if(NOT iwyu_path)
+        message(FATAL_ERROR "include-what-you-use binary not found")
+    endif()
+endif()
 
 if(APPLE)
     string(REGEX MATCH "[0-9]+\.[0-9]+" compiler_version ${CMAKE_CXX_COMPILER_VERSION})
