@@ -1,21 +1,21 @@
 {
-    "version": 3,
+    "version": 6,
     "cmakeMinimumRequired": {
         "major": 3,
-        "minor": 21,
+        "minor": 25,
         "patch": 0
     },
     "configurePresets": [
         {
             "name": "default",
             "hidden": true,
+            "binaryDir": "${sourceDir}/build_${presetName}",
             "cmakeExecutable": "cmake.exe"
         },
         {
             "name": "androidarm",
             "inherits": "default",
             "generator": "Ninja Multi-Config",
-            "binaryDir": "${sourceDir}/build_${presetName}",
             "cacheVariables": {
                 "ANDROID_ABI": {
                     "type": "STRING",
@@ -27,7 +27,6 @@
             "name": "androidarm64",
             "inherits": "default",
             "generator": "Ninja Multi-Config",
-            "binaryDir": "${sourceDir}/build_${presetName}",
             "cacheVariables": {
                 "ANDROID_ABI": {
                     "type": "STRING",
@@ -39,7 +38,6 @@
             "name": "ios",
             "inherits": "default",
             "generator": "Xcode",
-            "binaryDir": "${sourceDir}/build_${presetName}",
             "condition": {
                 "type": "equals",
                 "lhs": "${hostSystemName}",
@@ -56,7 +54,6 @@
             "name": "linux",
             "inherits": "default",
             "generator": "Ninja Multi-Config",
-            "binaryDir": "${sourceDir}/build_${presetName}",
             "condition": {
                 "type": "equals",
                 "lhs": "${hostSystemName}",
@@ -67,7 +64,6 @@
             "name": "macos",
             "inherits": "default",
             "generator": "Xcode",
-            "binaryDir": "${sourceDir}/build_${presetName}",
             "condition": {
                 "type": "equals",
                 "lhs": "${hostSystemName}",
@@ -79,12 +75,417 @@
             "inherits": "default",
             "generator": "Visual Studio 17 2022",
             "architecture": "Win32",
-            "binaryDir": "${sourceDir}/build_${presetName}",
             "condition": {
                 "type": "equals",
                 "lhs": "${hostSystemName}",
                 "rhs": "Windows"
             }
+        }
+    ],
+    "buildPresets": [
+        {
+            "name": "default",
+            "hidden": true,
+            "verbose": true
+        },
+        {
+            "name": "androidarmDebug",
+            "inherits": "default",
+            "configurePreset": "androidarm",
+            "configuration": "Debug"
+        },
+        {
+            "name": "androidarmRelease",
+            "inherits": "default",
+            "configurePreset": "androidarm",
+            "configuration": "Release"
+        },
+        {
+            "name": "androidarm64Debug",
+            "inherits": "default",
+            "configurePreset": "androidarm64",
+            "configuration": "Debug"
+        },
+        {
+            "name": "androidarm64Release",
+            "inherits": "default",
+            "configurePreset": "androidarm64",
+            "configuration": "Release"
+        },
+        {
+            "name": "iosDebug",
+            "inherits": "default",
+            "configurePreset": "ios",
+            "configuration": "Debug"
+        },
+        {
+            "name": "iosRelease",
+            "inherits": "default",
+            "configurePreset": "ios",
+            "configuration": "Release"
+        },
+        {
+            "name": "linuxDebug",
+            "inherits": "default",
+            "configurePreset": "linux",
+            "configuration": "Debug"
+        },
+        {
+            "name": "linuxRelease",
+            "inherits": "default",
+            "configurePreset": "linux",
+            "configuration": "Release"
+        },
+        {
+            "name": "macosDebug",
+            "inherits": "default",
+            "configurePreset": "macos",
+            "configuration": "Debug"
+        },
+        {
+            "name": "macosRelease",
+            "inherits": "default",
+            "configurePreset": "macos",
+            "configuration": "Release"
+        },
+        {
+            "name": "windowsDebug",
+            "inherits": "default",
+            "configurePreset": "windows",
+            "configuration": "Debug"
+        },
+        {
+            "name": "windowsRelease",
+            "inherits": "default",
+            "configurePreset": "windows",
+            "configuration": "Release"
+        }
+    ],
+    "testPresets": [
+        {
+            "name": "default",
+            "hidden": true,
+            "output": {"outputOnFailure": true}
+        },
+        {
+            "name": "linuxDebug",
+            "inherits": "default",
+            "configurePreset": "linux",
+            "configuration": "Debug"
+        },
+        {
+            "name": "linuxRelease",
+            "inherits": "default",
+            "configurePreset": "linux",
+            "configuration": "Release"
+        },
+        {
+            "name": "macosDebug",
+            "inherits": "default",
+            "configurePreset": "macos",
+            "configuration": "Debug"
+        },
+        {
+            "name": "macosRelease",
+            "inherits": "default",
+            "configurePreset": "macos",
+            "configuration": "Release"
+        },
+        {
+            "name": "windowsDebug",
+            "inherits": "default",
+            "configurePreset": "windows",
+            "configuration": "Debug"
+        },
+        {
+            "name": "windowsRelease",
+            "inherits": "default",
+            "configurePreset": "windows",
+            "configuration": "Release"
+        }
+    ],
+    "packagePresets": [
+        {
+            "name": "androidarmDebug",
+            "configurePreset": "androidarm",
+            "configurations": ["Debug"]
+        },
+        {
+            "name": "androidarmRelease",
+            "configurePreset": "androidarm",
+            "configurations": ["Release"]
+        },
+        {
+            "name": "androidarm64Debug",
+            "configurePreset": "androidarm64",
+            "configurations": ["Debug"]
+        },
+        {
+            "name": "androidarm64Release",
+            "configurePreset": "androidarm64",
+            "configurations": ["Release"]
+        },
+        {
+            "name": "iosDebug",
+            "configurePreset": "ios",
+            "configurations": ["Debug"]
+        },
+        {
+            "name": "iosRelease",
+            "configurePreset": "ios",
+            "configurations": ["Release"]
+        },
+        {
+            "name": "linuxDebug",
+            "configurePreset": "linux",
+            "configurations": ["Debug"]
+        },
+        {
+            "name": "linuxRelease",
+            "configurePreset": "linux",
+            "configurations": ["Release"]
+        },
+        {
+            "name": "macosDebug",
+            "configurePreset": "macos",
+            "configurations": ["Debug"]
+        },
+        {
+            "name": "macosRelease",
+            "configurePreset": "macos",
+            "configurations": ["Release"]
+        },
+        {
+            "name": "windowsDebug",
+            "configurePreset": "windows",
+            "configurations": ["Debug"]
+        },
+        {
+            "name": "windowsRelease",
+            "configurePreset": "windows",
+            "configurations": ["Release"]
+        }
+    ],
+    "workflowPresets": [
+        {
+            "name": "androidarmDebug",
+            "steps": [
+                {
+                    "type": "configure",
+                    "name": "androidarm"
+                },
+                {
+                    "type": "build",
+                    "name": "androidarmDebug"
+                },
+                {
+                    "type": "package",
+                    "name": "androidarmDebug"
+                }
+            ]
+        },
+        {
+            "name": "androidarmRelease",
+            "steps": [
+                {
+                    "type": "configure",
+                    "name": "androidarm"
+                },
+                {
+                    "type": "build",
+                    "name": "androidarmRelease"
+                },
+                {
+                    "type": "package",
+                    "name": "androidarmRelease"
+                }
+            ]
+        },
+        {
+            "name": "androidarm64Debug",
+            "steps": [
+                {
+                    "type": "configure",
+                    "name": "androidarm64"
+                },
+                {
+                    "type": "build",
+                    "name": "androidarm64Debug"
+                },
+                {
+                    "type": "package",
+                    "name": "androidarm64Debug"
+                }
+            ]
+        },
+        {
+            "name": "androidarm64Release",
+            "steps": [
+                {
+                    "type": "configure",
+                    "name": "androidarm64"
+                },
+                {
+                    "type": "build",
+                    "name": "androidarm64Release"
+                },
+                {
+                    "type": "package",
+                    "name": "androidarm64Release"
+                }
+            ]
+        },
+        {
+            "name": "iosDebug",
+            "steps": [
+                {
+                    "type": "configure",
+                    "name": "ios"
+                },
+                {
+                    "type": "package",
+                    "name": "iosDebug"
+                }
+            ]
+        },
+        {
+            "name": "iosRelease",
+            "steps": [
+                {
+                    "type": "configure",
+                    "name": "ios"
+                },
+                {
+                    "type": "package",
+                    "name": "iosRelease"
+                }
+            ]
+        },
+        {
+            "name": "linuxDebug",
+            "steps": [
+                {
+                    "type": "configure",
+                    "name": "linux"
+                },
+                {
+                    "type": "build",
+                    "name": "linuxDebug"
+                },
+                {
+                    "type": "test",
+                    "name": "linuxDebug"
+                },
+                {
+                    "type": "package",
+                    "name": "linuxDebug"
+                }
+            ]
+        },
+        {
+            "name": "linuxRelease",
+            "steps": [
+                {
+                    "type": "configure",
+                    "name": "linux"
+                },
+                {
+                    "type": "build",
+                    "name": "linuxRelease"
+                },
+                {
+                    "type": "test",
+                    "name": "linuxRelease"
+                },
+                {
+                    "type": "package",
+                    "name": "linuxRelease"
+                }
+            ]
+        },
+        {
+            "name": "macosDebug",
+            "steps": [
+                {
+                    "type": "configure",
+                    "name": "macos"
+                },
+                {
+                    "type": "build",
+                    "name": "macosDebug"
+                },
+                {
+                    "type": "test",
+                    "name": "macosDebug"
+                },
+                {
+                    "type": "package",
+                    "name": "macosDebug"
+                }
+            ]
+        },
+        {
+            "name": "macosRelease",
+            "steps": [
+                {
+                    "type": "configure",
+                    "name": "macos"
+                },
+                {
+                    "type": "build",
+                    "name": "macosRelease"
+                },
+                {
+                    "type": "test",
+                    "name": "macosRelease"
+                },
+                {
+                    "type": "package",
+                    "name": "macosRelease"
+                }
+            ]
+        },
+        {
+            "name": "windowsDebug",
+            "steps": [
+                {
+                    "type": "configure",
+                    "name": "windows"
+                },
+                {
+                    "type": "build",
+                    "name": "windowsDebug"
+                },
+                {
+                    "type": "test",
+                    "name": "windowsDebug"
+                },
+                {
+                    "type": "package",
+                    "name": "windowsDebug"
+                }
+            ]
+        },
+        {
+            "name": "windowsRelease",
+            "steps": [
+                {
+                    "type": "configure",
+                    "name": "windows"
+                },
+                {
+                    "type": "build",
+                    "name": "windowsRelease"
+                },
+                {
+                    "type": "test",
+                    "name": "windowsRelease"
+                },
+                {
+                    "type": "package",
+                    "name": "windowsRelease"
+                }
+            ]
         }
     ]
 }
