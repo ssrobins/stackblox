@@ -170,8 +170,8 @@ jobs:
         with:
           name: ${{ env.app_name }}_artifact${{ github.run_number }}
           path: |
-            build_${{ matrix.name }}/_package/*.*
-            !build_${{ matrix.name }}/_package/*.json
+            build_${{ matrix.name }}/_package/Release/*.*
+            !build_${{ matrix.name }}/_package/Release/*.json
           if-no-files-found: error
 
       - name: 'Publish to App Store'
