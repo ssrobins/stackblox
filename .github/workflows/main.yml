@@ -101,7 +101,8 @@ jobs:
       - name: Cache Conan packages
         uses: actions/cache@v3
         with:
-          path: ${{ env.HOME }}/.conan2
+          path: ~/.conan2
+          key: conan-${{ matrix.name }}
 
       - name: Set Android NDK
         if: contains(matrix.name, 'android')
