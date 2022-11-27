@@ -12,7 +12,7 @@ if(ANDROID_ABI)
     if(NOT EXISTS $ENV{ANDROID_SDK_ROOT})
         message(FATAL_ERROR "Environment variable ANDROID_SDK_ROOT needs to point to a valid Android SDK installation")
     endif()
-    set(android_sdk_version 32)
+    set(android_sdk_version 33)
 endif()
 
 if(ANDROID_ABI STREQUAL armeabi-v7a)
