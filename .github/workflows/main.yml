@@ -99,10 +99,13 @@ jobs:
           p12-password: ${{ secrets.APPLE_CERTIFICATES_PASSWORD }}
 
       - name: Cache Python packages
-        uses: actions/setup-python@v4
+        uses: actions/cache@v3
         with:
-          python-version: 3.11
-          cache: pip
+          path: |
+            ~/.cache/pip
+            ~/Library/Caches/pip
+            c:\users\runneradmin\appdata\local\pip\cache
+          key: pip-${{ matrix.name }}
 
       - name: Cache Conan packages
         uses: actions/cache@v3
