@@ -120,6 +120,13 @@ jobs:
           path: ~/.gradle/caches
           key: gradle-${{ matrix.name }}
 
+      - name: Cache Homebrew packages
+        if: matrix.name == 'ios' || matrix.name == 'macos'
+        uses: actions/cache@v3
+        with:
+          path: ~/Library/Caches/Homebrew
+          key: brew-${{ matrix.name }}
+
       - name: Set Android NDK
         if: contains(matrix.name, 'android')
         run: echo "ANDROID_NDK_ROOT=$ANDROID_HOME/ndk/23.2.8568313" >> $GITHUB_ENV
