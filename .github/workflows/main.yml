@@ -104,7 +104,7 @@ jobs:
           path: |
             ~/.cache/pip
             ~/Library/Caches/pip
-            c:\users\runneradmin\appdata\local\pip\cache
+            ~\AppData\Local\pip\Cache
           key: pip-${{ matrix.name }}
 
       - name: Cache Conan packages
@@ -112,6 +112,13 @@ jobs:
         with:
           path: ~/.conan2
           key: conan-${{ matrix.name }}
+
+      - name: Cache Gradle packages
+        if: contains(matrix.name, 'android')
+        uses: actions/cache@v3
+        with:
+          path: ~/.gradle/caches
+          key: gradle-${{ matrix.name }}
 
       - name: Set Android NDK
         if: contains(matrix.name, 'android')
