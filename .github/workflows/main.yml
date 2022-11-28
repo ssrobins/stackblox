@@ -98,6 +98,11 @@ jobs:
           p12-file-base64: ${{ secrets.APPLE_CERTIFICATES }}
           p12-password: ${{ secrets.APPLE_CERTIFICATES_PASSWORD }}
 
+      - name: Cache Python packages
+        uses: actions/setup-python@v4
+        with:
+          cache: pip
+
       - name: Cache Conan packages
         uses: actions/cache@v3
         with:
