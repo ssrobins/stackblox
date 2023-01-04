@@ -15,4 +15,4 @@ class Conan(ConanFile):
         if self.settings.os == "Android":
             self.requires("android_sdl/2.7.1@ssrobins")
         self.requires("cmake_utils/12.0.1@ssrobins")
-        self.requires("ssrobins_engine/2.0.6@ssrobins")
+        self.requires("ssrobins_engine/2.0.9@ssrobins")
