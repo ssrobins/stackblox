@@ -107,6 +107,11 @@ if(CONAN_BUILD_MISSING_PKGS)
     set(conan_build_option --build=missing)
 endif()
 
+option(CONAN_UPDATE "Check for newer Conan packages" OFF)
+if(CONAN_UPDATE)
+    set(conan_update_option --update)
+endif()
+
 set(conan_remote_name artifactory-ssrobins)
 set(conan_remote_url https://ssrobins.jfrog.io/artifactory/api/conan/conan)
 execute_process(
@@ -129,7 +134,7 @@ endif()
 set(CMAKE_CONFIGURATION_TYPES "Debug;Release")
 foreach(TYPE ${CMAKE_CONFIGURATION_TYPES})
     execute_process(
-        COMMAND ${conan_path} install --output-folder ${CMAKE_BINARY_DIR} --remote ${conan_remote_name} ${CMAKE_SOURCE_DIR} ${conan_build_option} ${conan_args} -s build_type=${TYPE} --profile:host ${CMAKE_SOURCE_DIR}/profile.jinja
+        COMMAND ${conan_path} install --output-folder ${CMAKE_BINARY_DIR} --remote ${conan_remote_name} ${CMAKE_SOURCE_DIR} ${conan_build_option} ${conan_update_option} ${conan_args} -s build_type=${TYPE} --profile:host ${CMAKE_SOURCE_DIR}/profile.jinja
         COMMAND_ECHO STDOUT
         RESULT_VARIABLE conan_result
     )
