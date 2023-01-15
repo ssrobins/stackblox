@@ -98,6 +98,28 @@ jobs:
           p12-file-base64: ${{ secrets.APPLE_CERTIFICATES }}
           p12-password: ${{ secrets.APPLE_CERTIFICATES_PASSWORD }}
 
+      - name: Cache Python packages
+        uses: actions/cache@v3
+        with:
+          path: |
+            ~/.cache/pip
+            ~/Library/Caches/pip
+            ~\AppData\Local\pip\Cache
+          key: pip-${{ matrix.name }}
+
+      - name: Cache Conan packages
+        uses: actions/cache@v3
+        with:
+          path: ~/.conan2
+          key: conan-${{ matrix.name }}
+
+      - name: Cache Gradle packages
+        if: contains(matrix.name, 'android')
+        uses: actions/cache@v3
+        with:
+          path: ~/.gradle/caches
+          key: gradle-${{ matrix.name }}
+
       - name: Set Android NDK
         if: contains(matrix.name, 'android')
         run: echo "ANDROID_NDK_ROOT=$ANDROID_HOME/ndk/23.2.8568313" >> $GITHUB_ENV
@@ -122,7 +144,7 @@ jobs:
       - name: Install Conan
         run: |
           pip3 install conan --pre --upgrade
-          conan profile detect
+          conan profile detect --force
 
       - name: Print versions
         run: |
