@@ -15,7 +15,6 @@ on:
         type: boolean
 
 env:
-  CONAN_REVISIONS_ENABLED: 1
   app_name: StackBlox
 
 jobs:
