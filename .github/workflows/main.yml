@@ -72,7 +72,7 @@ jobs:
 
       - name: 'Download development provisioning profile'
         if: matrix.name == 'ios'
-        uses: ssrobins/download-provisioning-profiles@v2
+        uses: apple-actions/download-provisioning-profiles@v2
         with:
           bundle-id: '*'
           profile-type: 'IOS_APP_DEVELOPMENT'
@@ -82,7 +82,7 @@ jobs:
 
       - name: 'Download App Store provisioning profile'
         if: matrix.name == 'ios'
-        uses: ssrobins/download-provisioning-profiles@v2
+        uses: apple-actions/download-provisioning-profiles@v2
         with:
           bundle-id: 'com.dnqpy.${{ env.app_name }}'
           profile-type: 'IOS_APP_STORE'
@@ -92,7 +92,7 @@ jobs:
 
       - name: Import Code-Signing Certificates
         if: matrix.name == 'ios' || matrix.name == 'macos'
-        uses: ssrobins/import-codesign-certs@v2
+        uses: apple-actions/import-codesign-certs@v2
         with:
           p12-file-base64: ${{ secrets.APPLE_CERTIFICATES }}
           p12-password: ${{ secrets.APPLE_CERTIFICATES_PASSWORD }}
