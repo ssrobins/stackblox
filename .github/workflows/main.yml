@@ -36,7 +36,7 @@ jobs:
             os: macos-12
             clang_version: 13
           - name: linux
-            os: ubuntu-18.04
+            os: ubuntu-20.04
           - name: macos
             os: macos-12
             clang_version: 13
@@ -142,7 +142,7 @@ jobs:
 
       - name: Install Conan
         run: |
-          pip3 install conan --pre --upgrade
+          pip3 install conan==2.0.2
           conan profile detect --force
 
       - name: Print versions
