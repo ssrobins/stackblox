@@ -1,6 +1,6 @@
 from conan import ConanFile
 
-required_conan_version = ">=2.0.0"
+required_conan_version = ">=2.0.4"
 
 class Conan(ConanFile):
     name = "StackBlox"

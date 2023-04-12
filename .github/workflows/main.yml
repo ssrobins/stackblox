@@ -142,7 +142,7 @@ jobs:
 
       - name: Install Conan
         run: |
-          pip3 install conan==2.0.2
+          pip3 install conan --upgrade
           conan profile detect --force
 
       - name: Print versions
