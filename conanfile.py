@@ -9,7 +9,7 @@ class Conan(ConanFile):
     generators = "CMakeDeps"
 
     def build_requirements(self):
-        self.test_requires("gtest/1.12.1@ssrobins")
+        self.test_requires("gtest/1.13.0@ssrobins")
 
     def requirements(self):
         if self.settings.os == "Android":
