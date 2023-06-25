@@ -9,10 +9,10 @@ class Conan(ConanFile):
     generators = "CMakeDeps"
 
     def build_requirements(self):
-        self.test_requires("gtest/1.13.0@ssrobins")
+        self.test_requires("gtest/1.13.0")
 
     def requirements(self):
-        if self.settings.os == "Android":
-            self.requires("android_sdl/2.7.6@ssrobins")
-        self.requires("cmake_utils/12.0.1@ssrobins")
-        self.requires("ssrobins_engine/2.0.10@ssrobins")
+        self.requires("sdl/2.26.5")
+        self.requires("sdl_image/2.0.5")
+        self.requires("sdl_mixer/2.0.4")
+        self.requires("sdl_ttf/2.20.1")

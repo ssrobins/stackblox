@@ -1,0 +1,16 @@
+function(install_executable target_name)
+    set(component_name ${target_name}_${PROJECT_VERSION}_${platform})
+
+    set(androidstudio_path ${CMAKE_BINARY_DIR}/AndroidStudio/${target_name})
+
+    if(ANDROID)
+        install(DIRECTORY ${androidstudio_path}/ DESTINATION . COMPONENT ${component_name} USE_SOURCE_PERMISSIONS)
+    elseif(IOS)
+        configure_file(${CMAKE_SOURCE_DIR}/cmake/export_options.plist export_options.plist)
+        install(FILES ${CMAKE_CURRENT_BINARY_DIR}/export_options.plist DESTINATION . COMPONENT ${component_name})
+        configure_file(${CMAKE_SOURCE_DIR}/cmake/install_ios.cmake install_ios.cmake @ONLY)
+        install(SCRIPT ${CMAKE_CURRENT_BINARY_DIR}/install_ios.cmake COMPONENT ${component_name})
+    else()
+        install(TARGETS ${target_name} DESTINATION ${target_name} COMPONENT ${component_name})
+    endif()
+endfunction(install_executable)
