@@ -53,6 +53,7 @@ target_include_directories(StackBlox PRIVATE
 )
 
 target_link_libraries(StackBlox
+    Game
     StackBloxPiece
     StackBloxWell
 )

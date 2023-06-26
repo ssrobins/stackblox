@@ -16,7 +16,7 @@ target_link_libraries(Game
     Display
     ErrorHandler
     SDL2::SDL2-static
-    sdl_image::sdl_image
-    sdl_mixer::sdl_mixer
-    sdl_ttf::sdl_ttf
+    SDL2_image::SDL2_image
+    SDL2_mixer::SDL2_mixer
+    SDL2_ttf::SDL2_ttf-static
 )
