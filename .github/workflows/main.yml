@@ -162,6 +162,16 @@ jobs:
           cppcheck --version
           cppcheck . --force --error-exitcode=1
 
+      - name: Export edited Conan recipes
+        run: |
+          git clone https://github.com/ssrobins/conan-center-index.git
+          cd conan-center-index
+          git checkout package-fixes
+          cd recipes/sdl_image/all
+          conan export . --version 2.0.5
+          cd ../../sdl_mixer/all
+          conan export . --version 2.0.4
+
       - name: Configure
         run: cmake --preset=${{ matrix.name }} -D CONAN_UPDATE=ON
 
