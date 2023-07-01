@@ -146,7 +146,7 @@ list(PREPEND CMAKE_PREFIX_PATH ${CMAKE_BINARY_DIR})
 set(CMAKE_FIND_PACKAGE_PREFER_CONFIG TRUE)
 set(CMAKE_FIND_ROOT_PATH ${CMAKE_BINARY_DIR})
 
-find_package(gtest REQUIRED)
+find_package(GTest REQUIRED)
 find_package(SDL2 REQUIRED)
 find_package(SDL2_image REQUIRED)
 find_package(SDL2_mixer REQUIRED)
