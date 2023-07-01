@@ -116,8 +116,10 @@ jobs:
         if: contains(matrix.name, 'android')
         uses: actions/cache@v3
         with:
-          path: ~/.gradle/caches
-          key: gradle-${{ runner.os }}
+          path: |
+            ~/.gradle/caches
+            ~/.gradle/wrapper
+          key: gradle-${{ runner.os }}-${{ hashFiles('**/*.gradle*', '**/gradle-wrapper.properties') }}
 
       - name: Set Android NDK
         if: contains(matrix.name, 'android')
