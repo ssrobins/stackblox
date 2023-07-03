@@ -34,7 +34,36 @@ class Conan(ConanFile):
         "sdl_mixer/*:opus": False,
         "sdl_mixer/*:tinymidi": False,
         "sdl_mixer/*:wav": False,
+        "sdl/*:alsa": False,
+        "sdl/*:arts": False,
+        "sdl/*:directfb": False,
+        "sdl/*:directx": False,
+        "sdl/*:esd": False,
+        "sdl/*:iconv": False,
+        "sdl/*:jack": False,
+        "sdl/*:libunwind": False,
+        "sdl/*:nas": False,
+        "sdl/*:opengl": False,
+        "sdl/*:opengles": False,
+        "sdl/*:pulse": False,
+        "sdl/*:sndio": False,
+        "sdl/*:video_rpi": False,
+        "sdl/*:vulkan": False,
+        "sdl/*:wayland": False,
+        "sdl/*:x11": False,
+        "sdl/*:xcursor": False,
+        "sdl/*:xinerama": False,
+        "sdl/*:xinput": False,
+        "sdl/*:xrandr": False,
+        "sdl/*:xscrnsaver": False,
+        "sdl/*:xshape": False,
+        "sdl/*:xvm": False,
     }
+
+    def config_options(self):
+        self.options["sdl/*"].iconv = self.settings.os == "iOS"
+        self.options["sdl/*"].opengl = self.settings.os == "Macos"
+        self.options["sdl/*"].opengles = self.settings.os == "Android"
 
     def build_requirements(self):
         self.test_requires("gtest/1.13.0")

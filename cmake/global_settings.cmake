@@ -7,6 +7,7 @@ elseif(APPLE)
 endif()
 if(APPLE)
     set(xcode_dev_team MLPC343Q5F)
+    set(MACOSX_BUNDLE_BUNDLE_NAME "\${PRODUCT_NAME:identifier}")
     set(MACOSX_BUNDLE_GUI_IDENTIFIER "com.${company}.\${PRODUCT_NAME:identifier}")
 endif()
 
