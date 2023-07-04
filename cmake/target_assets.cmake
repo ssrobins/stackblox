@@ -10,7 +10,9 @@ function(target_assets target_name)
         get_filename_component(assets_path "${assets_path}"
             REALPATH BASE_DIR "${CMAKE_CURRENT_SOURCE_DIR}")
 
-        get_target_property(MACOSX_BUNDLE ${target_name} MACOSX_BUNDLE)
+        if(APPLE)
+            get_target_property(MACOSX_BUNDLE ${target_name} MACOSX_BUNDLE)
+        endif()
 
         if(APPLE AND MACOSX_BUNDLE)
             target_sources(${target_name} PRIVATE
