@@ -62,7 +62,7 @@ class Conan(ConanFile):
 
     def config_options(self):
         self.options["sdl/*"].iconv = self.settings.os == "iOS"
-        self.options["sdl/*"].opengl = self.settings.os == "Macos"
+        self.options["sdl/*"].opengl = self.settings.os != "Android"
         self.options["sdl/*"].opengles = self.settings.os == "Android"
 
     def build_requirements(self):
