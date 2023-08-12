@@ -163,7 +163,9 @@ jobs:
           git clone https://github.com/ssrobins/conan-center-index.git
           cd conan-center-index
           git checkout package-fixes
-          cd recipes/sdl_image/all
+          cd recipes/sdl/all
+          conan export . --version 2.26.5
+          cd ../../sdl_image/all
           conan export . --version 2.0.5
           cd ../../sdl_mixer/all
           conan export . --version 2.0.4
