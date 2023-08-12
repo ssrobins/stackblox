@@ -34,7 +34,7 @@ class Conan(ConanFile):
         "sdl_mixer/*:opus": False,
         "sdl_mixer/*:tinymidi": False,
         "sdl_mixer/*:wav": False,
-        "sdl/*:alsa": False,
+        "sdl/*:alsa": True,
         "sdl/*:arts": False,
         "sdl/*:directfb": False,
         "sdl/*:directx": False,
