@@ -34,7 +34,7 @@ class Conan(ConanFile):
         "sdl_mixer/*:opus": False,
         "sdl_mixer/*:tinymidi": False,
         "sdl_mixer/*:wav": False,
-        "sdl/*:alsa": True,
+        "sdl/*:alsa": False,
         "sdl/*:arts": False,
         "sdl/*:directfb": False,
         "sdl/*:directx": False,
@@ -66,6 +66,11 @@ class Conan(ConanFile):
         self.options["sdl/*"].opengles = self.settings.os == "Android"
         self.options["sdl/*"].x11 = self.settings.os == "Linux"
         self.options["sdl/*"].xinput = self.settings.os == "Linux"
+
+    def system_requirements(self):
+        if self.settings.os == "Linux":
+            Apt(self).install(["libasound2-dev"],
+                update=True, check=True)
 
     def build_requirements(self):
         self.test_requires("gtest/1.13.0")
