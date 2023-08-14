@@ -100,6 +100,16 @@ elseif(conan_output MATCHES 1\\.)
     message(FATAL_ERROR "Conan 1.x found, you must install Conan 2.x.")
 endif()
 
+find_package(Python3 REQUIRED)
+execute_process(
+    COMMAND ${Python3_EXECUTABLE} ${CMAKE_SOURCE_DIR}/export_conan_recipes.py
+    WORKING_DIRECTORY ${CMAKE_BINARY_DIR}
+    RESULT_VARIABLE conan_export_result
+)
+if(conan_export_result)
+    message(FATAL_ERROR "Conan export error")
+endif()
+
 option(CONAN_BUILD_MISSING_PKGS "Build missing Conan packages" ON)
 if(CONAN_BUILD_MISSING_PKGS)
     set(conan_build_option --build=missing)
