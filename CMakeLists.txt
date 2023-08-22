@@ -27,7 +27,7 @@ elseif(ANDROID_ABI STREQUAL arm64-v8a)
     set(android_arch armv8)
 endif()
 
-project(StackBlox VERSION 1.3.0)
+project(StackBlox VERSION 1.3.1)
 
 set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
@@ -57,14 +57,12 @@ endif()
 if(ANDROID)
     set(conan_args -s os=Android -s os.api_level=${android_min_sdk_version} -s arch=${android_arch} -s compiler=clang -s compiler.version=${compiler_version} -s compiler.libcxx=c++_static -s compiler.cppstd=${CMAKE_CXX_STANDARD})
 elseif(IOS)
-    if(NOT CMAKE_OSX_ARCHITECTURES)
-        set(CMAKE_OSX_ARCHITECTURES "armv7;arm64")
-    endif()
-    set(CMAKE_OSX_DEPLOYMENT_TARGET 9.0)
-    set(conan_args -s os=iOS -s arch=armv7 -s os.sdk=iphoneos -s os.version=${CMAKE_OSX_DEPLOYMENT_TARGET} -s compiler=apple-clang -s compiler.libcxx=libc++ -s compiler.version=${compiler_version} -s compiler.cppstd=${CMAKE_CXX_STANDARD})
+    set(CMAKE_OSX_DEPLOYMENT_TARGET 11.0)
+    set(CMAKE_OSX_ARCHITECTURES "arm64")
+    set(conan_args -s os=iOS -s arch=armv8 -s os.sdk=iphoneos -s os.version=${CMAKE_OSX_DEPLOYMENT_TARGET} -s compiler=apple-clang -s compiler.libcxx=libc++ -s compiler.version=${compiler_version} -s compiler.cppstd=${CMAKE_CXX_STANDARD})
     set(bluetooth_statement "App uses the SDL2 library, which supports Bluetooth controllers, but it's not currently used. No data is being collected!")
 elseif(APPLE)
-    set(CMAKE_OSX_DEPLOYMENT_TARGET 10.9)
+    set(CMAKE_OSX_DEPLOYMENT_TARGET 10.13)
     if(CMAKE_SYSTEM_PROCESSOR STREQUAL "arm64")
         set(conan_arch "armv8")
     else()
@@ -102,6 +100,16 @@ elseif(conan_output MATCHES 1\\.)
     message(FATAL_ERROR "Conan 1.x found, you must install Conan 2.x.")
 endif()
 
+find_package(Python3 REQUIRED)
+execute_process(
+    COMMAND ${Python3_EXECUTABLE} ${CMAKE_SOURCE_DIR}/export_conan_recipes.py
+    WORKING_DIRECTORY ${CMAKE_BINARY_DIR}
+    RESULT_VARIABLE conan_export_result
+)
+if(conan_export_result)
+    message(FATAL_ERROR "Conan export error")
+endif()
+
 option(CONAN_BUILD_MISSING_PKGS "Build missing Conan packages" ON)
 if(CONAN_BUILD_MISSING_PKGS)
     set(conan_build_option --build=missing)
@@ -112,8 +120,8 @@ if(CONAN_UPDATE)
     set(conan_update_option --update)
 endif()
 
-set(conan_remote_name artifactory-ssrobins)
-set(conan_remote_url https://ssrobins.jfrog.io/artifactory/api/conan/conan)
+set(conan_remote_name conancenter)
+set(conan_remote_url https://center.conan.io)
 execute_process(
     COMMAND ${conan_path} remote update ${conan_remote_name} --url ${conan_remote_url}
     COMMAND_ECHO STDOUT
@@ -143,23 +151,25 @@ foreach(TYPE ${CMAKE_CONFIGURATION_TYPES})
     endif()
 endforeach()
 
-list(APPEND CMAKE_MODULE_PATH ${CMAKE_BINARY_DIR})
-list(APPEND CMAKE_PREFIX_PATH ${CMAKE_BINARY_DIR})
+list(PREPEND CMAKE_MODULE_PATH ${CMAKE_BINARY_DIR})
+list(PREPEND CMAKE_PREFIX_PATH ${CMAKE_BINARY_DIR})
 set(CMAKE_FIND_PACKAGE_PREFER_CONFIG TRUE)
 set(CMAKE_FIND_ROOT_PATH ${CMAKE_BINARY_DIR})
 
-find_package(cmake_utils REQUIRED)
-find_package(gtest REQUIRED)
-find_package(ssrobins_engine REQUIRED)
+find_package(GTest REQUIRED)
+find_package(SDL2 REQUIRED)
+find_package(SDL2_image REQUIRED)
+find_package(SDL2_mixer REQUIRED)
+find_package(SDL2_ttf REQUIRED)
 
-include(${cmake_utils_PACKAGE_FOLDER_RELEASE}/global_settings.cmake)
+include(cmake/global_settings.cmake)
 
 # Helper functions
-include(${cmake_utils_PACKAGE_FOLDER_RELEASE}/add_executable_custom.cmake)
-include(${cmake_utils_PACKAGE_FOLDER_RELEASE}/add_sdl_executable.cmake)
-include(${cmake_utils_PACKAGE_FOLDER_RELEASE}/add_test_executable.cmake)
-include(${cmake_utils_PACKAGE_FOLDER_RELEASE}/install_executable.cmake)
-include(${cmake_utils_PACKAGE_FOLDER_RELEASE}/target_assets.cmake)
+include(cmake/add_executable_custom.cmake)
+include(cmake/add_sdl_executable.cmake)
+include(cmake/add_test_executable.cmake)
+include(cmake/install_executable.cmake)
+include(cmake/target_assets.cmake)
 
 enable_testing()
 

@@ -44,4 +44,4 @@ The build process is automated through [GitHub Actions](https://github.com/featu
 All the builds run on the Windows, Linux, and macOS build environments provided by GitHub. More information at https://github.com/actions/runner-images.
 
 ## Conan packages
-The [Conan](https://conan.io/) packages directly used in StackBlox are listed in [conanfile.py](conanfile.py). For more details, check out https://github.com/ssrobins/conan-recipes.
+The [Conan](https://conan.io/) packages used in StackBlox are listed in [conanfile.py](conanfile.py) and originate from [ConanCenter](https://conan.io/center/). For more details, check out https://github.com/conan-io/conan-center-index.

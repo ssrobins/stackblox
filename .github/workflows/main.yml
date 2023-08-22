@@ -33,12 +33,12 @@ jobs:
             os: ubuntu-20.04
             clang_version: 12
           - name: ios
-            os: macos-12
+            os: macos-13
             clang_version: 13
           - name: linux
             os: ubuntu-20.04
           - name: macos
-            os: macos-12
+            os: macos-13
             clang_version: 13
           - name:  windows
             os: windows-2022
@@ -104,20 +104,22 @@ jobs:
             ~/.cache/pip
             ~/Library/Caches/pip
             ~\AppData\Local\pip\Cache
-          key: pip-${{ matrix.name }}
+          key: pip-${{ runner.os }}
 
       - name: Cache Conan packages
         uses: actions/cache@v3
         with:
-          path: ~/.conan2
-          key: conan-${{ matrix.name }}
+          path: ~/.conan2/p
+          key: conan-${{ matrix.name }}-${{ hashFiles('conanfile.py', 'profile.jinja') }}
 
       - name: Cache Gradle packages
         if: contains(matrix.name, 'android')
         uses: actions/cache@v3
         with:
-          path: ~/.gradle/caches
-          key: gradle-${{ matrix.name }}
+          path: |
+            ~/.gradle/caches
+            ~/.gradle/wrapper
+          key: gradle-${{ runner.os }}-${{ hashFiles('**/*.gradle*', '**/gradle-wrapper.properties') }}
 
       - name: Set Android NDK
         if: contains(matrix.name, 'android')
@@ -125,7 +127,7 @@ jobs:
 
       - name: Set Xcode version
         if: matrix.name == 'ios' || matrix.name == 'macos'
-        run: sudo xcode-select --switch /Applications/Xcode_13.4.1.app/Contents/Developer
+        run: sudo xcode-select --switch /Applications/Xcode_14.3.1.app/Contents/Developer
 
       - name: Install required Linux packages
         if: contains(matrix.name, 'android') || matrix.name == 'linux'
@@ -157,7 +159,7 @@ jobs:
           cppcheck . --force --error-exitcode=1
 
       - name: Configure
-        run: cmake --preset=${{ matrix.name }} -D CONAN_BUILD_MISSING_PKGS=OFF -D CONAN_UPDATE=ON
+        run: cmake --preset=${{ matrix.name }} -D CONAN_UPDATE=ON
 
       - name: Build
         if: matrix.name != 'ios'

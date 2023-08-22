@@ -53,13 +53,14 @@ target_include_directories(StackBlox PRIVATE
 )
 
 target_link_libraries(StackBlox
-    ssrobins_engine::ssrobins_engine
+    Game
     StackBloxPiece
     StackBloxWell
 )
 
 install_executable(StackBlox)
 
+add_subdirectory(Engine)
 add_subdirectory(Piece)
 add_subdirectory(PieceTest)
 add_subdirectory(Well)
