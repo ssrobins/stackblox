@@ -68,10 +68,10 @@ class Conan(ConanFile):
         self.options["sdl/*"].xinput = self.settings.os == "Linux"
 
     def build_requirements(self):
-        self.test_requires("gtest/1.13.0")
+        self.test_requires("gtest/1.14.0")
 
     def requirements(self):
         self.requires("sdl/2.26.5")
         self.requires("sdl_image/2.0.5")
         self.requires("sdl_mixer/2.0.4")
-        self.requires("sdl_ttf/2.20.1")
+        self.requires("sdl_ttf/2.20.2")
