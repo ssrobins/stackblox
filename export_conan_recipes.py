@@ -19,9 +19,5 @@ subprocess.run(["git", "reset", "--hard", f"origin/{conan_center_branch}"],
 
 subprocess.run(["conan", "export", ".", "--version", "2.26.5"],
     check=True, cwd=f"{conan_center_dir}/recipes/sdl/all")
-subprocess.run(["conan", "export", ".", "--version", "2.0.5"],
-    check=True, cwd=f"{conan_center_dir}/recipes/sdl_image/all")
 subprocess.run(["conan", "export", ".", "--version", "2.0.4"],
     check=True, cwd=f"{conan_center_dir}/recipes/sdl_mixer/all")
-subprocess.run(["conan", "export", ".", "--version", "2.20.1"],
-    check=True, cwd=f"{conan_center_dir}/recipes/sdl_ttf/all")
