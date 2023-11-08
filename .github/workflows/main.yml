@@ -1,6 +1,8 @@
 name: CI
 
 on:
+  schedule:
+    - cron:  '0 0 * * *'
   push:
     branches: [ main ]
   pull_request:
@@ -42,7 +44,6 @@ jobs:
             clang_version: 13
           - name: windows
             os: windows-2022
-            extra: -T v143,version=14.35
     steps:
       - uses: actions/checkout@v3
         with:
@@ -160,7 +161,7 @@ jobs:
           cppcheck . --force --error-exitcode=1
 
       - name: Configure
-        run: cmake --preset=${{ matrix.name }} ${{ matrix.extra }} -D CONAN_UPDATE=ON
+        run: cmake --preset=${{ matrix.name }} -D CONAN_UPDATE=ON
 
       - name: Build
         if: matrix.name != 'ios'
