@@ -16,7 +16,7 @@ if(ANDROID_ABI)
 endif()
 
 if(ANDROID_ABI STREQUAL armeabi-v7a)
-    set(android_min_sdk_version 16)
+    set(android_min_sdk_version 19)
     set(ANDROID_PLATFORM android-${android_min_sdk_version})
     set(version_code 28)
     set(android_arch armv7)
