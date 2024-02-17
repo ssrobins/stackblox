@@ -95,7 +95,7 @@ execute_process(
 )
 if(conan_result)
     message(FATAL_ERROR "Conan not found, is it installed?")
-elseif(conan_output MATCHES 1\\.)
+elseif(conan_output MATCHES ^1\\.)
     message(FATAL_ERROR "Conan 1.x found, you must install Conan 2.x.")
 endif()
 
