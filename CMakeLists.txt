@@ -26,6 +26,15 @@ elseif(ANDROID_ABI STREQUAL arm64-v8a)
     set(version_code 29)
 endif()
 
+list(APPEND CONAN_INSTALL_ARGS "--conf=tools.system.package_manager:mode=install")
+list(APPEND CONAN_INSTALL_ARGS "--conf=tools.system.package_manager:sudo=True")
+list(APPEND CONAN_INSTALL_ARGS "--conf=tools.cmake.cmaketoolchain:generator=Ninja Multi-Config")
+
+option(CONAN_UPDATE "Check for newer Conan packages" OFF)
+if(CONAN_UPDATE)
+    list(APPEND CONAN_INSTALL_ARGS "--update")
+endif()
+
 set(conan_provider_file "${CMAKE_BINARY_DIR}/conan_provider.cmake")
 if(NOT EXISTS "${conan_provider_file}")
     message(STATUS "Downloading conan_provider.cmake")
@@ -67,15 +76,6 @@ execute_process(
 )
 if(conan_export_result)
     message(FATAL_ERROR "Conan export error")
-endif()
-
-list(APPEND CONAN_INSTALL_ARGS "--conf=tools.system.package_manager:mode=install")
-list(APPEND CONAN_INSTALL_ARGS "--conf=tools.system.package_manager:sudo=True")
-list(APPEND CONAN_INSTALL_ARGS "--conf=tools.cmake.cmaketoolchain:generator=Ninja Multi-Config")
-
-option(CONAN_UPDATE "Check for newer Conan packages" OFF)
-if(CONAN_UPDATE)
-    list(APPEND CONAN_INSTALL_ARGS "--update")
 endif()
 
 set(CMAKE_CONFIGURATION_TYPES "Debug;Release")
