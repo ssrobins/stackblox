@@ -26,6 +26,17 @@ elseif(ANDROID_ABI STREQUAL arm64-v8a)
     set(version_code 29)
 endif()
 
+find_package(Python3 REQUIRED)
+execute_process(
+    COMMAND ${Python3_EXECUTABLE} ${CMAKE_SOURCE_DIR}/export_conan_recipes.py
+    WORKING_DIRECTORY ${CMAKE_BINARY_DIR}
+    RESULT_VARIABLE conan_export_result
+)
+if(conan_export_result)
+    message(FATAL_ERROR "Conan export error")
+endif()
+
+list(APPEND CONAN_INSTALL_ARGS "--build=missing")
 list(APPEND CONAN_INSTALL_ARGS "--conf=tools.system.package_manager:mode=install")
 list(APPEND CONAN_INSTALL_ARGS "--conf=tools.system.package_manager:sudo=True")
 list(APPEND CONAN_INSTALL_ARGS "--conf=tools.cmake.cmaketoolchain:generator=Ninja Multi-Config")
@@ -66,16 +77,6 @@ if(IOS)
     set(bluetooth_statement "App uses the SDL2 library, which supports Bluetooth controllers, but it's not currently used. No data is being collected!")
 elseif(APPLE)
     set(CMAKE_OSX_DEPLOYMENT_TARGET 10.13)
-endif()
-
-find_package(Python3 REQUIRED)
-execute_process(
-    COMMAND ${Python3_EXECUTABLE} ${CMAKE_SOURCE_DIR}/export_conan_recipes.py
-    WORKING_DIRECTORY ${CMAKE_BINARY_DIR}
-    RESULT_VARIABLE conan_export_result
-)
-if(conan_export_result)
-    message(FATAL_ERROR "Conan export error")
 endif()
 
 set(CMAKE_CONFIGURATION_TYPES "Debug;Release")
