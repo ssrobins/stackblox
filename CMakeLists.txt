@@ -36,10 +36,12 @@ if(conan_export_result)
     message(FATAL_ERROR "Conan export error")
 endif()
 
-list(APPEND CONAN_INSTALL_ARGS "--build=missing")
-list(APPEND CONAN_INSTALL_ARGS "--conf=tools.system.package_manager:mode=install")
-list(APPEND CONAN_INSTALL_ARGS "--conf=tools.system.package_manager:sudo=True")
-list(APPEND CONAN_INSTALL_ARGS "--conf=tools.cmake.cmaketoolchain:generator=Ninja Multi-Config")
+list(APPEND CONAN_INSTALL_ARGS
+    "--build=missing"
+    "--conf=tools.system.package_manager:mode=install"
+    "--conf=tools.system.package_manager:sudo=True"
+    "--conf=tools.cmake.cmaketoolchain:generator=Ninja Multi-Config"
+)
 
 option(CONAN_UPDATE "Check for newer Conan packages" OFF)
 if(CONAN_UPDATE)
