@@ -133,7 +133,7 @@ jobs:
 
       - name: Install required macOS packages
         if: matrix.name == 'ios' || matrix.name == 'macos'
-        run: brew install cppcheck
+        run: brew install cppcheck ninja
 
       - name: Install CMake
         uses: ssrobins/install-cmake@main
