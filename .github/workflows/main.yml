@@ -76,7 +76,7 @@ jobs:
         if: matrix.name == 'ios'
         uses: apple-actions/download-provisioning-profiles@v2
         with:
-          bundle-id: '*'
+          bundle-id: 'com.dnqpy.${{ env.app_name }}'
           profile-type: 'IOS_APP_DEVELOPMENT'
           issuer-id: ${{ secrets.APPSTORE_ISSUER_ID }}
           api-key-id: ${{ secrets.APPSTORE_KEY_ID }}

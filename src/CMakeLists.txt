@@ -58,6 +58,12 @@ target_link_libraries(StackBlox
     StackBloxWell
 )
 
+if(IOS)
+    set_target_properties(StackBlox PROPERTIES
+        XCODE_ATTRIBUTE_PROVISIONING_PROFILE_SPECIFIER "StackBlox Development"
+    )
+endif()
+
 install_executable(StackBlox)
 
 add_subdirectory(Engine)
