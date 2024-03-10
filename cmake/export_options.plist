@@ -4,7 +4,12 @@
 <dict>
     <key>method</key>
     <string>app-store</string>
-    <key>teamID</key>
-    <string>${xcode_dev_team}</string>
+    <key>signingStyle</key>
+    <string>manual</string>
+    <key>provisioningProfiles</key>
+    <dict>
+        <key>com.dnqpy.StackBlox</key>
+        <string>StackBlox App Store</string>
+    </dict>
 </dict>
 </plist>
