@@ -154,7 +154,7 @@ jobs:
         if: matrix.name != 'windows'
         run: |
           cppcheck --version
-          cppcheck . --force --error-exitcode=1
+          cppcheck . --force --check-level=exhaustive --error-exitcode=1
 
       - name: Configure
         run: cmake --preset=${{ matrix.name }} -D CONAN_UPDATE=ON
