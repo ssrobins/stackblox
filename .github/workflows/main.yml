@@ -31,19 +31,25 @@ jobs:
           - name: androidarm
             os: ubuntu-20.04
             clang_version: 12
+            cppcheck_extra_flags:
           - name: androidarm64
             os: ubuntu-20.04
             clang_version: 12
+            cppcheck_extra_flags:
           - name: ios
             os: macos-13
             clang_version: 13
+            cppcheck_extra_flags: --check-level=exhaustive
           - name: linux
             os: ubuntu-20.04
+            cppcheck_extra_flags:
           - name: macos
             os: macos-13
             clang_version: 13
+            cppcheck_extra_flags: --check-level=exhaustive
           - name: windows
             os: windows-2022
+            cppcheck_extra_flags:
     steps:
       - uses: actions/checkout@v3
         with:
@@ -154,7 +160,7 @@ jobs:
         if: matrix.name != 'windows'
         run: |
           cppcheck --version
-          cppcheck . --force --error-exitcode=1
+          cppcheck . --force --error-exitcode=1 ${{ matrix.cppcheck_extra_flags }}
 
       - name: Configure
         run: cmake --preset=${{ matrix.name }} -D CONAN_UPDATE=ON
