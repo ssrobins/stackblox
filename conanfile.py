@@ -71,6 +71,7 @@ class Conan(ConanFile):
         self.test_requires("gtest/1.14.0")
 
     def requirements(self):
+        self.requires("freetype/2.13.2#dfa3d504cae4a08d5c72113bd6f28498")
         self.requires("sdl/2.28.3")
         self.requires("sdl_image/2.0.5")
         self.requires("sdl_mixer/2.0.4")
