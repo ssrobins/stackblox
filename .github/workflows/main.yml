@@ -51,7 +51,7 @@ jobs:
             os: windows-2022
             cppcheck_extra_flags:
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
         with:
           lfs: 'true'
 
@@ -80,7 +80,7 @@ jobs:
 
       - name: 'Download development provisioning profile'
         if: matrix.name == 'ios'
-        uses: apple-actions/download-provisioning-profiles@v2
+        uses: apple-actions/download-provisioning-profiles@v3
         with:
           bundle-id: 'com.dnqpy.${{ env.app_name }}'
           profile-type: 'IOS_APP_DEVELOPMENT'
@@ -90,7 +90,7 @@ jobs:
 
       - name: 'Download App Store provisioning profile'
         if: matrix.name == 'ios'
-        uses: apple-actions/download-provisioning-profiles@v2
+        uses: apple-actions/download-provisioning-profiles@v3
         with:
           bundle-id: 'com.dnqpy.${{ env.app_name }}'
           profile-type: 'IOS_APP_STORE'
@@ -100,13 +100,13 @@ jobs:
 
       - name: Import Code-Signing Certificates
         if: matrix.name == 'ios' || matrix.name == 'macos'
-        uses: apple-actions/import-codesign-certs@v2
+        uses: apple-actions/import-codesign-certs@v3
         with:
           p12-file-base64: ${{ secrets.APPLE_CERTIFICATES }}
           p12-password: ${{ secrets.APPLE_CERTIFICATES_PASSWORD }}
 
       - name: Cache Python packages
-        uses: actions/cache@v3
+        uses: actions/cache@v4
         with:
           path: |
             ~/.cache/pip
@@ -115,14 +115,14 @@ jobs:
           key: pip-${{ runner.os }}
 
       - name: Cache Conan packages
-        uses: actions/cache@v3
+        uses: actions/cache@v4
         with:
           path: ~/.conan2
           key: conan-${{ matrix.name }}-${{ hashFiles('conanfile.py', 'profile.jinja') }}
 
       - name: Cache Gradle packages
         if: contains(matrix.name, 'android')
-        uses: actions/cache@v3
+        uses: actions/cache@v4
         with:
           path: |
             ~/.gradle/caches
@@ -192,10 +192,10 @@ jobs:
         if: matrix.clang_version && github.event.inputs.include_check == 'true'
         run: cmake --workflow --preset ${{ matrix.name }}Iwyu
 
-      - uses: actions/upload-artifact@v3
+      - uses: actions/upload-artifact@v4
         if: github.event.inputs.include_check != 'true'
         with:
-          name: ${{ env.app_name }}_artifact${{ github.run_number }}
+          name: ${{ env.app_name }}_${{ matrix.name }}_artifact${{ github.run_number }}
           path: |
             build_${{ matrix.name }}/_package/Release/*.*
             !build_${{ matrix.name }}/_package/Release/*.json
