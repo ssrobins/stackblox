@@ -195,7 +195,7 @@ jobs:
       - uses: actions/upload-artifact@v4
         if: github.event.inputs.include_check != 'true'
         with:
-          name: ${{ env.app_name }}_artifact${{ github.run_number }}
+          name: ${{ env.app_name }}_${{ matrix.name }}_artifact${{ github.run_number }}
           path: |
             build_${{ matrix.name }}/_package/Release/*.*
             !build_${{ matrix.name }}/_package/Release/*.json
