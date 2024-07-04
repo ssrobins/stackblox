@@ -72,7 +72,7 @@ class Conan(ConanFile):
 
     def requirements(self):
         self.requires("freetype/2.13.2")
-        self.requires("sdl/2.28.3")
+        self.requires("sdl/2.30.4")
         self.requires("sdl_image/2.0.5")
         self.requires("sdl_mixer/2.0.4")
         self.requires("sdl_ttf/2.20.2")
