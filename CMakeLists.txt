@@ -26,15 +26,15 @@ elseif(ANDROID_ABI STREQUAL arm64-v8a)
     set(version_code 37)
 endif()
 
-find_package(Python3 REQUIRED)
-execute_process(
-    COMMAND ${Python3_EXECUTABLE} ${CMAKE_SOURCE_DIR}/export_conan_recipes.py
-    WORKING_DIRECTORY ${CMAKE_BINARY_DIR}
-    RESULT_VARIABLE conan_export_result
-)
-if(conan_export_result)
-    message(FATAL_ERROR "Conan export error")
-endif()
+#find_package(Python3 REQUIRED)
+#execute_process(
+#    COMMAND ${Python3_EXECUTABLE} ${CMAKE_SOURCE_DIR}/export_conan_recipes.py
+#    WORKING_DIRECTORY ${CMAKE_BINARY_DIR}
+#    RESULT_VARIABLE conan_export_result
+#)
+#if(conan_export_result)
+#    message(FATAL_ERROR "Conan export error")
+#endif()
 
 list(APPEND CONAN_INSTALL_ARGS
     "--build=missing"
