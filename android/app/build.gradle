@@ -1,6 +1,7 @@
 apply plugin: 'com.android.application'
 
 android {
+    namespace "com.${company}.${target_name}"
     compileSdkVersion ${android_sdk_version}
     defaultConfig {
         applicationId "com.${company}.${target_name}"

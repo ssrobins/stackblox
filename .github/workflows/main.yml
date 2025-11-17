@@ -64,6 +64,12 @@ jobs:
           clang-format --version
           find . -iname "*.cpp" -or -iname "*.h" | xargs clang-format --dry-run --Werror
 
+      - name: Set Java version
+        if: contains(matrix.name, 'android')
+        run: |
+          echo "JAVA_HOME=$JAVA_HOME_17_X64" >> $GITHUB_ENV
+        shell: bash
+
       - name: Install Android key store
         if: contains(matrix.name, 'android')
         run: |
