@@ -139,12 +139,12 @@ jobs:
 
       - name: Install required macOS packages
         if: matrix.name == 'ios' || matrix.name == 'macos'
-        run: brew install cppcheck ninja
+        run: brew install cppcheck
 
       - name: Install CMake
         uses: ssrobins/install-cmake@main
         with:
-          release-candidate: true
+          version: 3.31.9
 
       - name: Install Conan
         run: |

@@ -1,6 +1,7 @@
 execute_process(
     COMMAND xcodebuild -workspace @CMAKE_BINARY_DIR@/@PROJECT_NAME@.xcodeproj/project.xcworkspace
         -scheme @target_name@ archive -archivePath @component_name@.xcarchive
+        -destination generic/platform=iOS
     COMMAND_ECHO STDOUT
     RESULT_VARIABLE xcode_archive_result
     WORKING_DIRECTORY @CMAKE_CURRENT_BINARY_DIR@
