@@ -29,22 +29,22 @@ jobs:
       matrix:
         include:
           - name: androidarm
-            os: ubuntu-20.04
+            os: ubuntu-22.04
             clang_version: 12
             cppcheck_extra_flags:
           - name: androidarm64
-            os: ubuntu-20.04
+            os: ubuntu-22.04
             clang_version: 12
             cppcheck_extra_flags:
           - name: ios
-            os: macos-13
+            os: macos-14
             clang_version: 13
             cppcheck_extra_flags: --check-level=exhaustive
           - name: linux
-            os: ubuntu-20.04
+            os: ubuntu-22.04
             cppcheck_extra_flags:
           - name: macos
-            os: macos-13
+            os: macos-14
             clang_version: 13
             cppcheck_extra_flags: --check-level=exhaustive
           - name: windows
@@ -63,6 +63,12 @@ jobs:
         run: |
           clang-format --version
           find . -iname "*.cpp" -or -iname "*.h" | xargs clang-format --dry-run --Werror
+
+      - name: Set Java version
+        if: contains(matrix.name, 'android')
+        run: |
+          echo "JAVA_HOME=$JAVA_HOME_17_X64" >> $GITHUB_ENV
+        shell: bash
 
       - name: Install Android key store
         if: contains(matrix.name, 'android')
@@ -139,12 +145,12 @@ jobs:
 
       - name: Install required macOS packages
         if: matrix.name == 'ios' || matrix.name == 'macos'
-        run: brew install cppcheck ninja
+        run: brew install cppcheck
 
       - name: Install CMake
         uses: ssrobins/install-cmake@main
         with:
-          release-candidate: true
+          version: 3.31.9
 
       - name: Install Conan
         run: |

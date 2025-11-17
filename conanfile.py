@@ -71,7 +71,7 @@ class Conan(ConanFile):
         self.test_requires("gtest/1.14.0")
 
     def requirements(self):
-        self.requires("sdl/2.26.5", override=True)
+        self.requires("sdl/2.32.8", override=True)
         self.requires("sdl_image/2.0.5")
         self.requires("sdl_mixer/2.0.4")
         self.requires("sdl_ttf/2.20.2")
