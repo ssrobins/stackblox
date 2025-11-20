@@ -1,0 +1,38 @@
+{
+  "version": "0.2.0",
+  "configurations": [
+    {
+      "name": "CMake: Launch (macOS/Linux / LLDB)",
+      "type": "lldb",
+      "request": "launch",
+      "program": "${command:cmake.launchTargetPath}",
+      "args": [
+        // Example: pass arguments to your program
+        // "arg1", "arg2=value", "--flag"
+      ],
+      "cwd": "${command:cmake.launchTargetDirectory}",
+      "stopOnEntry": false,
+      "env": {
+        // Example: set environment variables for your program
+        // "MY_VAR": "value"
+      },
+      "terminal": "integrated"
+    },
+    {
+      "name": "CMake: Launch (Windows / MSVC)",
+      "type": "cppvsdbg",
+      "request": "launch",
+      "program": "${command:cmake.launchTargetPath}",
+      "args": [
+        // Example: pass arguments to your program
+        // "arg1", "arg2=value", "--flag"
+      ],
+      "cwd": "${command:cmake.launchTargetDirectory}",
+      "stopAtEntry": false,
+      "environment": [
+        // Example: set environment variables for your program
+        // { "name": "MY_VAR", "value": "value" }
+      ]
+    }
+  ]
+}

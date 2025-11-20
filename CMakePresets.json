@@ -9,8 +9,7 @@
         {
             "name": "default",
             "hidden": true,
-            "binaryDir": "${sourceDir}/build_${presetName}",
-            "cmakeExecutable": "cmake.exe"
+            "binaryDir": "${sourceDir}/build_${presetName}"
         },
         {
             "name": "iwyu",
