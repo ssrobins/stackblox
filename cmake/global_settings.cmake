@@ -102,3 +102,18 @@ set(CMAKE_INSTALL_PREFIX ${PROJECT_BINARY_DIR}/_install)
 set(CPACK_PACKAGE_DIRECTORY ${PROJECT_BINARY_DIR}/_package/\${CPACK_BUILD_CONFIG})
 set(CPACK_COMPONENTS_GROUPING IGNORE)
 set(CPACK_INCLUDE_TOPLEVEL_DIRECTORY 0)
+
+# Fix for VS Code's Quick Debugging error "No compiler found in the cache file."
+# when using CMake's Xcode generator.
+# Note: Quick Debugging is the "Launch the debugger" icon in the status bar at the bottom,
+# not to be confused with "Start Debugging" in the Run menu and in the "Run and Debug"
+# Activity Bar, which is controlled by .vscode/launch.json")
+if(CMAKE_GENERATOR MATCHES "Xcode" AND NOT DEFINED CMAKE_COMPILER_FORCED)
+    foreach(lang C CXX)
+        set(CMAKE_${lang}_COMPILER "${CMAKE_${lang}_COMPILER}" 
+            CACHE STRING "Detected ${lang} compiler" FORCE)
+    endforeach()
+
+    set(CMAKE_COMPILER_FORCED TRUE CACHE INTERNAL "Mark compiler as forced")
+endif()
+

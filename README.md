@@ -37,6 +37,13 @@ https://cmake.org/cmake/help/latest/manual/cmake-presets.7.html) to make it easy
 1. Run `cmake --workflow --list-presets` to see available presets
 1. Run `cmake --workflow --preset=<preset-name>` to run the full CMake workflow for that build (example: macOS build/test/packaging with release build config would be `cmake --workflow --preset=macosRelease`).
 
+#### Build with VS Code
+1. Install [recommended extensions](.vscode/extensions.json) from the Extensions sidebar
+1. Configure presets and Debug/Launch targets in the CMake sidebar
+1. Click the Build icon in the status bar to build
+1. Select your platform launcher in the "Run and Debug" sidebar and click play to debug
+1. Run tests from the Tests sidebar
+
 ## Continuous integration (CI)
 The build process is automated through [GitHub Actions](https://github.com/features/actions), defined in the [main.yml](.github/workflows/main.yml) file. Nothing fancy here, it runs CMake's configure, build, test, and package commands and archives the results.
 
